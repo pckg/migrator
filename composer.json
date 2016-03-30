@@ -1,0 +1,21 @@
+{
+  "name": "pckg/migration",
+  "description": "Database, config and other migrations made simple",
+  "homepage": "https://github.com/pckg/migration",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Bojan Rajh",
+      "email": "schtr4jh@schtr4jh.net"
+    }
+  ],
+  "require": {
+    "pckg/database": "dev-master"
+  },
+  "autoload": {
+    "psr-0": {
+      "Pckg": "src\\"
+    }
+  },
+  "minimum-stability": "dev"
+}
