@@ -11,7 +11,6 @@ use Symfony\Component\Console\Question\Question;
  * Class CreatePckgProject
  *
  */
-
 class CreatePckgProject extends Command
 {
 
@@ -42,6 +41,7 @@ class CreatePckgProject extends Command
     }
 
 }
+
 
 $application = new Application();
 $application->add(new CreatePckgProject());
