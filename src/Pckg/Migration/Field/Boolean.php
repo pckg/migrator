@@ -2,7 +2,7 @@
 
 use Pckg\Migration\Field;
 
-class Id extends Field
+class Boolean extends Field
 {
-
+    
 }
