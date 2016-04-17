@@ -1,5 +1,6 @@
 <?php namespace Pckg\Migration;
 
+use Pckg\Migration\Command\ExecuteMigration;
 use Pckg\Migration\Field\Boolean;
 use Pckg\Migration\Field\Datetime;
 use Pckg\Migration\Field\Group\Timeable;

@@ -1,8 +1,6 @@
 <?php namespace Pckg\Migration\Console;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use Pckg\Framework\Console\Command;
 
 class ShowMigrations extends Command
 {
@@ -13,7 +11,7 @@ class ShowMigrations extends Command
             ->setDescription('List available migrations');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function handle()
     {
         die("ListMigrations::exec");
     }

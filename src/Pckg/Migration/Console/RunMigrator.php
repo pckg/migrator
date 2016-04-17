@@ -1,8 +1,7 @@
 <?php namespace Pckg\Migration\Console;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use Pckg\Framework\Console\Command;
+use Symfony\Component\Console\Input\InputArgument;
 
 class RunMigrator extends Command
 {
@@ -10,10 +9,13 @@ class RunMigrator extends Command
     protected function configure()
     {
         $this->setName('migrator:run')
-            ->setDescription('Execute migrations one by one');
+            ->setDescription('Execute migrations one by one')
+            ->addArguments([
+                'migration' => 'Migration class',
+            ], InputArgument::REQUIRED);
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function handle()
     {
         die("RunMigrations::exec");
     }

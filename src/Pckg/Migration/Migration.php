@@ -2,12 +2,25 @@
 
 namespace Pckg\Migration;
 
+use Pckg\Migration\Command\ExecuteMigration;
+
 class Migration
 {
 
+    protected $tables = [];
+
     public function table($table)
     {
-        return new Table($table);
+        $table = new Table($table);
+
+        $this->tables[] = $table;
+
+        return $table;
+    }
+
+    public function save()
+    {
+        (new ExecuteMigration($this))->execute();
     }
 
     public function translatable($table, $suffix = '_i18n')
