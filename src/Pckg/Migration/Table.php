@@ -1,6 +1,8 @@
 <?php namespace Pckg\Migration;
 
 use Pckg\Migration\Field\Boolean;
+use Pckg\Migration\Field\Datetime;
+use Pckg\Migration\Field\Group\Timeable;
 use Pckg\Migration\Field\Id;
 use Pckg\Migration\Field\Integer;
 use Pckg\Migration\Key\Index;
@@ -23,6 +25,8 @@ class Table
         $this->name = $name;
     }
 
+    // adders
+
     public function addRelation(Relation $relation)
     {
         $this->relations[] = $relation;
@@ -36,6 +40,15 @@ class Table
 
         return $this;
     }
+
+    public function addField(Field $field)
+    {
+        $this->fields[] = $field;
+
+        return $this;
+    }
+
+    // fields
 
     public function id($name = 'id', $primary = true)
     {
@@ -82,6 +95,26 @@ class Table
 
         return $integer;
     }
+
+    public function datetime($name)
+    {
+        $datetime = new Datetime($this, $name);
+
+        $this->fields[] = $datetime;
+
+        return $datetime;
+    }
+
+    // groups
+
+    public function timeable()
+    {
+        $timeable = new Timeable($this);
+
+        return $timeable;
+    }
+
+    // index, primary, unique
 
     public function index(...$fields)
     {
