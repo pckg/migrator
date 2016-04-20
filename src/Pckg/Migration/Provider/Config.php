@@ -1,17 +1,17 @@
 <?php namespace Pckg\Migration\Provider;
 
 use Pckg\Framework\Provider;
-use Pckg\Migration\Console\RunMigrator;
-use Pckg\Migration\Console\ShowMigrations;
+use Pckg\Migration\Console\InstallMigrator;
+use Pckg\Migration\Console\UpdateMigrator;
 
 class Config extends Provider
 {
 
-    public function commands()
+    public function consoles()
     {
         return [
-            RunMigrator::class,
-            ShowMigrations::class,
+            UpdateMigrator::class,
+            InstallMigrator::class,
         ];
     }
 

@@ -1,14 +1,14 @@
 <?php namespace Pckg\Migration;
 
-use Pckg\Migration\Command\ExecuteMigration;
 use Pckg\Migration\Field\Boolean;
 use Pckg\Migration\Field\Datetime;
 use Pckg\Migration\Field\Group\Timeable;
 use Pckg\Migration\Field\Id;
 use Pckg\Migration\Field\Integer;
-use Pckg\Migration\Key\Index;
-use Pckg\Migration\Key\Primary;
-use Pckg\Migration\Key\Unique;
+use Pckg\Migration\Field\Varchar;
+use Pckg\Migration\Constraint\Index;
+use Pckg\Migration\Constraint\Primary;
+use Pckg\Migration\Constraint\Unique;
 
 class Table
 {
@@ -26,6 +26,23 @@ class Table
         $this->name = $name;
     }
 
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    // getters
+
+    public function getFields()
+    {
+        return $this->fields;
+    }
+
+    public function getConstraints()
+    {
+        return $this->constraints;
+    }
+
     // adders
 
     public function addRelation(Relation $relation)
@@ -35,7 +52,7 @@ class Table
         return $this;
     }
 
-    public function addConstraint(Key $constraint)
+    public function addConstraint(Constraint $constraint)
     {
         $this->constraints[] = $constraint;
 
@@ -66,7 +83,7 @@ class Table
 
     public function varchar($name, $length = 128)
     {
-        $varchar = new Field($this, $name);
+        $varchar = new Varchar($this, $name);
 
         $this->fields[] = $varchar;
 
@@ -117,6 +134,15 @@ class Table
 
     // index, primary, unique
 
+    public function primary(...$fields)
+    {
+        $primary = new Primary($this, ...$fields);
+
+        $this->constraints[] = $primary;
+
+        return $primary;
+    }
+
     public function index(...$fields)
     {
         $index = new Index($this, ...$fields);
@@ -126,18 +152,9 @@ class Table
         return $index;
     }
 
-    public function primary(...$fields)
-    {
-        $primary = new Primary($this, $fields);
-
-        $this->constraints[] = $primary;
-
-        return $primary;
-    }
-
     public function unique(...$fields)
     {
-        $unique = new Unique($this, $fields);
+        $unique = new Unique($this, ...$fields);
 
         $this->constraints[] = $unique;
 

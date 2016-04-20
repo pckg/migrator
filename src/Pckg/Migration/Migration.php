@@ -18,6 +18,11 @@ class Migration
         return $table;
     }
 
+    public function getTables()
+    {
+        return $this->tables;
+    }
+
     public function save()
     {
         (new ExecuteMigration($this))->execute();
