@@ -1,14 +1,15 @@
 <?php namespace Pckg\Migration;
 
+use Pckg\Migration\Constraint\Index;
+use Pckg\Migration\Constraint\Primary;
+use Pckg\Migration\Constraint\Unique;
 use Pckg\Migration\Field\Boolean;
 use Pckg\Migration\Field\Datetime;
 use Pckg\Migration\Field\Group\Timeable;
 use Pckg\Migration\Field\Id;
 use Pckg\Migration\Field\Integer;
+use Pckg\Migration\Field\Text;
 use Pckg\Migration\Field\Varchar;
-use Pckg\Migration\Constraint\Index;
-use Pckg\Migration\Constraint\Primary;
-use Pckg\Migration\Constraint\Unique;
 
 class Table
 {
@@ -92,6 +93,35 @@ class Table
         return $varchar;
     }
 
+    public function slug($name = 'slug', $length = 128)
+    {
+        $field = $this->varchar($name, $length);
+
+        $this->unique($name);
+
+        return $field;
+    }
+
+    public function title($name = 'title', $length = 128)
+    {
+        return $this->varchar($name, $length);
+    }
+
+    public function subtitle($name = 'subtitle')
+    {
+        return $this->text($name);
+    }
+
+    public function lead($name = 'lead')
+    {
+        return $this->text($name);
+    }
+
+    public function content($name = 'content')
+    {
+        return $this->text($name);
+    }
+
     public function boolean($name, $default = null)
     {
         $boolean = new Boolean($this, $name);
@@ -103,6 +133,30 @@ class Table
         return $boolean;
     }
 
+    public function text($name)
+    {
+        $text = new Text($this, $name);
+
+        $this->fields[] = $text;
+
+        return $text;
+    }
+
+    public function description($name = 'description')
+    {
+        return $this->text($name);
+    }
+
+    public function email($name = 'email')
+    {
+        return $this->varchar($name);
+    }
+
+    public function password($name = 'password', $length = 40)
+    {
+        return $this->varchar($name, $length);
+    }
+
     public function integer($name, $length = 11)
     {
         $integer = new Integer($this, $name);
@@ -112,6 +166,15 @@ class Table
         $integer->length($length);
 
         return $integer;
+    }
+
+    public function parent($name = 'parent_id')
+    {
+        $parent = $this->integer($name);
+
+        $parent->references($this->name);
+
+        return $parent;
     }
 
     public function datetime($name)
@@ -130,6 +193,16 @@ class Table
         $timeable = new Timeable($this);
 
         return $timeable;
+    }
+
+    public function orderable()
+    {
+        // @T00D00
+    }
+
+    public function hideable()
+    {
+        // @T00D00
     }
 
     // index, primary, unique

@@ -113,7 +113,7 @@ class Field
         return $this;
     }
 
-    public function references($table, $on)
+    public function references($table, $on = 'id')
     {
         $relation = new Relation($this, $table, $on);
 
