@@ -35,7 +35,9 @@ class ExecuteMigration
             }
         }
 
-        d('SQLs:', $this->sqls);
+        if ($this->sqls) {
+            d('SQLs:', $this->sqls);
+        }
     }
 
     protected function updateTable(Cache $cache, Table $table)
@@ -43,9 +45,13 @@ class ExecuteMigration
         //$this->output('Updating table ' . $table->getName());
         foreach ($table->getFields() as $field) {
             if ($cache->tableHasField($table->getName(), $field->getName())) {
-                $this->updateField($cache, $table, $field);
+                $sql = $this->updateField($cache, $table, $field);
+                if ($sql) {
+                    $this->sql[] = 'CHANGE `' . $field->getName() . '` ' . $sql;
+                }
             } else {
-                $this->installField($cache, $table, $field);
+                $sql = $this->installField($cache, $table, $field);
+                $this->sql[] = 'ADD `' . $field->getName() . '` ' . $sql;
             }
         }
 
@@ -59,7 +65,7 @@ class ExecuteMigration
 
         if ($this->sql) {
             $this->sqls[] = 'ALTER TABLE `' . $table->getName() . '` ' . "\n"
-                . 'ADD ' . implode(",\n ADD", $this->sql);
+                . ' ' . implode(",\n ", $this->sql);
         }
     }
 
@@ -70,7 +76,9 @@ class ExecuteMigration
         $oldSql = $this->buildOldFieldSql($cache, $table, $field);
 
         if ($newSql != $oldSql) {
-            $this->sql[] = 'CHANGE `' . $field->getName() . '` `' . $field->getName() . '` ' . $newSql;
+            d($oldSql, $newSql);
+
+            return '`' . $field->getName() . '` ' . $newSql;
         }
     }
 
@@ -127,7 +135,8 @@ class ExecuteMigration
 
         return strtoupper($cachedField['type'])
         . ($cachedField['limit'] ? '(' . $cachedField['limit'] . ')' : '')
-        . ($cachedField['null'] == 'YES' ? ' DEFAULT NULL' : ' NOT NULL')
+        . ($cachedField['null'] ? ' NULL' : ' NOT NULL')
+        . ($cachedField['default'] ? ' DEFAULT ' . ($cachedField['default']) : ($cachedField['null'] ? ' DEFAULT NULL' : ''))
         . ($cachedField['extra'] ? ' ' . strtoupper($cachedField['extra']) : '');
     }
 

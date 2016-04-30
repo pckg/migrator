@@ -40,9 +40,22 @@ class Field
         $sql = [];
         $sql[] = $this->getTypeWithLength();
         if ($this->isNullable()) {
-            $sql[] = 'DEFAULT NULL';
+            $sql[] = 'NULL';
         } else {
             $sql[] = 'NOT NULL';
+        }
+
+        if ($this->default) {
+            $default = '';
+            if ($this->default == 'CURRENT_TIMESTAMP') {
+                $default = $this->default;
+            } else {
+                $default = "'" . $this->default . "'";
+            }
+            $sql[] = 'DEFAULT ' . $default;
+
+        } else if ($this->isNullable()) {
+            $sql[] = 'DEFAULT NULL';
         }
 
         return implode(' ', $sql);
@@ -119,7 +132,7 @@ class Field
 
         $this->table->addRelation($relation);
 
-        return $relation;
+        return $this;
     }
 
 }

@@ -11,7 +11,7 @@ class Timeable
     {
         $this->table = $table;
         
-        $table->datetime('created_at')->setDefault('NOW()');
+        $table->datetime('created_at')->setDefault('CURRENT_TIMESTAMP');
         $table->datetime('updated_at');
         $table->datetime('deleted_at');
     }
