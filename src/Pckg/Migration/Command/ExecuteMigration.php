@@ -22,7 +22,7 @@ class ExecuteMigration
 
     public function execute()
     {
-        //$this->output('Executing migration ' . get_class($this->migration));
+        $this->output('Executing migration ' . get_class($this->migration));
 
         $entity = new Entity();
         $cache = $entity->getRepository()->getCache();
@@ -35,7 +35,7 @@ class ExecuteMigration
             }
         }
 
-        dd($this->sqls);
+        d('SQLs:', $this->sqls);
     }
 
     protected function updateTable(Cache $cache, Table $table)
@@ -59,7 +59,7 @@ class ExecuteMigration
 
         if ($this->sql) {
             $this->sqls[] = 'ALTER TABLE `' . $table->getName() . '` ' . "\n"
-                . implode(",\n", $this->sql);
+                . 'ADD ' . implode(",\n ADD", $this->sql);
         }
     }
 

@@ -22,6 +22,7 @@ class InstallMigrator extends Command
         $requestedMigrations = $this->getRequestedMigrations();
         $installedMigrations = $this->getInstalledMigrations();
 
+        $count = 0;
         foreach ($requestedMigrations as $requestedMigration) {
             if (!in_array($requestedMigration, $installedMigrations)) {
                 $this->output('Creating ' . $requestedMigration);
@@ -29,10 +30,15 @@ class InstallMigrator extends Command
                 $this->output('Installing ...');
                 $migration->up();
                 $this->output('Installed.');
+                $installedMigrations[] = $requestedMigration;
+                $count++;
             }
         }
-        dd($requestedMigrations, $installedMigrations);
-        dd("InstallMigrator::handle", $this->app, $this->getAppMigrationPath());
+
+        $this->output($count ? $count . ' migrations installed.' : 'All migrations already installed.');
+        $this->output('Total installed migrations: ' . count($installedMigrations));
+
+        $this->putInstalledMigrations($installedMigrations);
     }
 
     private function getRequestedMigrations()
@@ -45,6 +51,11 @@ class InstallMigrator extends Command
         return is_file($this->getEnvironmentPath())
             ? json_decode(file_get_contents($this->getEnvironmentPath()))
             : [];
+    }
+
+    private function putInstalledMigrations(array $installedMigrations = [])
+    {
+        return file_put_contents($this->getEnvironmentPath(), json_encode($installedMigrations));
     }
 
     private function getConfigPath()
