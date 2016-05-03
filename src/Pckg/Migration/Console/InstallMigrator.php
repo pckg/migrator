@@ -24,7 +24,7 @@ class InstallMigrator extends Command
 
         $count = 0;
         foreach ($requestedMigrations as $requestedMigration) {
-            if (!in_array($requestedMigration, $installedMigrations)) {
+            //if (!in_array($requestedMigration, $installedMigrations)) {
                 $this->output('Creating ' . $requestedMigration);
                 $migration = new $requestedMigration;
                 $this->output('Installing ...');
@@ -32,7 +32,7 @@ class InstallMigrator extends Command
                 $this->output('Installed.');
                 $installedMigrations[] = $requestedMigration;
                 $count++;
-            }
+            //}
         }
 
         $this->output($count ? $count . ' migrations installed.' : 'All migrations already installed.');

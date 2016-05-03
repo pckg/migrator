@@ -35,7 +35,7 @@ class Migration
     public function translatable($table, $suffix = '_i18n')
     {
         $translatable = new Table($table . $suffix);
-        $this->tables[] = $table;
+        $this->tables[] = $translatable;
 
         $translatable->id('id', false);
         $translatable->varchar('language_id', 2)->references('languages', 'slug');
@@ -45,10 +45,22 @@ class Migration
         return $translatable;
     }
 
+    public function permissiontable($table, $suffix = '_p17n')
+    {
+        $permissiontable = new Table($table . $suffix);
+        $this->tables[] = $permissiontable;
+
+        $permissiontable->id('id');
+        $permissiontable->integer('user_group_id')->references('user_groups');
+        $permissiontable->varchar('action', 32);
+
+        return $permissiontable;
+    }
+
     public function morphtable($table, $morph, $suffix = '_morphs')
     {
         $morphtable = new Table($table . $suffix);
-        $this->tables[] = $table;
+        $this->tables[] = $morphtable;
 
         $morphtable->integer($morph)->references($table);
         $morphtable->varchar('morph_id');
