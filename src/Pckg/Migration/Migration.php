@@ -35,6 +35,7 @@ class Migration
     public function translatable($table, $suffix = '_i18n')
     {
         $translatable = new Table($table . $suffix);
+        $this->tables[] = $table;
 
         $translatable->id('id', false);
         $translatable->varchar('language_id', 2)->references('languages', 'slug');
@@ -47,6 +48,7 @@ class Migration
     public function morphtable($table, $morph, $suffix = '_morphs')
     {
         $morphtable = new Table($table . $suffix);
+        $this->tables[] = $table;
 
         $morphtable->integer($morph)->references($table);
         $morphtable->varchar('morph_id');
