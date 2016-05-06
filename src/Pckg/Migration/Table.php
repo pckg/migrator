@@ -6,6 +6,7 @@ use Pckg\Migration\Constraint\Unique;
 use Pckg\Migration\Field\Boolean;
 use Pckg\Migration\Field\Datetime;
 use Pckg\Migration\Field\Group\Timeable;
+use Pckg\Migration\Field\Group\Orderable;
 use Pckg\Migration\Field\Id;
 use Pckg\Migration\Field\Integer;
 use Pckg\Migration\Field\Text;
@@ -197,7 +198,9 @@ class Table
 
     public function orderable()
     {
-        // @T00D00
+        $orderable = new Orderable($this);
+
+        return $orderable;
     }
 
     public function hideable()

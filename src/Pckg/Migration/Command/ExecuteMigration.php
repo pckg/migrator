@@ -51,7 +51,7 @@ class ExecuteMigration
                 }
             } else {
                 $sql = $this->installField($cache, $table, $field);
-                $this->sql[] = 'ADD `' . $field->getName() . '` ' . $sql;
+                $this->sql[] = 'ADD ' . $sql;
             }
         }
 
@@ -76,8 +76,6 @@ class ExecuteMigration
         $oldSql = $this->buildOldFieldSql($cache, $table, $field);
 
         if ($newSql != $oldSql) {
-            d($oldSql, $newSql);
-
             return '`' . $field->getName() . '` ' . $newSql;
         }
     }
@@ -92,7 +90,8 @@ class ExecuteMigration
     {
         //$this->output('Installing table ' . $table->getName());
         foreach ($table->getFields() as $field) {
-            $this->installField($cache, $table, $field);
+            $sql = $this->installField($cache, $table, $field);
+            $this->sql[] = '`' . $field->getName() . '`' . $sql;
         }
 
         foreach ($table->getConstraints() as $constraint) {
@@ -109,7 +108,7 @@ class ExecuteMigration
     protected function installField(Cache $cache, Table $table, Field $field)
     {
         //$this->output('Installing field ' . $table->getName() . '.' . $field->getName());
-        $this->sql[] = '`' . $field->getName() . '` ' . $field->getSql();
+        return '`' . $field->getName() . '` ' . $field->getSql();
     }
 
     protected function installNewConstraint(Cache $cache, Table $table, Constraint $key)
