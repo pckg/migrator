@@ -90,8 +90,7 @@ class ExecuteMigration
     {
         //$this->output('Installing table ' . $table->getName());
         foreach ($table->getFields() as $field) {
-            $sql = $this->installField($cache, $table, $field);
-            $this->sql[] = '`' . $field->getName() . '`' . $sql;
+            $this->sql[] = $this->installField($cache, $table, $field);
         }
 
         foreach ($table->getConstraints() as $constraint) {
