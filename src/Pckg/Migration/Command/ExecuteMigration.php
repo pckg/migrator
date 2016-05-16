@@ -134,7 +134,11 @@ class ExecuteMigration
         return strtoupper($cachedField['type'])
         . ($cachedField['limit'] ? '(' . $cachedField['limit'] . ')' : '')
         . ($cachedField['null'] ? ' NULL' : ' NOT NULL')
-        . ($cachedField['default'] ? ' DEFAULT ' . ($cachedField['default']) : ($cachedField['null'] ? ' DEFAULT NULL' : ''))
+        . ($cachedField['default']
+            ? ' DEFAULT ' . ($cachedField['default'] == 'CURRENT_TIMESTAMP'
+                ? $cachedField['default']
+                : ("'" . $cachedField['default'] . "'"))
+            : ($cachedField['null'] ? ' DEFAULT NULL' : ''))
         . ($cachedField['extra'] ? ' ' . strtoupper($cachedField['extra']) : '');
     }
 
