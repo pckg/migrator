@@ -36,7 +36,7 @@ class ExecuteMigration
         }
 
         if ($this->sqls) {
-            d('SQLs:', $this->sqls);
+            print_r($this->sqls);
         }
     }
 

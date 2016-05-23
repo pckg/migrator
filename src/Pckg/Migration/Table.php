@@ -5,6 +5,7 @@ use Pckg\Migration\Constraint\Primary;
 use Pckg\Migration\Constraint\Unique;
 use Pckg\Migration\Field\Boolean;
 use Pckg\Migration\Field\Datetime;
+use Pckg\Migration\Field\Decimal;
 use Pckg\Migration\Field\Group\Timeable;
 use Pckg\Migration\Field\Group\Orderable;
 use Pckg\Migration\Field\Id;
@@ -167,6 +168,17 @@ class Table
         $integer->length($length);
 
         return $integer;
+    }
+
+    public function decimal($name, $length = [5, 2])
+    {
+        $decimal = new Decimal($this, $name);
+
+        $this->fields[] = $decimal;
+
+        $decimal->length($length);
+
+        return $decimal;
     }
 
     public function parent($name = 'parent_id')
