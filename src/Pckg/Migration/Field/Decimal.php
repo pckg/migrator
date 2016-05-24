@@ -11,7 +11,7 @@ class Decimal extends Field
 
     public function getTypeWithLength()
     {
-        return $this->type . ($this->length ? '(' . implode(', ', $this->length) . ')' : '');
+        return $this->type . ($this->length ? '(' . implode(',', $this->length) . ')' : '');
     }
 
 }
