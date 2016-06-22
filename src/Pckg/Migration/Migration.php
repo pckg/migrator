@@ -50,7 +50,7 @@ class Migration
         $permissiontable = new Table($table . $suffix);
         $this->tables[] = $permissiontable;
 
-        $permissiontable->id('id');
+        $permissiontable->id('id', false);
         $permissiontable->integer('user_group_id')->references('user_groups');
         $permissiontable->varchar('action', 32);
 
@@ -62,6 +62,7 @@ class Migration
         $morphtable = new Table($table . $suffix);
         $this->tables[] = $morphtable;
 
+        $morphtable->id('id');
         $morphtable->integer($morph)->references($table);
         $morphtable->varchar('morph_id');
         $morphtable->integer('poly_id');

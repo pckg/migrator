@@ -36,7 +36,9 @@ class ExecuteMigration
         }
 
         if ($this->sqls) {
-            print_r($this->sqls);
+            foreach ($this->sqls as $sql) {
+                echo $sql . ";\n";
+            }
         }
     }
 
