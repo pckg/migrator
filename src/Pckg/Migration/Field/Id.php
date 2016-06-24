@@ -7,9 +7,16 @@ class Id extends Integer
 
     protected $nullable = false;
 
-    public function getSql()
-    {
-        return parent::getSql() . ' AUTO_INCREMENT';
+    protected $autoincrement = true;
+
+    public function autoincrement($boolean) {
+        $this->autoincrement = $boolean;
+
+        return $this;
+    }
+
+    public function getSql() {
+        return parent::getSql() . ($this->autoincrement ? ' AUTO_INCREMENT' : '');
     }
 
 }

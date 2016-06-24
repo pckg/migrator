@@ -77,6 +77,8 @@ class Table
 
         if ($primary) {
             $id->primary();
+        } else {
+            $id->autoincrement(false);
         }
 
         $this->fields[] = $id;
