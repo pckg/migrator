@@ -4,7 +4,7 @@ use Pckg\Framework\Provider;
 use Pckg\Migration\Console\InstallMigrator;
 use Pckg\Migration\Console\UpdateMigrator;
 
-class Config extends Provider
+class Migration extends Provider
 {
 
     public function consoles()
