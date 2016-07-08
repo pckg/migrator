@@ -5,6 +5,13 @@ use Pckg\Migration\Migration;
 class Contents extends Migration
 {
 
+    public function up()
+    {
+        $this->upPlugins();
+        $this->upContents();
+        $this->upActions();
+    }
+
     protected function upPlugins()
     {
         $plugins = $this->table('plugins');
@@ -19,15 +26,6 @@ class Contents extends Migration
         $pluginsSettings = $this->mtmTable('plugins', 'settings', 'plugin_id', 'setting_id');
         $pluginsSettings->addColumn('value', 'string');
         $pluginsSettings->save();
-    }
-
-    protected function upActions()
-    {
-        $actionsRoutes = $this->mtmTable('actions', 'routes', 'action_id', 'route_id');
-        $actionsRoutes->save();
-
-        $actionsContents = $this->mtmTable('actions', 'contents', 'action_id', 'content_id');
-        $actionsContents->save();
     }
 
     protected function upContents()
@@ -57,11 +55,13 @@ class Contents extends Migration
         $contentTypesI18n->save();
     }
 
-    public function up()
+    protected function upActions()
     {
-        $this->upPlugins();
-        $this->upContents();
-        $this->upActions();
+        $actionsRoutes = $this->mtmTable('actions', 'routes', 'action_id', 'route_id');
+        $actionsRoutes->save();
+
+        $actionsContents = $this->mtmTable('actions', 'contents', 'action_id', 'content_id');
+        $actionsContents->save();
     }
 
     public function down()

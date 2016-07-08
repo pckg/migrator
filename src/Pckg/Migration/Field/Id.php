@@ -9,13 +9,15 @@ class Id extends Integer
 
     protected $autoincrement = true;
 
-    public function autoincrement($boolean) {
+    public function autoincrement($boolean)
+    {
         $this->autoincrement = $boolean;
 
         return $this;
     }
 
-    public function getSql() {
+    public function getSql()
+    {
         return parent::getSql() . ($this->autoincrement ? ' AUTO_INCREMENT' : '');
     }
 

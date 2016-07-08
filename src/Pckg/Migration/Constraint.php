@@ -23,7 +23,10 @@ class Constraint
 
     public function getName()
     {
-        return str_replace(' KEY', '', $this->type) . '__' . $this->table->getName() . '__' . implode('_', $this->fields);
+        return str_replace(' KEY', '', $this->type) . '__' . $this->table->getName() . '__' . implode(
+            '_',
+            $this->fields
+        );
     }
 
 }

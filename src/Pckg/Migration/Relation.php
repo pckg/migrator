@@ -3,12 +3,6 @@
 class Relation
 {
 
-    protected $field;
-
-    protected $onDelete = self::NO_ACTION;
-
-    protected $onUpdate = self::CASCADE;
-
     const RESTRICT = 'RESTRICT';
 
     const CASCADE = 'CASCADE';
@@ -16,6 +10,12 @@ class Relation
     const SET_NULL = 'SET NULL';
 
     const NO_ACTION = 'NO ACTION';
+
+    protected $field;
+
+    protected $onDelete = self::NO_ACTION;
+
+    protected $onUpdate = self::CASCADE;
 
     public function __construct(Field $field, $references, $on)
     {

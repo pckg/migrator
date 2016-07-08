@@ -26,39 +26,46 @@ class Table
 
     protected $relations = [];
 
-    public function __construct($name) {
+    public function __construct($name)
+    {
         $this->name = $name;
     }
 
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
     // getters
 
-    public function getFields() {
+    public function getFields()
+    {
         return $this->fields;
     }
 
-    public function getConstraints() {
+    public function getConstraints()
+    {
         return $this->constraints;
     }
 
     // adders
 
-    public function addRelation(Relation $relation) {
+    public function addRelation(Relation $relation)
+    {
         $this->relations[] = $relation;
 
         return $this;
     }
 
-    public function addConstraint(Constraint $constraint) {
+    public function addConstraint(Constraint $constraint)
+    {
         $this->constraints[] = $constraint;
 
         return $this;
     }
 
-    public function addField(Field $field) {
+    public function addField(Field $field)
+    {
         $this->fields[] = $field;
 
         return $this;
@@ -66,7 +73,8 @@ class Table
 
     // fields
 
-    public function id($name = 'id', $primary = true) {
+    public function id($name = 'id', $primary = true)
+    {
         $id = new Id($this, $name);
 
         if ($primary) {
@@ -80,7 +88,8 @@ class Table
         return $id;
     }
 
-    public function varchar($name, $length = 128) {
+    public function varchar($name, $length = 128)
+    {
         $varchar = new Varchar($this, $name);
 
         $this->fields[] = $varchar;
@@ -90,7 +99,8 @@ class Table
         return $varchar;
     }
 
-    public function slug($name = 'slug', $length = 128) {
+    public function slug($name = 'slug', $length = 128)
+    {
         $field = $this->varchar($name, $length);
 
         $this->unique($name);
@@ -98,23 +108,28 @@ class Table
         return $field;
     }
 
-    public function title($name = 'title', $length = 128) {
+    public function title($name = 'title', $length = 128)
+    {
         return $this->varchar($name, $length);
     }
 
-    public function subtitle($name = 'subtitle') {
+    public function subtitle($name = 'subtitle')
+    {
         return $this->text($name);
     }
 
-    public function lead($name = 'lead') {
+    public function lead($name = 'lead')
+    {
         return $this->text($name);
     }
 
-    public function content($name = 'content') {
+    public function content($name = 'content')
+    {
         return $this->text($name);
     }
 
-    public function boolean($name, $default = null) {
+    public function boolean($name, $default = null)
+    {
         $boolean = new Boolean($this, $name);
 
         $this->fields[] = $boolean;
@@ -124,7 +139,8 @@ class Table
         return $boolean;
     }
 
-    public function text($name) {
+    public function text($name)
+    {
         $text = new Text($this, $name);
 
         $this->fields[] = $text;
@@ -132,19 +148,23 @@ class Table
         return $text;
     }
 
-    public function description($name = 'description') {
+    public function description($name = 'description')
+    {
         return $this->text($name);
     }
 
-    public function email($name = 'email') {
+    public function email($name = 'email')
+    {
         return $this->varchar($name);
     }
 
-    public function password($name = 'password', $length = 40) {
+    public function password($name = 'password', $length = 40)
+    {
         return $this->varchar($name, $length);
     }
 
-    public function integer($name, $length = 11) {
+    public function integer($name, $length = 11)
+    {
         $integer = new Integer($this, $name);
 
         $this->fields[] = $integer;
@@ -154,7 +174,8 @@ class Table
         return $integer;
     }
 
-    public function decimal($name, $length = [5, 2]) {
+    public function decimal($name, $length = [5, 2])
+    {
         $decimal = new Decimal($this, $name);
 
         $this->fields[] = $decimal;
@@ -164,7 +185,8 @@ class Table
         return $decimal;
     }
 
-    public function parent($name = 'parent_id') {
+    public function parent($name = 'parent_id')
+    {
         $parent = $this->integer($name);
 
         $parent->references($this->name);
@@ -172,7 +194,8 @@ class Table
         return $parent;
     }
 
-    public function datetime($name) {
+    public function datetime($name)
+    {
         $datetime = new Datetime($this, $name);
 
         $this->fields[] = $datetime;
@@ -182,25 +205,29 @@ class Table
 
     // groups
 
-    public function timeable() {
+    public function timeable()
+    {
         $timeable = new Timeable($this);
 
         return $timeable;
     }
 
-    public function orderable() {
+    public function orderable()
+    {
         $orderable = new Orderable($this);
 
         return $orderable;
     }
 
-    public function hideable() {
+    public function hideable()
+    {
         $hidable = new Hidable($this);
 
         return $hidable;
     }
 
-    public function deletable() {
+    public function deletable()
+    {
         $deletable = new Deletable($this);
 
         return $deletable;
@@ -208,7 +235,8 @@ class Table
 
     // index, primary, unique
 
-    public function primary(...$fields) {
+    public function primary(...$fields)
+    {
         $primary = new Primary($this, ...$fields);
 
         $this->constraints[] = $primary;
@@ -216,7 +244,8 @@ class Table
         return $primary;
     }
 
-    public function index(...$fields) {
+    public function index(...$fields)
+    {
         $index = new Index($this, ...$fields);
 
         $this->constraints[] = $index;
@@ -224,7 +253,8 @@ class Table
         return $index;
     }
 
-    public function unique(...$fields) {
+    public function unique(...$fields)
+    {
         $unique = new Unique($this, ...$fields);
 
         $this->constraints[] = $unique;

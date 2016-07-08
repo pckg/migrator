@@ -39,5 +39,5 @@ class Core extends Migration
     {
 
     }
-    
+
 }

@@ -13,6 +13,7 @@ class ExecuteMigration
     protected $migration;
 
     protected $sql = [];
+
     protected $sqls = [];
 
     public function __construct(Migration $migration)
@@ -67,7 +68,7 @@ class ExecuteMigration
 
         if ($this->sql) {
             $this->sqls[] = 'ALTER TABLE `' . $table->getName() . '` ' . "\n"
-                . ' ' . implode(",\n ", $this->sql);
+                            . ' ' . implode(",\n ", $this->sql);
         }
     }
 
@@ -101,8 +102,8 @@ class ExecuteMigration
 
         if ($this->sql) {
             $this->sqls[] = 'CREATE TABLE IF NOT EXISTS `' . $table->getName() . '` (' . "\n"
-                . implode(",\n", $this->sql) . "\n" .
-                ') ENGINE=InnoDB DEFAULT CHARSET=utf8';
+                            . implode(",\n", $this->sql) . "\n" .
+                            ') ENGINE=InnoDB DEFAULT CHARSET=utf8';
         }
     }
 
@@ -134,14 +135,14 @@ class ExecuteMigration
         $cachedField = $cache->getField($field->getName(), $table->getName());
 
         return strtoupper($cachedField['type'])
-        . ($cachedField['limit'] ? '(' . $cachedField['limit'] . ')' : '')
-        . ($cachedField['null'] ? ' NULL' : ' NOT NULL')
-        . ($cachedField['default']
+               . ($cachedField['limit'] ? '(' . $cachedField['limit'] . ')' : '')
+               . ($cachedField['null'] ? ' NULL' : ' NOT NULL')
+               . ($cachedField['default']
             ? ' DEFAULT ' . ($cachedField['default'] == 'CURRENT_TIMESTAMP'
                 ? $cachedField['default']
                 : ("'" . $cachedField['default'] . "'"))
             : ($cachedField['null'] ? ' DEFAULT NULL' : ''))
-        . ($cachedField['extra'] ? ' ' . strtoupper($cachedField['extra']) : '');
+               . ($cachedField['extra'] ? ' ' . strtoupper($cachedField['extra']) : '');
     }
 
     protected function buildOldKeySql(Cache $cache, Table $table, Constraint $key)

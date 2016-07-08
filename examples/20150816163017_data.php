@@ -2,12 +2,15 @@
 
 use Pckg\Migration\Migration;
 
-class Data extends Migration {
+class Data extends Migration
+{
 
-    public function up() {
+    public function up()
+    {
     }
 
-    public function down(){
+    public function down()
+    {
 
     }
 

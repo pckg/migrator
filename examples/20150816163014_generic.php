@@ -19,7 +19,7 @@ class Generic extends Migration
         $users->addColumn('user_group_id', 'integer');
         $users->addColumn('language_id', 'integer');
         $users->addColumn('email', 'string');
-        $users->addIndex('email', array('unique' => true));
+        $users->addIndex('email', ['unique' => true]);
         $users->addColumn('password', 'string');
         $users->save();
 
@@ -31,7 +31,7 @@ class Generic extends Migration
         $routesI18n = $this->translaTable('routes');
         $this->addTitle($routesI18n);
         $routesI18n->addColumn('route', 'string');
-        $routes->addIndex('route', array('unique' => true));
+        $routes->addIndex('route', ['unique' => true]);
         $routesI18n->save();
 
         $layouts = $this->table('layouts');

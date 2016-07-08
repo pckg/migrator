@@ -9,7 +9,7 @@ class InstallMigrator extends Command
     protected function configure()
     {
         $this->setName('migrator:install')
-            ->setDescription('Install migrations from envirtonment');
+             ->setDescription('Install migrations from envirtonment');
     }
 
     /**
@@ -25,14 +25,14 @@ class InstallMigrator extends Command
         $count = 0;
         foreach ($requestedMigrations as $requestedMigration) {
             //if (!in_array($requestedMigration, $installedMigrations)) {
-                $this->output('Creating ' . $requestedMigration);
-                $migration = new $requestedMigration;
-                $this->output('Installing ...');
-                $migration->up();
-                $this->output('Installed.');
-                $this->output();
-                $installedMigrations[] = $requestedMigration;
-                $count++;
+            $this->output('Creating ' . $requestedMigration);
+            $migration = new $requestedMigration;
+            $this->output('Installing ...');
+            $migration->up();
+            $this->output('Installed.');
+            $this->output();
+            $installedMigrations[] = $requestedMigration;
+            $count++;
             //}
         }
 
@@ -71,7 +71,9 @@ class InstallMigrator extends Command
 
     private function getEnvironmentPath()
     {
-        return path('root') . 'storage' . path('ds') . 'environment' . path('ds') . 'migrator' . path('ds') . $this->app . '.json';
+        return path('root') . 'storage' . path('ds') . 'environment' . path('ds') . 'migrator' . path(
+            'ds'
+        ) . $this->app . '.json';
     }
 
 }
