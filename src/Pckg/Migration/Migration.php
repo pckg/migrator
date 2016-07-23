@@ -12,14 +12,14 @@ class Migration
 
     protected $repository = Repository::class;
 
-    public function table($table, $id = true)
+    public function table($table, $id = true, $primary = true)
     {
         $table = new Table($table);
 
         $this->tables[] = $table;
 
         if ($id) {
-            $table->id();
+            $table->id($primary);
         }
 
         return $table;
