@@ -26,6 +26,7 @@ class ExecuteMigration
         $this->output('Executing migration ' . get_class($this->migration));
 
         $entity = new Entity();
+        $entity->setRepository(context()->get($this->migration->getRepository()));
         $cache = $entity->getRepository()->getCache();
         foreach ($this->migration->getTables() as $table) {
             $this->sql = [];

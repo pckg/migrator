@@ -2,12 +2,15 @@
 
 namespace Pckg\Migration;
 
+use Pckg\Database\Repository;
 use Pckg\Migration\Command\ExecuteMigration;
 
 class Migration
 {
 
     protected $tables = [];
+
+    protected $repository = Repository::class;
 
     public function table($table, $id = true)
     {
@@ -25,6 +28,11 @@ class Migration
     public function getTables()
     {
         return $this->tables;
+    }
+
+    public function getRepository()
+    {
+        return $this->repository;
     }
 
     public function save()
