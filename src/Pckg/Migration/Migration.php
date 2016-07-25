@@ -19,7 +19,7 @@ class Migration
         $this->tables[] = $table;
 
         if ($id) {
-            $table->id($primary);
+            $table->id('id', $primary);
         }
 
         return $table;

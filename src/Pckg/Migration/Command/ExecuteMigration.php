@@ -28,6 +28,7 @@ class ExecuteMigration
         $entity = new Entity();
         $entity->setRepository(context()->get($this->migration->getRepository()));
         $cache = $entity->getRepository()->getCache();
+
         foreach ($this->migration->getTables() as $table) {
             $this->sql = [];
             if ($cache->hasTable($table->getName())) {
