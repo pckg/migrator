@@ -2,6 +2,7 @@
 
 use Pckg\Framework\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 class InstallMigrator extends Command
 {
@@ -9,7 +10,8 @@ class InstallMigrator extends Command
     protected function configure()
     {
         $this->setName('migrator:install')
-             ->setDescription('Install migrations from envirtonment');
+             ->setDescription('Install migrations from envirtonment')
+             ->addOption('platform', null, InputOption::VALUE_REQUIRED);
     }
 
     /**
@@ -20,24 +22,31 @@ class InstallMigrator extends Command
         $this->app = $this->getApp();
 
         $requestedMigrations = $this->getRequestedMigrations();
-        $installedMigrations = $this->getInstalledMigrations();
+        $installedMigrations = (array)$this->getInstalledMigrations();
 
-        $count = 0;
+        $installed = 0;
+        $updated = 0;
         foreach ($requestedMigrations as $requestedMigration) {
-            //if (!in_array($requestedMigration, $installedMigrations)) {
             $this->output('Creating ' . $requestedMigration);
             $migration = new $requestedMigration;
-            $this->output('Installing ...');
+            $this->output('Installing @ ' . $migration->getRepository());
             $migration->up();
             $this->output('Installed.');
             $this->output();
-            $installedMigrations[] = $requestedMigration;
-            $count++;
-            //}
+
+            if (in_array($requestedMigration, $installedMigrations)) {
+                $updated++;
+
+            } else {
+                $installedMigrations[] = $requestedMigration;
+                $installed++;
+
+            }
         }
 
-        $this->output($count ? $count . ' migrations installed.' : 'All migrations already installed.');
-        $this->output('Total installed migrations: ' . count($installedMigrations));
+        $this->output('Updated: ' . $updated);
+        $this->output('Installed: ' . $installed);
+        $this->output('Total: ' . count($installedMigrations));
 
         $this->putInstalledMigrations($installedMigrations);
     }
