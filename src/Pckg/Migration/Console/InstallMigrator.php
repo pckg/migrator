@@ -10,8 +10,7 @@ class InstallMigrator extends Command
     protected function configure()
     {
         $this->setName('migrator:install')
-             ->setDescription('Install migrations from envirtonment')
-             ->addOption('platform', null, InputOption::VALUE_REQUIRED);
+             ->setDescription('Install migrations from envirtonment');
     }
 
     /**
