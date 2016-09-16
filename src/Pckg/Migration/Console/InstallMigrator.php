@@ -1,5 +1,6 @@
 <?php namespace Pckg\Migration\Console;
 
+use Exception;
 use Pckg\Framework\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -19,6 +20,10 @@ class InstallMigrator extends Command
     public function handle()
     {
         $this->app = $this->getApp();
+
+        if (!$this->app) {
+            throw new Exception('App name is required in migrator');
+        }
 
         $requestedMigrations = $this->getRequestedMigrations();
         $installedMigrations = (array)$this->getInstalledMigrations();
