@@ -7,7 +7,7 @@ class Decimal extends Field
 
     protected $type = 'DECIMAL';
 
-    protected $length = [5, 2];
+    protected $length = [8, 2];
 
     public function getTypeWithLength()
     {
