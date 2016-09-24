@@ -1,7 +1,9 @@
 <?php namespace Pckg\Migration\Command;
 
+use Exception;
 use Pckg\Database\Entity;
 use Pckg\Database\Helper\Cache;
+use Pckg\Migration\Console\InstallMigrator;
 use Pckg\Migration\Constraint;
 use Pckg\Migration\Field;
 use Pckg\Migration\Migration;
@@ -36,10 +38,26 @@ class ExecuteMigration
             }
         }
 
-        if ($this->sqls) {
-            foreach ($this->sqls as $sql) {
-                echo $sql . ";\n";
+        $sqls = implode(";\n\n", $this->sqls);
+        if ($sqls && $installMigrator = context()->getOrDefault(InstallMigrator::class)) {
+            $installMigrator->output($sqls);
+            $repositoryName = $this->migration->getRepository();
+            $message = 'Should I execute SQL statements on ' . $this->migration->getRepository() . '?';
+            if ($installMigrator->askConfirmation($message)) {
+                foreach ($this->sqls as $sql) {
+                    $repository = context()->get($repositoryName);
+
+                    $prepare = $repository->getConnection()->prepare($sql);
+                    $execute = $prepare->execute();
+                    if (!$execute) {
+                        throw new Exception('Cannot execute query! ' . $sql);
+                    }
+                }
             }
+
+        } elseif ($sqls) {
+            echo $sqls;
+
         }
     }
 

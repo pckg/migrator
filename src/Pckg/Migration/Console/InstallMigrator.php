@@ -25,18 +25,26 @@ class InstallMigrator extends Command
             throw new Exception('App name is required in migrator');
         }
 
+        context()->bind(InstallMigrator::class, $this);
+
         $requestedMigrations = $this->getRequestedMigrations();
         $installedMigrations = (array)$this->getInstalledMigrations();
 
         $installed = 0;
         $updated = 0;
         foreach ($requestedMigrations as $requestedMigration) {
-            $this->output('Creating ' . $requestedMigration);
-            $migration = new $requestedMigration;
-            $this->output('Installing @ ' . $migration->getRepository());
-            $migration->up();
-            $this->output('Installed.');
-            $this->output();
+            /**
+             * @T00D00
+             * Implement beforeFirstUp(), beforeUp(), afterUp(), afterFirstUp(), isFirstUp()
+             */
+            try {
+                $migration = new $requestedMigration;
+                $migration->up();
+                $this->output($migration->getRepository() . ' : ' . $requestedMigration);
+                $this->output();
+            } catch (Exception $e) {
+                dd(exception($e));
+            }
 
             if (in_array($requestedMigration, $installedMigrations)) {
                 $updated++;
