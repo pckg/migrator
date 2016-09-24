@@ -35,6 +35,16 @@ class Migration
         return $this->repository;
     }
 
+    public function up()
+    {
+        return $this;
+    }
+
+    public function afterFirstUp()
+    {
+        return $this;
+    }
+
     public function save()
     {
         (new ExecuteMigration($this))->execute();

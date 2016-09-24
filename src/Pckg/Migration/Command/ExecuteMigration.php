@@ -38,32 +38,45 @@ class ExecuteMigration
             }
         }
 
+        if ($this->sqls) {
+            $this->applyMigration();
+        }
+    }
+
+    protected function applyMigration()
+    {
         $sqls = implode(";\n\n", $this->sqls);
-        if ($sqls && $installMigrator = context()->getOrDefault(InstallMigrator::class)) {
-            $installMigrator->output($sqls);
-            $repositoryName = $this->migration->getRepository();
-            $message = 'Should I execute SQL statements on ' . $this->migration->getRepository() . '?';
-            if ($installMigrator->askConfirmation($message)) {
-                foreach ($this->sqls as $sql) {
-                    $repository = context()->get($repositoryName);
+        $installMigrator = context()->getOrDefault(InstallMigrator::class);
 
-                    $prepare = $repository->getConnection()->prepare($sql);
-                    $execute = $prepare->execute();
-                    if (!$execute) {
-                        throw new Exception('Cannot execute query! ' . $sql);
-                    }
-                }
-            }
-
-        } elseif ($sqls) {
+        if (!$installMigrator) {
             echo $sqls;
 
+            return;
+        }
+
+        $installMigrator->output($sqls);
+        $message = 'Should I execute SQL statements on ' . $this->migration->getRepository() . '?';
+        if ($installMigrator->askConfirmation($message)) {
+            $this->executeInRepository();
+        }
+    }
+
+    protected function executeInRepository()
+    {
+        $repositoryName = $this->migration->getRepository();
+        foreach ($this->sqls as $sql) {
+            $repository = context()->get($repositoryName);
+
+            $prepare = $repository->getConnection()->prepare($sql);
+            $execute = $prepare->execute();
+            if (!$execute) {
+                throw new Exception('Cannot execute query! ' . $sql);
+            }
         }
     }
 
     protected function updateTable(Cache $cache, Table $table)
     {
-        //$this->output('Updating table ' . $table->getName());
         foreach ($table->getFields() as $field) {
             if ($cache->tableHasField($table->getName(), $field->getName())) {
                 $sql = $this->updateField($cache, $table, $field);

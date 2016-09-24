@@ -40,6 +40,9 @@ class InstallMigrator extends Command
             try {
                 $migration = new $requestedMigration;
                 $migration->up();
+                if (!in_array($requestedMigration, $installedMigrations)) {
+                    $migration->afterFirstUp();
+                }
                 $this->output($migration->getRepository() . ' : ' . $requestedMigration);
                 $this->output();
             } catch (Exception $e) {
