@@ -174,7 +174,7 @@ class Table
         return $integer;
     }
 
-    public function decimal($name, $length = [5, 2])
+    public function decimal($name, $length = [8, 2])
     {
         $decimal = new Decimal($this, $name);
 
