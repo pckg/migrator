@@ -48,6 +48,11 @@ class Table
         return $this->constraints;
     }
 
+    public function getRelations()
+    {
+        return $this->relations;
+    }
+
     // adders
 
     public function addRelation(Relation $relation)

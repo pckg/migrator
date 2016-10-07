@@ -7,6 +7,7 @@ use Pckg\Migration\Console\InstallMigrator;
 use Pckg\Migration\Constraint;
 use Pckg\Migration\Field;
 use Pckg\Migration\Migration;
+use Pckg\Migration\Relation;
 use Pckg\Migration\Table;
 
 class ExecuteMigration
@@ -70,7 +71,10 @@ class ExecuteMigration
             $prepare = $repository->getConnection()->prepare($sql);
             $execute = $prepare->execute();
             if (!$execute) {
-                throw new Exception('Cannot execute query! ' . $sql);
+                throw new Exception(
+                    'Cannot execute query! ' . "\n" . $sql . "\n" . 'Error code ' . $prepare->errorCode(
+                    ) . "\n" . $prepare->errorInfo()[2]
+                );
             }
         }
     }
@@ -97,10 +101,48 @@ class ExecuteMigration
             }
         }
 
+        foreach ($table->getRelations() as $relation) {
+            $relationName = $relation->getName();
+
+            if (strpos($relationName, 'FOREIGN_') !== 0) {
+                continue;
+            }
+
+            if ($cache->tableHasConstraint($table->getName(), $relation->getName())) {
+                $this->updateRelation($cache, $table, $relation);
+            } else {
+                $this->installRelation($cache, $table, $relation);
+            }
+        }
+
         if ($this->sql) {
             $this->sqls[] = 'ALTER TABLE `' . $table->getName() . '` ' . "\n"
                             . ' ' . implode(",\n ", $this->sql);
         }
+    }
+
+    public function updateRelation(Cache $cache, Table $table, Relation $relation)
+    {
+        $cached = $cache->getConstraint($relation->getName(), $table->getName());
+        $current = $relation->getSqlByParams(
+            $cached['primary'],
+            $cached['references'],
+            $cached['on'],
+            Relation::RESTRICT,
+            Relation::CASCADE
+        );
+
+        if ($current != $relation->getSql()) {
+            $this->output('Apply relation manually: ' . "\n" . $relation->getSql());
+            $this->output();
+        }
+    }
+
+    public function installRelation(Cache $cache, Table $table, Relation $relation)
+    {
+        $this->sqls[] = 'SET foreign_key_checks = 0';
+        $this->sqls[] = 'ALTER TABLE `' . $table->getName() . '` ADD ' . $relation->getSql();
+        $this->sqls[] = 'SET foreign_key_checks = 1';
     }
 
     protected function updateField(Cache $cache, Table $table, Field $field)
@@ -156,7 +198,7 @@ class ExecuteMigration
         $this->sql[] = 'ADD ' . $key->getSql();
     }
 
-    protected function output($msg)
+    protected function output($msg = '')
     {
         echo $msg . "\n";
     }

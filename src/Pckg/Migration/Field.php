@@ -61,6 +61,11 @@ class Field
         return implode(' ', $sql);
     }
 
+    public function getTable()
+    {
+        return $this->table;
+    }
+
     public function isNullable()
     {
         return $this->nullable;

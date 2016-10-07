@@ -13,7 +13,11 @@ class Relation
 
     protected $field;
 
-    protected $onDelete = self::NO_ACTION;
+    protected $references;
+
+    protected $on;
+
+    protected $onDelete = self::RESTRICT;
 
     protected $onUpdate = self::CASCADE;
 
@@ -24,7 +28,42 @@ class Relation
         $this->on = $on;
     }
 
-    public function onDelete($action = self::NO_ACTION)
+    public function getName()
+    {
+        $name = $this->field->getTable()->getName() . '__' . $this->field->getName();
+        if (strlen($name) > 55) {
+            $name = substr($name, -55);
+        }
+
+        return 'FOREIGN__' . $name;
+    }
+
+    public function getReferences()
+    {
+        return $this->references;
+    }
+
+    public function getOn()
+    {
+        return $this->on;
+    }
+
+    public function getField()
+    {
+        return $this->field;
+    }
+
+    public function getOnDelete()
+    {
+        return $this->onDelete;
+    }
+
+    public function getOnUpdate()
+    {
+        return $this->onUpdate;
+    }
+
+    public function onDelete($action = self::RESTRICT)
     {
         $this->onDelete = $action;
 
@@ -36,6 +75,24 @@ class Relation
         $this->onUpdate = $action;
 
         return $this;
+    }
+
+    public function getSql()
+    {
+        return 'CONSTRAINT `' . $this->getName()
+               . '` FOREIGN KEY (`' . $this->getField()->getName() . '`) ' .
+               'REFERENCES `' . $this->getReferences() . '`(`' . $this->getOn() . '`) ' .
+               'ON DELETE ' . $this->getOnDelete() . ' ' .
+               'ON UPDATE ' . $this->getOnUpdate();
+    }
+
+    public function getSqlByParams($field, $references, $on, $onDelete, $onUpdate)
+    {
+        return 'CONSTRAINT `' . $this->getName()
+               . '` FOREIGN KEY (`' . $field . '`) ' .
+               'REFERENCES `' . $references . '`(`' . $on . '`) ' .
+               'ON DELETE ' . $onDelete . ' ' .
+               'ON UPDATE ' . $onUpdate;
     }
 
 }
