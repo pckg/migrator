@@ -55,7 +55,7 @@ class Migration
         $translatable = new Table($table . $suffix);
         $this->tables[] = $translatable;
 
-        $translatable->id('id', false);
+        $translatable->id('id', false)->references($table);
         $translatable->varchar('language_id', 2)->references('languages', 'slug')->required();
 
         $translatable->primary('id', 'language_id');
