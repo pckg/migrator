@@ -104,11 +104,13 @@ class Table
         return $varchar;
     }
 
-    public function slug($name = 'slug', $length = 128)
+    public function slug($name = 'slug', $length = 128, $unique = true)
     {
         $field = $this->varchar($name, $length);
 
-        $this->unique($name);
+        if ($unique) {
+            $this->unique($name);
+        }
 
         return $field;
     }
