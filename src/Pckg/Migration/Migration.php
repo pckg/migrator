@@ -55,7 +55,7 @@ class Migration
         $translatable = new Table($table . $suffix);
         $this->tables[] = $translatable;
 
-        $translatable->id('id', false)->references($table);
+        $translatable->id('id', false)->references($table)->required();
         $translatable->varchar('language_id', 2)->references('languages', 'slug')->required();
 
         $translatable->primary('id', 'language_id');
@@ -68,9 +68,13 @@ class Migration
         $permissiontable = new Table($table . $suffix);
         $this->tables[] = $permissiontable;
 
-        $permissiontable->id('id', false);
-        $permissiontable->integer('user_group_id')->references('user_groups');
-        $permissiontable->varchar('action', 32);
+        $permissiontable->id('id', false)->references($table);
+        $permissiontable->integer('user_group_id')->references('user_groups')->required();
+        $permissiontable->varchar('action', 32)->required();
+
+        /**
+         * @T00D00 - add double index
+         */
 
         return $permissiontable;
     }
