@@ -48,6 +48,8 @@ class Migration
     public function save()
     {
         (new ExecuteMigration($this))->execute();
+        
+        $this->tables = [];
     }
 
     public function translatable($table, $suffix = '_i18n')

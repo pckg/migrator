@@ -140,4 +140,12 @@ class Field
         return $this;
     }
 
+    public function drop()
+    {
+        /**
+         * @T00D00
+         */
+        return $this;
+    }
+
 }
