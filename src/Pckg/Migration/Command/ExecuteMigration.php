@@ -93,6 +93,11 @@ class ExecuteMigration
             }
         }
 
+        if ($this->sql) {
+            $this->sqls[] = 'ALTER TABLE `' . $table->getName() . '` ' . "\n"
+                            . ' ' . implode(",\n ", $this->sql);
+        }
+
         foreach ($table->getConstraints() as $constraint) {
             if ($cache->tableHasConstraint($table->getName(), $constraint->getName())) {
                 $this->updateConstraint($cache, $table, $constraint);
@@ -113,11 +118,6 @@ class ExecuteMigration
             } else {
                 $this->installRelation($cache, $table, $relation);
             }
-        }
-
-        if ($this->sql) {
-            $this->sqls[] = 'ALTER TABLE `' . $table->getName() . '` ' . "\n"
-                            . ' ' . implode(",\n ", $this->sql);
         }
     }
 
