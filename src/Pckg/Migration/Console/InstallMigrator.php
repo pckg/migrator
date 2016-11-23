@@ -4,6 +4,7 @@ use Exception;
 use Pckg\Framework\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Throwable;
 
 class InstallMigrator extends Command
 {
@@ -45,7 +46,7 @@ class InstallMigrator extends Command
                 }
                 $this->output($migration->getRepository() . ' : ' . $requestedMigration);
                 $this->output();
-            } catch (Exception $e) {
+            } catch (Throwable $e) {
                 dd(exception($e));
             }
 
