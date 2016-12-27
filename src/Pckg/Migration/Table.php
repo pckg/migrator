@@ -12,6 +12,7 @@ use Pckg\Migration\Field\Group\Orderable;
 use Pckg\Migration\Field\Group\Timeable;
 use Pckg\Migration\Field\Id;
 use Pckg\Migration\Field\Integer;
+use Pckg\Migration\Field\Point;
 use Pckg\Migration\Field\Text;
 use Pckg\Migration\Field\Varchar;
 
@@ -120,6 +121,23 @@ class Table
         return $this->varchar($name, $length);
     }
 
+    public function range($name, $type = 'datetime')
+    {
+        $this->{$type}($name . '_from')->nullable();
+        $this->{$type}($name . '_to')->nullable();
+
+        return $this;
+    }
+
+    public function point($name)
+    {
+        $point = new Point($this, $name);
+
+        $this->fields[] = $point;
+
+        return $point;
+    }
+
     public function subtitle($name = 'subtitle')
     {
         return $this->text($name);
@@ -196,7 +214,7 @@ class Table
     {
         $parent = $this->integer($name);
 
-        $parent->references($this->name);
+        $parent->references($this->name)->nullable();
 
         return $parent;
     }

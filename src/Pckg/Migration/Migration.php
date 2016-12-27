@@ -71,7 +71,7 @@ class Migration
         $this->tables[] = $permissiontable;
 
         $permissiontable->id('id', false)->references($table);
-        $permissiontable->integer('user_group_id')->references('user_groups')->required();
+        $permissiontable->integer('user_group_id')->references('user_groups');
         $permissiontable->varchar('action', 32)->required();
 
         /**
@@ -86,10 +86,14 @@ class Migration
         $morphtable = new Table($table . $suffix);
         $this->tables[] = $morphtable;
 
-        $morphtable->id('id');
+        $morphtable->id('id', false);
         $morphtable->integer($morph)->references($table);
         $morphtable->varchar('morph_id');
-        $morphtable->integer('poly_id');
+        $morphtable->varchar('poly_id');
+
+        /**
+         * @T00D00 - add double index
+         */
 
         return $morphtable;
     }
