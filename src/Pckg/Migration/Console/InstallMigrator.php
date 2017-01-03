@@ -1,6 +1,7 @@
 <?php namespace Pckg\Migration\Console;
 
 use Exception;
+use Pckg\Concept\Reflect;
 use Pckg\Framework\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -40,9 +41,23 @@ class InstallMigrator extends Command
              */
             try {
                 $migration = new $requestedMigration;
+                foreach ($migration->dependencies() as $dependency) {
+                    if (is_string($dependency)) {
+                        $dependency = Reflect::create($dependency);
+                    }
+                    $this->output(' - Dependency: ' . $dependency->getRepository() . ' : ' . get_class($dependency));
+                    $dependency->up();
+                }
                 $migration->up();
                 if (!in_array($requestedMigration, $installedMigrations)) {
                     $migration->afterFirstUp();
+                }
+                foreach ($migration->partials() as $partial) {
+                    if (is_string($partial)) {
+                        $partial = Reflect::create($partial);
+                    }
+                    $this->output(' - Partial: ' . $partial->getRepository() . ' : ' . get_class($partial));
+                    $partial->up();
                 }
                 $this->output($migration->getRepository() . ' : ' . $requestedMigration);
                 $this->output();

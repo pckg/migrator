@@ -35,9 +35,26 @@ class Migration
         return $this->repository;
     }
 
+    public function setRepository($repository)
+    {
+        $this->repository = $repository;
+
+        return $this;
+    }
+
     public function up()
     {
         return $this;
+    }
+
+    public function dependencies()
+    {
+        return [];
+    }
+
+    public function partials()
+    {
+        return [];
     }
 
     public function afterFirstUp()
@@ -48,7 +65,7 @@ class Migration
     public function save()
     {
         (new ExecuteMigration($this))->execute();
-        
+
         $this->tables = [];
     }
 
