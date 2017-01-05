@@ -228,6 +228,15 @@ class Table
         return $datetime;
     }
 
+    public function language()
+    {
+        $language = $this->varchar('language_id', 2)->references('languages', 'slug');
+
+        $this->fields[] = $language;
+
+        return $language;
+    }
+
     // groups
 
     public function timeable()
