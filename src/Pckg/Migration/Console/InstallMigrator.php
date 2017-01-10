@@ -40,12 +40,13 @@ class InstallMigrator extends Command
              * Implement beforeFirstUp(), beforeUp(), afterUp(), afterFirstUp(), isFirstUp()
              */
             try {
+                $this->output('Migration: ' . $requestedMigration, 'info');
                 $migration = new $requestedMigration;
                 foreach ($migration->dependencies() as $dependency) {
                     if (is_string($dependency)) {
                         $dependency = Reflect::create($dependency);
                     }
-                    $this->output(' - Dependency: ' . $dependency->getRepository() . ' : ' . get_class($dependency));
+                    $this->output('Dependency: ' . $dependency->getRepository() . ' : ' . get_class($dependency), 'info');
                     $dependency->up();
                 }
                 $migration->up();
@@ -56,10 +57,10 @@ class InstallMigrator extends Command
                     if (is_string($partial)) {
                         $partial = Reflect::create($partial);
                     }
-                    $this->output(' - Partial: ' . $partial->getRepository() . ' : ' . get_class($partial));
+                    $this->output('Partial: ' . $partial->getRepository() . ' : ' . get_class($partial), 'info');
                     $partial->up();
                 }
-                $this->output($migration->getRepository() . ' : ' . $requestedMigration);
+                $this->output($migration->getRepository() . ' : ' . $requestedMigration, 'info');
                 $this->output();
             } catch (Throwable $e) {
                 dd(exception($e));
@@ -75,9 +76,9 @@ class InstallMigrator extends Command
             }
         }
 
-        $this->output('Updated: ' . $updated);
-        $this->output('Installed: ' . $installed);
-        $this->output('Total: ' . count($installedMigrations));
+        $this->output('Updated: ' . $updated, 'comment');
+        $this->output('Installed: ' . $installed, 'comment');
+        $this->output('Total: ' . count($installedMigrations), 'comment');
 
         $this->putInstalledMigrations($installedMigrations);
     }

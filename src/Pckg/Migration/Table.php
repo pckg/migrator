@@ -11,6 +11,7 @@ use Pckg\Migration\Field\Group\Hidable;
 use Pckg\Migration\Field\Group\Orderable;
 use Pckg\Migration\Field\Group\Timeable;
 use Pckg\Migration\Field\Id;
+use Pckg\Migration\Field\IdString;
 use Pckg\Migration\Field\Integer;
 use Pckg\Migration\Field\Point;
 use Pckg\Migration\Field\Text;
@@ -87,6 +88,19 @@ class Table
             $id->primary();
         } else {
             $id->autoincrement(false);
+        }
+
+        $this->fields[] = $id;
+
+        return $id;
+    }
+
+    public function idString($name = 'id', $primary = true)
+    {
+        $id = new IdString($this, $name);
+
+        if ($primary) {
+            $id->primary();
         }
 
         $this->fields[] = $id;
@@ -231,8 +245,6 @@ class Table
     public function language()
     {
         $language = $this->varchar('language_id', 2)->references('languages', 'slug');
-
-        $this->fields[] = $language;
 
         return $language;
     }

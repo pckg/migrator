@@ -124,6 +124,7 @@ class ExecuteMigration
     public function updateRelation(Cache $cache, Table $table, Relation $relation)
     {
         $cached = $cache->getConstraint($relation->getName(), $table->getName());
+        
         $current = $relation->getSqlByParams(
             $cached['primary'],
             $cached['references'],
@@ -133,8 +134,7 @@ class ExecuteMigration
         );
 
         if ($current != $relation->getSql()) {
-            $this->output('Apply relation manually: ' . "\n" . $relation->getSql());
-            $this->output();
+            $this->output('APPLY RELATION MANUALLY: ' . "\n" . $relation->getSql());
         }
     }
 
@@ -200,7 +200,7 @@ class ExecuteMigration
 
     protected function output($msg = '')
     {
-        echo $msg . "\n";
+        echo '<question>' . $msg . "</question>\n";
     }
 
     protected function buildOldFieldSql(Cache $cache, Table $table, Field $field)
