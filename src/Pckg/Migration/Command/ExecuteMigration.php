@@ -124,6 +124,11 @@ class ExecuteMigration
     public function updateRelation(Cache $cache, Table $table, Relation $relation)
     {
         $cached = $cache->getConstraint($relation->getName(), $table->getName());
+
+        if (!isset($cached['primary'])) {
+            d($cached, $table->getName(), $relation->getName());
+            return;
+        }
         
         $current = $relation->getSqlByParams(
             $cached['primary'],
