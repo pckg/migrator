@@ -19,9 +19,21 @@ class ExecuteMigration
 
     protected $sqls = [];
 
+    protected $fields = true;
+
+    protected $relations = true;
+
     public function __construct(Migration $migration)
     {
         $this->migration = $migration;
+    }
+
+    public function onlyFields()
+    {
+        $this->fields = true;
+        $this->relations = false;
+
+        return $this;
     }
 
     public function execute()
@@ -98,25 +110,27 @@ class ExecuteMigration
                             . ' ' . implode(",\n ", $this->sql);
         }
 
-        foreach ($table->getConstraints() as $constraint) {
-            if ($cache->tableHasConstraint($table->getName(), $constraint->getName())) {
-                $this->updateConstraint($cache, $table, $constraint);
-            } else {
-                $this->installConstraint($cache, $table, $constraint);
-            }
-        }
-
-        foreach ($table->getRelations() as $relation) {
-            $relationName = $relation->getName();
-
-            if (strpos($relationName, 'FOREIGN_') !== 0) {
-                continue;
+        if ($this->relations) {
+            foreach ($table->getConstraints() as $constraint) {
+                if ($cache->tableHasConstraint($table->getName(), $constraint->getName())) {
+                    $this->updateConstraint($cache, $table, $constraint);
+                } else {
+                    $this->installConstraint($cache, $table, $constraint);
+                }
             }
 
-            if ($cache->tableHasConstraint($table->getName(), $relation->getName())) {
-                $this->updateRelation($cache, $table, $relation);
-            } else {
-                $this->installRelation($cache, $table, $relation);
+            foreach ($table->getRelations() as $relation) {
+                $relationName = $relation->getName();
+
+                if (strpos($relationName, 'FOREIGN_') !== 0) {
+                    continue;
+                }
+
+                if ($cache->tableHasConstraint($table->getName(), $relation->getName())) {
+                    $this->updateRelation($cache, $table, $relation);
+                } else {
+                    $this->installRelation($cache, $table, $relation);
+                }
             }
         }
     }
@@ -127,9 +141,10 @@ class ExecuteMigration
 
         if (!isset($cached['primary'])) {
             d($cached, $table->getName(), $relation->getName());
+
             return;
         }
-        
+
         $current = $relation->getSqlByParams(
             $cached['primary'],
             $cached['references'],
@@ -174,8 +189,10 @@ class ExecuteMigration
             $this->sql[] = $this->installField($cache, $table, $field);
         }
 
-        foreach ($table->getConstraints() as $constraint) {
-            $this->installNewConstraint($cache, $table, $constraint);
+        if ($this->relations) {
+            foreach ($table->getConstraints() as $constraint) {
+                $this->installNewConstraint($cache, $table, $constraint);
+            }
         }
 
         if ($this->sql) {

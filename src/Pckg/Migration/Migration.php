@@ -12,6 +12,18 @@ class Migration
 
     protected $repository = Repository::class;
 
+    protected $fields = true;
+
+    protected $relations = true;
+
+    public function onlyFields()
+    {
+        $this->fields = true;
+        $this->relations = false;
+
+        return $this;
+    }
+
     public function table($table, $id = true, $primary = true)
     {
         $table = new Table($table);
@@ -64,7 +76,13 @@ class Migration
 
     public function save()
     {
-        (new ExecuteMigration($this))->execute();
+        $executeMigration = (new ExecuteMigration($this));
+
+        if (!$this->relations) {
+            $executeMigration->onlyFields();
+        }
+
+        $executeMigration->execute();
 
         $this->tables = [];
     }

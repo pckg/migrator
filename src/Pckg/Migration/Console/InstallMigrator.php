@@ -13,7 +13,9 @@ class InstallMigrator extends Command
     protected function configure()
     {
         $this->setName('migrator:install')
-             ->setDescription('Install migrations from envirtonment');
+             ->setDescription('Install migrations from envirtonment')
+             ->addOption('only', null, InputOption::VALUE_OPTIONAL, 'Install only listed migrations')
+             ->addOption('fields', null, InputOption::VALUE_OPTIONAL, 'Install only fields (no keys)');
     }
 
     /**
@@ -35,6 +37,10 @@ class InstallMigrator extends Command
         $installed = 0;
         $updated = 0;
         foreach ($requestedMigrations as $requestedMigration) {
+            if ($this->option('only') && $requestedMigration != $this->option('only') && strpos($requestedMigration, $this->option('only')) === false) {
+                continue;
+            }
+
             /**
              * @T00D00
              * Implement beforeFirstUp(), beforeUp(), afterUp(), afterFirstUp(), isFirstUp()
@@ -42,11 +48,17 @@ class InstallMigrator extends Command
             try {
                 $this->output('Migration: ' . $requestedMigration, 'info');
                 $migration = new $requestedMigration;
+                if ($this->option('fields')) {
+                    $migration->onlyFields();
+                }
                 foreach ($migration->dependencies() as $dependency) {
                     if (is_string($dependency)) {
                         $dependency = Reflect::create($dependency);
                     }
-                    $this->output('Dependency: ' . $dependency->getRepository() . ' : ' . get_class($dependency), 'info');
+                    $this->output(
+                        'Dependency: ' . $dependency->getRepository() . ' : ' . get_class($dependency),
+                        'info'
+                    );
                     $dependency->up();
                 }
                 $migration->up();
