@@ -1,6 +1,6 @@
 {
   "name": "pckg/migrator",
-  "description": "Database, config and other migrations made simple",
+  "description": "Database and config migrations made simple",
   "homepage": "https://github.com/pckg/migrator",
   "license": "MIT",
   "authors": [
