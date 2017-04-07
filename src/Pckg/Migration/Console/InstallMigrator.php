@@ -37,7 +37,8 @@ class InstallMigrator extends Command
         $installed = 0;
         $updated = 0;
         foreach ($requestedMigrations as $requestedMigration) {
-            if ($this->option('only') && $requestedMigration != $this->option('only') && strpos($requestedMigration, $this->option('only')) === false) {
+            $migrationClass = is_object($requestedMigration) ? get_class($requestedMigration) : $requestedMigration;
+            if ($this->option('only') && strpos($migrationClass, $this->option('only')) === false) {
                 continue;
             }
 
