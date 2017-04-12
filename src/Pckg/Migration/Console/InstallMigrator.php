@@ -15,7 +15,7 @@ class InstallMigrator extends Command
         $this->setName('migrator:install')
              ->setDescription('Install migrations from envirtonment')
              ->addOption('only', null, InputOption::VALUE_OPTIONAL, 'Install only listed migrations')
-             ->addOption('fields', null, InputOption::VALUE_OPTIONAL, 'Install only fields (no keys)');
+             ->addOption('fields', null, null, 'Install only fields (no keys)');
     }
 
     /**
