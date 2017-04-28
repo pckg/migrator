@@ -3,7 +3,6 @@
 use Exception;
 use Pckg\Concept\Reflect;
 use Pckg\Framework\Console\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Throwable;
 
@@ -56,6 +55,9 @@ class InstallMigrator extends Command
                     if (is_string($dependency)) {
                         $dependency = Reflect::create($dependency);
                     }
+                    if ($this->option('fields')) {
+                        $dependency->onlyFields();
+                    }
                     $this->output(
                         'Dependency: ' . $dependency->getRepository() . ' : ' . get_class($dependency),
                         'info'
@@ -70,6 +72,9 @@ class InstallMigrator extends Command
                     if (is_string($partial)) {
                         $partial = Reflect::create($partial);
                     }
+                    if ($this->option('fields')) {
+                        $partial->onlyFields();
+                    }
                     $this->output('Partial: ' . $partial->getRepository() . ' : ' . get_class($partial), 'info');
                     $partial->up();
                 }
@@ -81,11 +86,9 @@ class InstallMigrator extends Command
 
             if (in_array($requestedMigration, $installedMigrations)) {
                 $updated++;
-
             } else {
                 $installedMigrations[] = $requestedMigration;
                 $installed++;
-
             }
         }
 
@@ -126,8 +129,8 @@ class InstallMigrator extends Command
     private function getEnvironmentPath()
     {
         return path('root') . 'storage' . path('ds') . 'environment' . path('ds') . 'migrator' . path(
-            'ds'
-        ) . $this->app . '.json';
+                'ds'
+            ) . $this->app . '.json';
     }
 
 }
