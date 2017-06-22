@@ -84,8 +84,8 @@ class ExecuteMigration
             $execute = $prepare->execute();
             if (!$execute) {
                 throw new Exception(
-                    'Cannot execute query! ' . "\n" . $sql . "\n" . 'Error code ' . $prepare->errorCode(
-                    ) . "\n" . $prepare->errorInfo()[2]
+                    'Cannot execute query! ' . "\n" . $sql . "\n" . 'Error code ' . $prepare->errorCode() . "\n" .
+                    $prepare->errorInfo()[2]
                 );
             }
         }
@@ -102,6 +102,9 @@ class ExecuteMigration
             } else {
                 $sql = $this->installField($cache, $table, $field);
                 $this->sql[] = 'ADD ' . $sql;
+                if (strpos($sql, 'AUTO_INCREMENT')) {
+                    $this->sql[] = 'ADD PRIMARY KEY(`' . $field->getName() . '`)';
+                }
             }
         }
 
@@ -186,7 +189,11 @@ class ExecuteMigration
     {
         //$this->output('Installing table ' . $table->getName());
         foreach ($table->getFields() as $field) {
-            $this->sql[] = $this->installField($cache, $table, $field);
+            $sql = $this->installField($cache, $table, $field);
+            $this->sql[] = $sql;
+            if (strpos($sql, 'AUTO_INCREMENT')) {
+                $this->sql[] = 'PRIMARY KEY(`' . $field->getName() . '`)';
+            }
         }
 
         if ($this->relations) {
@@ -233,10 +240,10 @@ class ExecuteMigration
                . ($cachedField['limit'] ? '(' . $cachedField['limit'] . ')' : '')
                . ($cachedField['null'] ? ' NULL' : ' NOT NULL')
                . ($cachedField['default']
-            ? ' DEFAULT ' . ($cachedField['default'] == 'CURRENT_TIMESTAMP'
-                ? $cachedField['default']
-                : ("'" . $cachedField['default'] . "'"))
-            : ($cachedField['null'] ? ' DEFAULT NULL' : ''))
+                ? ' DEFAULT ' . ($cachedField['default'] == 'CURRENT_TIMESTAMP'
+                    ? $cachedField['default']
+                    : ("'" . $cachedField['default'] . "'"))
+                : ($cachedField['null'] ? ' DEFAULT NULL' : ''))
                . ($cachedField['extra'] ? ' ' . strtoupper($cachedField['extra']) : '');
     }
 

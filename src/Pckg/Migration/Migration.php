@@ -133,4 +133,9 @@ class Migration
         return $morphtable;
     }
 
+    public function output($msg)
+    {
+        echo $msg . "\n";
+    }
+
 }
