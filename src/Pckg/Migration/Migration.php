@@ -121,14 +121,10 @@ class Migration
         $morphtable = new Table($table . $suffix);
         $this->tables[] = $morphtable;
 
-        $morphtable->id('id', false);
+        $morphtable->id('id');
         $morphtable->integer($morph)->references($table);
         $morphtable->varchar('morph_id');
         $morphtable->varchar('poly_id');
-
-        /**
-         * @T00D00 - add double index
-         */
 
         return $morphtable;
     }
