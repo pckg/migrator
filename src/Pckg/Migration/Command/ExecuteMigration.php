@@ -188,11 +188,12 @@ class ExecuteMigration
     protected function installTable(Cache $cache, Table $table)
     {
         //$this->output('Installing table ' . $table->getName());
+        $primaryKey = null;
         foreach ($table->getFields() as $field) {
             $sql = $this->installField($cache, $table, $field);
             $this->sql[] = $sql;
             if (strpos($sql, 'AUTO_INCREMENT')) {
-                $this->sql[] = 'PRIMARY KEY(`' . $field->getName() . '`)';
+                $primaryKey = $field->getName();
             }
         }
 
@@ -200,6 +201,10 @@ class ExecuteMigration
             foreach ($table->getConstraints() as $constraint) {
                 $this->installNewConstraint($cache, $table, $constraint);
             }
+        }
+
+        if ($primaryKey && !in_array('PRIMARY KEY(`' . $primaryKey . '`)', $this->sql)) {
+            $this->sql[] = 'PRIMARY KEY(`' . $primaryKey . '`)';
         }
 
         if ($this->sql) {
