@@ -100,7 +100,7 @@ class ExecuteMigration
                     $this->sql[] = 'CHANGE `' . $field->getName() . '` ' . $sql;
                 }
             } else {
-                $sql = $this->installField($cache, $table, $field);
+                $sql = $this->installField($field);
                 $this->sql[] = 'ADD ' . $sql;
                 if (strpos($sql, 'AUTO_INCREMENT')) {
                     $this->sql[] = 'ADD PRIMARY KEY(`' . $field->getName() . '`)';
@@ -118,7 +118,7 @@ class ExecuteMigration
                 if ($cache->tableHasConstraint($table->getName(), $constraint->getName())) {
                     $this->updateConstraint($cache, $table, $constraint);
                 } else {
-                    $this->installConstraint($cache, $table, $constraint);
+                    $this->installConstraint($constraint);
                 }
             }
 
@@ -132,7 +132,7 @@ class ExecuteMigration
                 if ($cache->tableHasConstraint($table->getName(), $relation->getName())) {
                     $this->updateRelation($cache, $table, $relation);
                 } else {
-                    $this->installRelation($cache, $table, $relation);
+                    $this->installRelation($table, $relation);
                 }
             }
         }
@@ -161,7 +161,7 @@ class ExecuteMigration
         }
     }
 
-    public function installRelation(Cache $cache, Table $table, Relation $relation)
+    public function installRelation(Table $table, Relation $relation)
     {
         $this->sqls[] = 'SET foreign_key_checks = 0';
         $this->sqls[] = 'ALTER TABLE `' . $table->getName() . '` ADD ' . $relation->getSql();
@@ -181,8 +181,10 @@ class ExecuteMigration
 
     protected function updateConstraint(Cache $cache, Table $table, Constraint $key)
     {
+        /*
         $newSql = $key->getSql();
         $oldSql = $this->buildOldKeySql($cache, $table, $key);
+        */
     }
 
     protected function installTable(Cache $cache, Table $table)
@@ -190,7 +192,7 @@ class ExecuteMigration
         //$this->output('Installing table ' . $table->getName());
         $primaryKey = null;
         foreach ($table->getFields() as $field) {
-            $sql = $this->installField($cache, $table, $field);
+            $sql = $this->installField($field);
             $this->sql[] = $sql;
             if (strpos($sql, 'AUTO_INCREMENT')) {
                 $primaryKey = $field->getName();
@@ -199,7 +201,7 @@ class ExecuteMigration
 
         if ($this->relations) {
             foreach ($table->getConstraints() as $constraint) {
-                $this->installNewConstraint($cache, $table, $constraint);
+                $this->installNewConstraint($constraint);
             }
         }
 
@@ -214,21 +216,18 @@ class ExecuteMigration
         }
     }
 
-    protected function installField(Cache $cache, Table $table, Field $field)
+    protected function installField(Field $field)
     {
-        //$this->output('Installing field ' . $table->getName() . '.' . $field->getName());
         return '`' . $field->getName() . '` ' . $field->getSql();
     }
 
-    protected function installNewConstraint(Cache $cache, Table $table, Constraint $key)
+    protected function installNewConstraint(Constraint $key)
     {
-        //$this->output('Installing constraint ' . $table->getName() . '.' . $key->getName());
         $this->sql[] = $key->getSql();
     }
 
-    protected function installConstraint(Cache $cache, Table $table, Constraint $key)
+    protected function installConstraint(Constraint $key)
     {
-        //$this->output('Installing constraint ' . $table->getName() . '.' . $key->getName());
         $this->sql[] = 'ADD ' . $key->getSql();
     }
 
