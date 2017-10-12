@@ -11,8 +11,8 @@ use Pckg\Migration\Constraint;
  */
 class Unique extends Constraint
 {
-	/**
-	 * @var string
-	 */
-	protected $type = 'UNIQUE KEY';
+    /**
+     * @var string
+     */
+    protected $type = 'UNIQUE KEY';
 }
