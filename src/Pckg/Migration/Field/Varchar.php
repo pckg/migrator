@@ -1,12 +1,23 @@
-<?php namespace Pckg\Migration\Field;
+<?php
+
+namespace Pckg\Migration\Field;
 
 use Pckg\Migration\Field;
 
+/**
+ * Class Varchar
+ *
+ * @package Pckg\Migration\Field
+ */
 class Varchar extends Field
 {
+	/**
+	 * @var string
+	 */
+	protected $type = 'VARCHAR';
 
-    protected $type = 'VARCHAR';
-
-    protected $length = 128;
-
+	/**
+	 * @var int
+	 */
+	protected $length = 128;
 }

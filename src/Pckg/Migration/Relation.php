@@ -1,98 +1,152 @@
-<?php namespace Pckg\Migration;
+<?php
+
+namespace Pckg\Migration;
 
 class Relation
 {
+	const RESTRICT  = 'RESTRICT';
+	const CASCADE   = 'CASCADE';
+	const SET_NULL  = 'SET NULL';
+	const NO_ACTION = 'NO ACTION';
 
-    const RESTRICT = 'RESTRICT';
+	/**
+	 * @var Field
+	 */
+	protected $field;
 
-    const CASCADE = 'CASCADE';
+	/**
+	 * @var
+	 */
+	protected $references;
 
-    const SET_NULL = 'SET NULL';
+	/**
+	 * @var
+	 */
+	protected $on;
 
-    const NO_ACTION = 'NO ACTION';
+	/**
+	 * @var string
+	 */
+	protected $onDelete = self::RESTRICT;
 
-    protected $field;
+	/**
+	 * @var string
+	 */
+	protected $onUpdate = self::CASCADE;
 
-    protected $references;
+	/**
+	 * Relation constructor.
+	 *
+	 * @param Field $field
+	 * @param       $references
+	 * @param       $on
+	 */
+	public function __construct(Field $field, $references, $on)
+	{
+		$this->field      = $field;
+		$this->references = $references;
+		$this->on         = $on;
+	}
 
-    protected $on;
+	/**
+	 * @return string
+	 */
+	public function getName()
+	{
+		$name = $this->field->getTable()->getName() . '__' . $this->field->getName();
+		if (strlen($name) > 55) {
+			$name = substr($name, -55);
+		}
 
-    protected $onDelete = self::RESTRICT;
+		return 'FOREIGN__' . $name;
+	}
 
-    protected $onUpdate = self::CASCADE;
+	/**
+	 * @return mixed
+	 */
+	public function getReferences()
+	{
+		return $this->references;
+	}
 
-    public function __construct(Field $field, $references, $on)
-    {
-        $this->field = $field;
-        $this->references = $references;
-        $this->on = $on;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getOn()
+	{
+		return $this->on;
+	}
 
-    public function getName()
-    {
-        $name = $this->field->getTable()->getName() . '__' . $this->field->getName();
-        if (strlen($name) > 55) {
-            $name = substr($name, -55);
-        }
+	/**
+	 * @return Field
+	 */
+	public function getField()
+	{
+		return $this->field;
+	}
 
-        return 'FOREIGN__' . $name;
-    }
+	/**
+	 * @return string
+	 */
+	public function getOnDelete()
+	{
+		return $this->onDelete;
+	}
 
-    public function getReferences()
-    {
-        return $this->references;
-    }
+	/**
+	 * @return string
+	 */
+	public function getOnUpdate()
+	{
+		return $this->onUpdate;
+	}
 
-    public function getOn()
-    {
-        return $this->on;
-    }
+	/**
+	 * @param string $action
+	 *
+	 * @return $this
+	 */
+	public function onDelete($action = self::RESTRICT)
+	{
+		$this->onDelete = $action;
 
-    public function getField()
-    {
-        return $this->field;
-    }
+		return $this;
+	}
 
-    public function getOnDelete()
-    {
-        return $this->onDelete;
-    }
+	/**
+	 * @param string $action
+	 *
+	 * @return $this
+	 */
+	public function onUpdate($action = self::CASCADE)
+	{
+		$this->onUpdate = $action;
 
-    public function getOnUpdate()
-    {
-        return $this->onUpdate;
-    }
+		return $this;
+	}
 
-    public function onDelete($action = self::RESTRICT)
-    {
-        $this->onDelete = $action;
+	/**
+	 * @return string
+	 */
+	public function getSql()
+	{
+		return 'CONSTRAINT `' . $this->getName() . '` FOREIGN KEY (`' . $this->getField()->getName(
+			) . '`) ' . 'REFERENCES `' . $this->getReferences() . '`(`' . $this->getOn(
+			) . '`) ' . 'ON DELETE ' . $this->getOnDelete() . ' ' . 'ON UPDATE ' . $this->getOnUpdate();
+	}
 
-        return $this;
-    }
-
-    public function onUpdate($action = self::CASCADE)
-    {
-        $this->onUpdate = $action;
-
-        return $this;
-    }
-
-    public function getSql()
-    {
-        return 'CONSTRAINT `' . $this->getName()
-               . '` FOREIGN KEY (`' . $this->getField()->getName() . '`) ' .
-               'REFERENCES `' . $this->getReferences() . '`(`' . $this->getOn() . '`) ' .
-               'ON DELETE ' . $this->getOnDelete() . ' ' .
-               'ON UPDATE ' . $this->getOnUpdate();
-    }
-
-    public function getSqlByParams($field, $references, $on, $onDelete, $onUpdate)
-    {
-        return 'CONSTRAINT `' . $this->getName()
-               . '` FOREIGN KEY (`' . $field . '`) ' .
-               'REFERENCES `' . $references . '`(`' . $on . '`) ' .
-               'ON DELETE ' . $onDelete . ' ' .
-               'ON UPDATE ' . $onUpdate;
-    }
-
+	/**
+	 * @param $field
+	 * @param $references
+	 * @param $on
+	 * @param $onDelete
+	 * @param $onUpdate
+	 *
+	 * @return string
+	 */
+	public function getSqlByParams($field, $references, $on, $onDelete, $onUpdate)
+	{
+		return 'CONSTRAINT `' . $this->getName(
+			) . '` FOREIGN KEY (`' . $field . '`) ' . 'REFERENCES `' . $references . '`(`' . $on . '`) ' . 'ON DELETE ' . $onDelete . ' ' . 'ON UPDATE ' . $onUpdate;
+	}
 }

@@ -1,22 +1,41 @@
-<?php namespace Pckg\Migration\Field;
+<?php
 
+namespace Pckg\Migration\Field;
+
+/**
+ * Class Id
+ *
+ * @package Pckg\Migration\Field
+ */
 class Id extends Integer
 {
+	/**
+	 * @var bool
+	 */
+	protected $nullable = false;
 
-    protected $nullable = false;
+	/**
+	 * @var bool
+	 */
+	protected $autoincrement = true;
 
-    protected $autoincrement = true;
+	/**
+	 * @param $boolean
+	 *
+	 * @return $this
+	 */
+	public function autoincrement($boolean)
+	{
+		$this->autoincrement = $boolean;
 
-    public function autoincrement($boolean)
-    {
-        $this->autoincrement = $boolean;
+		return $this;
+	}
 
-        return $this;
-    }
-
-    public function getSql()
-    {
-        return parent::getSql() . ($this->autoincrement ? ' AUTO_INCREMENT' : '');
-    }
-
+	/**
+	 * @return string
+	 */
+	public function getSql()
+	{
+		return parent::getSql() . ($this->autoincrement ? ' AUTO_INCREMENT' : '');
+	}
 }

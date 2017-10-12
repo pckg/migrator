@@ -1,4 +1,6 @@
-<?php namespace Pckg\Migration\Helper;
+<?php
+
+namespace Pckg\Migration\Helper;
 
 use Pckg\Generic\Record\ListItem as ListItemRecord;
 use Pckg\Generic\Record\ListRecord;
@@ -10,28 +12,26 @@ use Pckg\Generic\Record\ListRecord;
  */
 trait Lists
 {
+	/**
+	 * @param $id
+	 *
+	 * @return ListRecord
+	 */
+	protected function list($id)
+	{
+		return ListRecord::getOrCreate(['id' => $id]);
+	}
 
-    /**
-     * @param $id
-     *
-     * @return ListRecord
-     */
-    protected function list($id)
-    {
-        return ListRecord::getOrCreate(['id' => $id]);
-    }
+	/**
+	 * @param $list
+	 * @param $slug
+	 *
+	 * @return ListItemRecord
+	 */
+	protected function listItem($list, $slug)
+	{
+		$list = $this->list($list);
 
-    /**
-     * @param $list
-     * @param $slug
-     *
-     * @return ListItemRecord
-     */
-    protected function listItem($list, $slug)
-    {
-        $list = $this->list($list);
-
-        return ListItemRecord::getOrCreate(['list_id' => $list->id, 'slug' => $slug]);
-    }
-
+		return ListItemRecord::getOrCreate(['list_id' => $list->id, 'slug' => $slug]);
+	}
 }
