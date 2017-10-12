@@ -26,471 +26,471 @@ use Pckg\Migration\Field\Varchar;
  */
 class Table
 {
-	/**
-	 * @var
-	 */
-	protected $name;
-
-	/**
-	 * @var array
-	 */
-	protected $fields = [];
-
-	/**
-	 * @var array
-	 */
-	protected $constraints = [];
-
-	/**
-	 * @var array
-	 */
-	protected $relations = [];
-
-	/**
-	 * Table constructor.
-	 *
-	 * @param $name
-	 */
-	public function __construct($name)
-	{
-		$this->name = $name;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getName()
-	{
-		return $this->name;
-	}
-
-	// getters
-
-	/**
-	 * @return array
-	 */
-	public function getFields()
-	{
-		return $this->fields;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getConstraints()
-	{
-		return $this->constraints;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getRelations()
-	{
-		return $this->relations;
-	}
-
-	// adders
-
-	/**
-	 * @param Relation $relation
-	 *
-	 * @return $this
-	 */
-	public function addRelation(Relation $relation)
-	{
-		$this->relations[] = $relation;
-
-		return $this;
-	}
-
-	/**
-	 * @param Constraint $constraint
-	 *
-	 * @return $this
-	 */
-	public function addConstraint(Constraint $constraint)
-	{
-		$this->constraints[] = $constraint;
-
-		return $this;
-	}
-
-	/**
-	 * @param Field $field
-	 *
-	 * @return $this
-	 */
-	public function addField(Field $field)
-	{
-		$this->fields[] = $field;
-
-		return $this;
-	}
-
-	// fields
-
-	/**
-	 * @param string $name
-	 * @param bool   $primary
-	 *
-	 * @return Id
-	 */
-	public function id($name = 'id', $primary = true)
-	{
-		$id = new Id($this, $name);
-
-		if ($primary) {
-			$id->primary();
-		} else {
-			$id->autoincrement(false);
-		}
-
-		$this->fields[] = $id;
-
-		return $id;
-	}
-
-	/**
-	 * @param string $name
-	 * @param bool   $primary
-	 *
-	 * @return IdString
-	 */
-	public function idString($name = 'id', $primary = true)
-	{
-		$id = new IdString($this, $name);
-
-		if ($primary) {
-			$id->primary();
-		}
-
-		$this->fields[] = $id;
-
-		return $id;
-	}
-
-	/**
-	 * @param     $name
-	 * @param int $length
-	 *
-	 * @return Varchar
-	 */
-	public function varchar($name, $length = 128)
-	{
-		$varchar = new Varchar($this, $name);
-
-		$this->fields[] = $varchar;
-
-		$varchar->length($length);
-
-		return $varchar;
-	}
-
-	/**
-	 * @param string $name
-	 * @param int    $length
-	 * @param bool   $unique
-	 *
-	 * @return Varchar
-	 */
-	public function slug($name = 'slug', $length = 128, $unique = true)
-	{
-		$field = $this->varchar($name, $length);
-
-		if ($unique) {
-			$this->unique($name);
-		}
-
-		return $field;
-	}
-
-	/**
-	 * @param string $name
-	 * @param int    $length
-	 *
-	 * @return Varchar
-	 */
-	public function title($name = 'title', $length = 128)
-	{
-		return $this->varchar($name, $length);
-	}
-
-	/**
-	 * @param        $name
-	 * @param string $type
-	 *
-	 * @return $this
-	 */
-	public function range($name, $type = 'datetime')
-	{
-		$this->{$type}($name . '_from')->nullable();
-		$this->{$type}($name . '_to')->nullable();
-
-		return $this;
-	}
-
-	/**
-	 * @param $name
-	 *
-	 * @return Point
-	 */
-	public function point($name)
-	{
-		$point = new Point($this, $name);
-
-		$this->fields[] = $point;
-
-		return $point;
-	}
-
-	/**
-	 * @param string $name
-	 *
-	 * @return Text
-	 */
-	public function subtitle($name = 'subtitle')
-	{
-		return $this->text($name);
-	}
-
-	/**
-	 * @param string $name
-	 *
-	 * @return Text
-	 */
-	public function lead($name = 'lead')
-	{
-		return $this->text($name);
-	}
-
-	/**
-	 * @param string $name
-	 *
-	 * @return Text
-	 */
-	public function content($name = 'content')
-	{
-		return $this->text($name);
-	}
-
-	/**
-	 * @param      $name
-	 * @param null $default
-	 *
-	 * @return Boolean
-	 */
-	public function boolean($name, $default = null)
-	{
-		$boolean = new Boolean($this, $name);
-
-		$this->fields[] = $boolean;
-
-		$boolean->setDefault($default);
-
-		return $boolean;
-	}
-
-	/**
-	 * @param $name
-	 *
-	 * @return Text
-	 */
-	public function text($name)
-	{
-		$text = new Text($this, $name);
-
-		$this->fields[] = $text;
-
-		return $text;
-	}
-
-	/**
-	 * @param string $name
-	 *
-	 * @return Text
-	 */
-	public function description($name = 'description')
-	{
-		return $this->text($name);
-	}
-
-	/**
-	 * @param string $name
-	 *
-	 * @return Varchar
-	 */
-	public function email($name = 'email')
-	{
-		return $this->varchar($name);
-	}
-
-	/**
-	 * @param string $name
-	 * @param int    $length
-	 *
-	 * @return Varchar
-	 */
-	public function password($name = 'password', $length = 40)
-	{
-		return $this->varchar($name, $length);
-	}
-
-	/**
-	 * @param     $name
-	 * @param int $length
-	 *
-	 * @return Integer
-	 */
-	public function integer($name, $length = 11)
-	{
-		$integer = new Integer($this, $name);
-
-		$this->fields[] = $integer;
-
-		$integer->length($length);
-
-		return $integer;
-	}
-
-	/**
-	 * @param       $name
-	 * @param array $length
-	 *
-	 * @return Decimal
-	 */
-	public function decimal($name, $length = [8, 2])
-	{
-		$decimal = new Decimal($this, $name);
-
-		$this->fields[] = $decimal;
-
-		$decimal->length($length);
-
-		return $decimal;
-	}
-
-	/**
-	 * @param string $name
-	 *
-	 * @return int
-	 */
-	public function parent($name = 'parent_id')
-	{
-		$parent = $this->integer($name);
-
-		$parent->references($this->name)->nullable();
-
-		return $parent;
-	}
-
-	/**
-	 * @param $name
-	 *
-	 * @return Datetime
-	 */
-	public function datetime($name)
-	{
-		$datetime = new Datetime($this, $name);
-
-		$this->fields[] = $datetime;
-
-		return $datetime;
-	}
-
-	/**
-	 * @return $this
-	 */
-	public function language()
-	{
-		$language = $this->varchar('language_id', 2)->references('languages', 'slug');
-
-		return $language;
-	}
-
-	// groups
-
-	/**
-	 * @return Timeable
-	 */
-	public function timeable()
-	{
-		$timeable = new Timeable($this);
-
-		return $timeable;
-	}
-
-	/**
-	 * @return Orderable
-	 */
-	public function orderable()
-	{
-		$orderable = new Orderable($this);
-
-		return $orderable;
-	}
-
-	/**
-	 * @return Hidable
-	 */
-	public function hideable()
-	{
-		$hidable = new Hidable($this);
-
-		return $hidable;
-	}
-
-	/**
-	 * @return Deletable
-	 */
-	public function deletable()
-	{
-		$deletable = new Deletable($this);
-
-		return $deletable;
-	}
-
-	// index, primary, unique
-
-	/**
-	 * @param array ...$fields
-	 *
-	 * @return Primary
-	 */
-	public function primary(...$fields)
-	{
-		$primary = new Primary($this, ...$fields);
-
-		$this->constraints[] = $primary;
-
-		return $primary;
-	}
-
-	/**
-	 * @param array ...$fields
-	 *
-	 * @return Index
-	 */
-	public function index(...$fields)
-	{
-		$index = new Index($this, ...$fields);
-
-		$this->constraints[] = $index;
-
-		return $index;
-	}
-
-	/**
-	 * @param array ...$fields
-	 *
-	 * @return Unique
-	 */
-	public function unique(...$fields)
-	{
-		$unique = new Unique($this, ...$fields);
-
-		$this->constraints[] = $unique;
-
-		return $unique;
-	}
+    /**
+     * @var
+     */
+    protected $name;
+
+    /**
+     * @var array
+     */
+    protected $fields = [];
+
+    /**
+     * @var array
+     */
+    protected $constraints = [];
+
+    /**
+     * @var array
+     */
+    protected $relations = [];
+
+    /**
+     * Table constructor.
+     *
+     * @param $name
+     */
+    public function __construct($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    // getters
+
+    /**
+     * @return array
+     */
+    public function getFields()
+    {
+        return $this->fields;
+    }
+
+    /**
+     * @return array
+     */
+    public function getConstraints()
+    {
+        return $this->constraints;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRelations()
+    {
+        return $this->relations;
+    }
+
+    // adders
+
+    /**
+     * @param Relation $relation
+     *
+     * @return $this
+     */
+    public function addRelation(Relation $relation)
+    {
+        $this->relations[] = $relation;
+
+        return $this;
+    }
+
+    /**
+     * @param Constraint $constraint
+     *
+     * @return $this
+     */
+    public function addConstraint(Constraint $constraint)
+    {
+        $this->constraints[] = $constraint;
+
+        return $this;
+    }
+
+    /**
+     * @param Field $field
+     *
+     * @return $this
+     */
+    public function addField(Field $field)
+    {
+        $this->fields[] = $field;
+
+        return $this;
+    }
+
+    // fields
+
+    /**
+     * @param string $name
+     * @param bool   $primary
+     *
+     * @return Id
+     */
+    public function id($name = 'id', $primary = true)
+    {
+        $id = new Id($this, $name);
+
+        if ($primary) {
+            $id->primary();
+        } else {
+            $id->autoincrement(false);
+        }
+
+        $this->fields[] = $id;
+
+        return $id;
+    }
+
+    /**
+     * @param string $name
+     * @param bool   $primary
+     *
+     * @return IdString
+     */
+    public function idString($name = 'id', $primary = true)
+    {
+        $id = new IdString($this, $name);
+
+        if ($primary) {
+            $id->primary();
+        }
+
+        $this->fields[] = $id;
+
+        return $id;
+    }
+
+    /**
+     * @param     $name
+     * @param int $length
+     *
+     * @return Varchar
+     */
+    public function varchar($name, $length = 128)
+    {
+        $varchar = new Varchar($this, $name);
+
+        $this->fields[] = $varchar;
+
+        $varchar->length($length);
+
+        return $varchar;
+    }
+
+    /**
+     * @param string $name
+     * @param int    $length
+     * @param bool   $unique
+     *
+     * @return Varchar
+     */
+    public function slug($name = 'slug', $length = 128, $unique = true)
+    {
+        $field = $this->varchar($name, $length);
+
+        if ($unique) {
+            $this->unique($name);
+        }
+
+        return $field;
+    }
+
+    /**
+     * @param string $name
+     * @param int    $length
+     *
+     * @return Varchar
+     */
+    public function title($name = 'title', $length = 128)
+    {
+        return $this->varchar($name, $length);
+    }
+
+    /**
+     * @param        $name
+     * @param string $type
+     *
+     * @return $this
+     */
+    public function range($name, $type = 'datetime')
+    {
+        $this->{$type}($name . '_from')->nullable();
+        $this->{$type}($name . '_to')->nullable();
+
+        return $this;
+    }
+
+    /**
+     * @param $name
+     *
+     * @return Point
+     */
+    public function point($name)
+    {
+        $point = new Point($this, $name);
+
+        $this->fields[] = $point;
+
+        return $point;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return Text
+     */
+    public function subtitle($name = 'subtitle')
+    {
+        return $this->text($name);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return Text
+     */
+    public function lead($name = 'lead')
+    {
+        return $this->text($name);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return Text
+     */
+    public function content($name = 'content')
+    {
+        return $this->text($name);
+    }
+
+    /**
+     * @param      $name
+     * @param null $default
+     *
+     * @return Boolean
+     */
+    public function boolean($name, $default = null)
+    {
+        $boolean = new Boolean($this, $name);
+
+        $this->fields[] = $boolean;
+
+        $boolean->setDefault($default);
+
+        return $boolean;
+    }
+
+    /**
+     * @param $name
+     *
+     * @return Text
+     */
+    public function text($name)
+    {
+        $text = new Text($this, $name);
+
+        $this->fields[] = $text;
+
+        return $text;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return Text
+     */
+    public function description($name = 'description')
+    {
+        return $this->text($name);
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return Varchar
+     */
+    public function email($name = 'email')
+    {
+        return $this->varchar($name);
+    }
+
+    /**
+     * @param string $name
+     * @param int    $length
+     *
+     * @return Varchar
+     */
+    public function password($name = 'password', $length = 40)
+    {
+        return $this->varchar($name, $length);
+    }
+
+    /**
+     * @param     $name
+     * @param int $length
+     *
+     * @return Integer
+     */
+    public function integer($name, $length = 11)
+    {
+        $integer = new Integer($this, $name);
+
+        $this->fields[] = $integer;
+
+        $integer->length($length);
+
+        return $integer;
+    }
+
+    /**
+     * @param       $name
+     * @param array $length
+     *
+     * @return Decimal
+     */
+    public function decimal($name, $length = [8, 2])
+    {
+        $decimal = new Decimal($this, $name);
+
+        $this->fields[] = $decimal;
+
+        $decimal->length($length);
+
+        return $decimal;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return int
+     */
+    public function parent($name = 'parent_id')
+    {
+        $parent = $this->integer($name);
+
+        $parent->references($this->name)->nullable();
+
+        return $parent;
+    }
+
+    /**
+     * @param $name
+     *
+     * @return Datetime
+     */
+    public function datetime($name)
+    {
+        $datetime = new Datetime($this, $name);
+
+        $this->fields[] = $datetime;
+
+        return $datetime;
+    }
+
+    /**
+     * @return $this
+     */
+    public function language()
+    {
+        $language = $this->varchar('language_id', 2)->references('languages', 'slug');
+
+        return $language;
+    }
+
+    // groups
+
+    /**
+     * @return Timeable
+     */
+    public function timeable()
+    {
+        $timeable = new Timeable($this);
+
+        return $timeable;
+    }
+
+    /**
+     * @return Orderable
+     */
+    public function orderable()
+    {
+        $orderable = new Orderable($this);
+
+        return $orderable;
+    }
+
+    /**
+     * @return Hidable
+     */
+    public function hideable()
+    {
+        $hidable = new Hidable($this);
+
+        return $hidable;
+    }
+
+    /**
+     * @return Deletable
+     */
+    public function deletable()
+    {
+        $deletable = new Deletable($this);
+
+        return $deletable;
+    }
+
+    // index, primary, unique
+
+    /**
+     * @param array ...$fields
+     *
+     * @return Primary
+     */
+    public function primary(...$fields)
+    {
+        $primary = new Primary($this, ...$fields);
+
+        $this->constraints[] = $primary;
+
+        return $primary;
+    }
+
+    /**
+     * @param array ...$fields
+     *
+     * @return Index
+     */
+    public function index(...$fields)
+    {
+        $index = new Index($this, ...$fields);
+
+        $this->constraints[] = $index;
+
+        return $index;
+    }
+
+    /**
+     * @param array ...$fields
+     *
+     * @return Unique
+     */
+    public function unique(...$fields)
+    {
+        $unique = new Unique($this, ...$fields);
+
+        $this->constraints[] = $unique;
+
+        return $unique;
+    }
 }

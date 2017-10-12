@@ -11,13 +11,13 @@ use Pckg\Migration\Field;
  */
 class Varchar extends Field
 {
-	/**
-	 * @var string
-	 */
-	protected $type = 'VARCHAR';
+    /**
+     * @var string
+     */
+    protected $type = 'VARCHAR';
 
-	/**
-	 * @var int
-	 */
-	protected $length = 128;
+    /**
+     * @var int
+     */
+    protected $length = 128;
 }

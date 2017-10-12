@@ -11,20 +11,20 @@ use Pckg\Migration\Table;
  */
 class Orderable
 {
-	/**
-	 * @var Table
-	 */
-	protected $table;
+    /**
+     * @var Table
+     */
+    protected $table;
 
-	/**
-	 * Orderable constructor.
-	 *
-	 * @param Table $table
-	 */
-	public function __construct(Table $table)
-	{
-		$this->table = $table;
+    /**
+     * Orderable constructor.
+     *
+     * @param Table $table
+     */
+    public function __construct(Table $table)
+    {
+        $this->table = $table;
 
-		$table->integer('order');
-	}
+        $table->integer('order');
+    }
 }

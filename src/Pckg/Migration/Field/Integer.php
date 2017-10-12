@@ -11,13 +11,13 @@ use Pckg\Migration\Field;
  */
 class Integer extends Field
 {
-	/**
-	 * @var string
-	 */
-	protected $type = 'INT';
+    /**
+     * @var string
+     */
+    protected $type = 'INT';
 
-	/**
-	 * @var int
-	 */
-	protected $length = 11;
+    /**
+     * @var int
+     */
+    protected $length = 11;
 }

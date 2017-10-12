@@ -11,24 +11,24 @@ use Pckg\Migration\Constraint;
  */
 class Index extends Constraint
 {
-	/**
-	 * @var string
-	 */
-	protected $type = 'KEY';
+    /**
+     * @var string
+     */
+    protected $type = 'KEY';
 
-	/**
-	 * @return string
-	 */
-	public function getSql()
-	{
-		return $this->type . '(`' . implode('`,`', $this->fields) . '`)';
-	}
+    /**
+     * @return string
+     */
+    public function getSql()
+    {
+        return $this->type . '(`' . implode('`,`', $this->fields) . '`)';
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getName()
-	{
-		return 'INDEX';
-	}
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'INDEX';
+    }
 }

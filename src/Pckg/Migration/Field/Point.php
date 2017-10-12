@@ -11,8 +11,8 @@ use Pckg\Migration\Field;
  */
 class Point extends Field
 {
-	/**
-	 * @var string
-	 */
-	protected $type = 'POINT';
+    /**
+     * @var string
+     */
+    protected $type = 'POINT';
 }

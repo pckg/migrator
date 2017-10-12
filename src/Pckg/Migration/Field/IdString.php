@@ -11,8 +11,8 @@ use Pckg\Migration\Field;
  */
 class IdString extends Varchar
 {
-	/**
-	 * @var bool
-	 */
-	protected $nullable = false;
+    /**
+     * @var bool
+     */
+    protected $nullable = false;
 }

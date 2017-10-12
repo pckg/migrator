@@ -11,13 +11,13 @@ use Pckg\Migration\Field;
  */
 class Boolean extends Field
 {
-	/**
-	 * @var string
-	 */
-	protected $type = 'TINYINT';
+    /**
+     * @var string
+     */
+    protected $type = 'TINYINT';
 
-	/**
-	 * @var int
-	 */
-	protected $length = 1;
+    /**
+     * @var int
+     */
+    protected $length = 1;
 }

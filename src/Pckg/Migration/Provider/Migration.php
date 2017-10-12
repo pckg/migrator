@@ -13,14 +13,14 @@ use Pckg\Migration\Console\UpdateMigrator;
  */
 class Migration extends Provider
 {
-	/**
-	 * @return array
-	 */
-	public function consoles()
-	{
-		return [
-			UpdateMigrator::class,
-			InstallMigrator::class,
-		];
-	}
+    /**
+     * @return array
+     */
+    public function consoles()
+    {
+        return [
+            UpdateMigrator::class,
+            InstallMigrator::class,
+        ];
+    }
 }

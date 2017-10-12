@@ -11,8 +11,8 @@ use Pckg\Migration\Field;
  */
 class Text extends Field
 {
-	/**
-	 * @var string
-	 */
-	protected $type = 'TEXT';
+    /**
+     * @var string
+     */
+    protected $type = 'TEXT';
 }

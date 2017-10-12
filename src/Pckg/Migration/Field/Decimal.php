@@ -11,21 +11,21 @@ use Pckg\Migration\Field;
  */
 class Decimal extends Field
 {
-	/**
-	 * @var string
-	 */
-	protected $type = 'DECIMAL';
+    /**
+     * @var string
+     */
+    protected $type = 'DECIMAL';
 
-	/**
-	 * @var array
-	 */
-	protected $length = [8, 2];
+    /**
+     * @var array
+     */
+    protected $length = [8, 2];
 
-	/**
-	 * @return string
-	 */
-	public function getTypeWithLength()
-	{
-		return $this->type . ($this->length ? '(' . implode(',', $this->length) . ')' : '');
-	}
+    /**
+     * @return string
+     */
+    public function getTypeWithLength()
+    {
+        return $this->type . ($this->length ? '(' . implode(',', $this->length) . ')' : '');
+    }
 }

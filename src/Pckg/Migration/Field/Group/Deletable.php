@@ -11,20 +11,20 @@ use Pckg\Migration\Table;
  */
 class Deletable
 {
-	/**
-	 * @var Table
-	 */
-	protected $table;
+    /**
+     * @var Table
+     */
+    protected $table;
 
-	/**
-	 * Deletable constructor.
-	 *
-	 * @param Table $table
-	 */
-	public function __construct(Table $table)
-	{
-		$this->table = $table;
+    /**
+     * Deletable constructor.
+     *
+     * @param Table $table
+     */
+    public function __construct(Table $table)
+    {
+        $this->table = $table;
 
-		$table->datetime('deleted_at');
-	}
+        $table->datetime('deleted_at');
+    }
 }

@@ -11,22 +11,22 @@ use Pckg\Migration\Table;
  */
 class Timeable
 {
-	/**
-	 * @var Table
-	 */
-	protected $table;
+    /**
+     * @var Table
+     */
+    protected $table;
 
-	/**
-	 * Timeable constructor.
-	 *
-	 * @param Table $table
-	 */
-	public function __construct(Table $table)
-	{
-		$this->table = $table;
+    /**
+     * Timeable constructor.
+     *
+     * @param Table $table
+     */
+    public function __construct(Table $table)
+    {
+        $this->table = $table;
 
-		$table->datetime('created_at')->setDefault('CURRENT_TIMESTAMP');
-		$table->datetime('updated_at');
-		$table->datetime('deleted_at');
-	}
+        $table->datetime('created_at')->setDefault('CURRENT_TIMESTAMP');
+        $table->datetime('updated_at');
+        $table->datetime('deleted_at');
+    }
 }

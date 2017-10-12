@@ -11,8 +11,8 @@ use Pckg\Migration\Field;
  */
 class Datetime extends Field
 {
-	/**
-	 * @var string
-	 */
-	protected $type = 'DATETIME';
+    /**
+     * @var string
+     */
+    protected $type = 'DATETIME';
 }
