@@ -143,17 +143,6 @@ class InstallMigrator extends Command
         return path('apps') . $this->app . path('ds') . 'config' . path('ds') . 'migrations.php';
     }
 
-    /**
-     * @return string
-     */
-    private function getSrcPath()
-    {
-        return path('apps') . $this->app . path('ds') . 'src';
-    }
-
-    /**
-     * @return string
-     */
     private function getEnvironmentPath()
     {
         return path('root') . 'storage' . path('ds') . 'environment' . path('ds') . 'migrator' . path('ds') . $this->app . '.json';
