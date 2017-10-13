@@ -1,4 +1,6 @@
-<?php namespace Pckg\Migration\Helper;
+<?php
+
+namespace Pckg\Migration\Helper;
 
 use Pckg\Generic\Record\ListRecord;
 use Pckg\Translator\Record\Translation;
@@ -10,11 +12,12 @@ use Pckg\Translator\Record\Translation;
  */
 trait Translations
 {
-
     /**
-     * @param $id
+     * @param       $slug
+     * @param array $translations
      *
      * @return ListRecord
+     * @internal param $id
      */
     protected function translation($slug, $translations = [])
     {
@@ -24,10 +27,9 @@ trait Translations
 
         $t = Translation::getOrCreate(['slug' => $slug]);
         foreach ($translations as $language => $translation) {
-            $t->value = $translation;
+            $t->value       = $translation;
             $t->language_id = $language;
             $t->save();
         }
     }
-
 }

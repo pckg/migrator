@@ -5,25 +5,51 @@ namespace Pckg\Migration;
 use Pckg\Database\Repository;
 use Pckg\Migration\Command\ExecuteMigration;
 
+/**
+ * Class Migration
+ *
+ * @package Pckg\Migration
+ */
 class Migration
 {
-
+    /**
+     * @var array
+     */
     protected $tables = [];
 
+    /**
+     * @var string
+     */
     protected $repository = Repository::class;
 
+    /**
+     * @var bool
+     */
     protected $fields = true;
 
+    /**
+     * @var bool
+     */
     protected $relations = true;
 
+    /**
+     * @return $this
+     */
     public function onlyFields()
     {
-        $this->fields = true;
+        $this->fields    = true;
         $this->relations = false;
 
         return $this;
     }
 
+    /**
+     * @param      $table
+     * @param bool $id
+     * @param bool $primary
+     *
+     * @return Table
+     */
     public function table($table, $id = true, $primary = true)
     {
         $table = new Table($table);
@@ -37,16 +63,27 @@ class Migration
         return $table;
     }
 
+    /**
+     * @return array
+     */
     public function getTables()
     {
         return $this->tables;
     }
 
+    /**
+     * @return string
+     */
     public function getRepository()
     {
         return $this->repository;
     }
 
+    /**
+     * @param $repository
+     *
+     * @return $this
+     */
     public function setRepository($repository)
     {
         $this->repository = $repository;
@@ -54,26 +91,41 @@ class Migration
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function up()
     {
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function dependencies()
     {
         return [];
     }
 
+    /**
+     * @return array
+     */
     public function partials()
     {
         return [];
     }
 
+    /**
+     * @return $this
+     */
     public function afterFirstUp()
     {
         return $this;
     }
 
+    /**
+     *
+     */
     public function save()
     {
         $executeMigration = (new ExecuteMigration($this));
@@ -87,9 +139,15 @@ class Migration
         $this->tables = [];
     }
 
+    /**
+     * @param        $table
+     * @param string $suffix
+     *
+     * @return Table
+     */
     public function translatable($table, $suffix = '_i18n')
     {
-        $translatable = new Table($table . $suffix);
+        $translatable   = new Table($table . $suffix);
         $this->tables[] = $translatable;
 
         $translatable->id('id', false)->references($table)->required();
@@ -100,10 +158,16 @@ class Migration
         return $translatable;
     }
 
+    /**
+     * @param        $table
+     * @param string $suffix
+     *
+     * @return Table
+     */
     public function permissiontable($table, $suffix = '_p17n')
     {
         $permissiontable = new Table($table . $suffix);
-        $this->tables[] = $permissiontable;
+        $this->tables[]  = $permissiontable;
 
         $permissiontable->id('id', false)->references($table);
         $permissiontable->integer('user_group_id')->references('user_groups');
@@ -116,9 +180,16 @@ class Migration
         return $permissiontable;
     }
 
+    /**
+     * @param        $table
+     * @param        $morph
+     * @param string $suffix
+     *
+     * @return Table
+     */
     public function morphtable($table, $morph, $suffix = '_morphs')
     {
-        $morphtable = new Table($table . $suffix);
+        $morphtable     = new Table($table . $suffix);
         $this->tables[] = $morphtable;
 
         $morphtable->id('id');
@@ -129,9 +200,11 @@ class Migration
         return $morphtable;
     }
 
+    /**
+     * @param $msg
+     */
     public function output($msg)
     {
         echo $msg . "\n";
     }
-
 }

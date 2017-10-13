@@ -1,12 +1,21 @@
-<?php namespace Pckg\Migration\Provider;
+<?php
+
+namespace Pckg\Migration\Provider;
 
 use Pckg\Framework\Provider;
 use Pckg\Migration\Console\InstallMigrator;
 use Pckg\Migration\Console\UpdateMigrator;
 
+/**
+ * Class Migration
+ *
+ * @package Pckg\Migration\Provider
+ */
 class Migration extends Provider
 {
-
+    /**
+     * @return array
+     */
     public function consoles()
     {
         return [
@@ -14,5 +23,4 @@ class Migration extends Provider
             InstallMigrator::class,
         ];
     }
-
 }

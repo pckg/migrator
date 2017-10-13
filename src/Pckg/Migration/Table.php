@@ -1,4 +1,6 @@
-<?php namespace Pckg\Migration;
+<?php
+
+namespace Pckg\Migration;
 
 use Pckg\Migration\Constraint\Index;
 use Pckg\Migration\Constraint\Primary;
@@ -17,22 +19,46 @@ use Pckg\Migration\Field\Point;
 use Pckg\Migration\Field\Text;
 use Pckg\Migration\Field\Varchar;
 
+/**
+ * Class Table
+ *
+ * @package Pckg\Migration
+ */
 class Table
 {
-
+    /**
+     * @var
+     */
     protected $name;
 
+    /**
+     * @var array
+     */
     protected $fields = [];
 
+    /**
+     * @var array
+     */
     protected $constraints = [];
 
+    /**
+     * @var array
+     */
     protected $relations = [];
 
+    /**
+     * Table constructor.
+     *
+     * @param $name
+     */
     public function __construct($name)
     {
         $this->name = $name;
     }
 
+    /**
+     * @return mixed
+     */
     public function getName()
     {
         return $this->name;
@@ -40,16 +66,25 @@ class Table
 
     // getters
 
+    /**
+     * @return array
+     */
     public function getFields()
     {
         return $this->fields;
     }
 
+    /**
+     * @return array
+     */
     public function getConstraints()
     {
         return $this->constraints;
     }
 
+    /**
+     * @return array
+     */
     public function getRelations()
     {
         return $this->relations;
@@ -57,6 +92,11 @@ class Table
 
     // adders
 
+    /**
+     * @param Relation $relation
+     *
+     * @return $this
+     */
     public function addRelation(Relation $relation)
     {
         $this->relations[] = $relation;
@@ -64,6 +104,11 @@ class Table
         return $this;
     }
 
+    /**
+     * @param Constraint $constraint
+     *
+     * @return $this
+     */
     public function addConstraint(Constraint $constraint)
     {
         $this->constraints[] = $constraint;
@@ -71,6 +116,11 @@ class Table
         return $this;
     }
 
+    /**
+     * @param Field $field
+     *
+     * @return $this
+     */
     public function addField(Field $field)
     {
         $this->fields[] = $field;
@@ -80,6 +130,12 @@ class Table
 
     // fields
 
+    /**
+     * @param string $name
+     * @param bool   $primary
+     *
+     * @return Id
+     */
     public function id($name = 'id', $primary = true)
     {
         $id = new Id($this, $name);
@@ -95,6 +151,12 @@ class Table
         return $id;
     }
 
+    /**
+     * @param string $name
+     * @param bool   $primary
+     *
+     * @return IdString
+     */
     public function idString($name = 'id', $primary = true)
     {
         $id = new IdString($this, $name);
@@ -108,6 +170,12 @@ class Table
         return $id;
     }
 
+    /**
+     * @param     $name
+     * @param int $length
+     *
+     * @return Varchar
+     */
     public function varchar($name, $length = 128)
     {
         $varchar = new Varchar($this, $name);
@@ -119,6 +187,13 @@ class Table
         return $varchar;
     }
 
+    /**
+     * @param string $name
+     * @param int    $length
+     * @param bool   $unique
+     *
+     * @return Varchar
+     */
     public function slug($name = 'slug', $length = 128, $unique = true)
     {
         $field = $this->varchar($name, $length);
@@ -130,11 +205,23 @@ class Table
         return $field;
     }
 
+    /**
+     * @param string $name
+     * @param int    $length
+     *
+     * @return Varchar
+     */
     public function title($name = 'title', $length = 128)
     {
         return $this->varchar($name, $length);
     }
 
+    /**
+     * @param        $name
+     * @param string $type
+     *
+     * @return $this
+     */
     public function range($name, $type = 'datetime')
     {
         $this->{$type}($name . '_from')->nullable();
@@ -143,6 +230,11 @@ class Table
         return $this;
     }
 
+    /**
+     * @param $name
+     *
+     * @return Point
+     */
     public function point($name)
     {
         $point = new Point($this, $name);
@@ -152,21 +244,42 @@ class Table
         return $point;
     }
 
+    /**
+     * @param string $name
+     *
+     * @return Text
+     */
     public function subtitle($name = 'subtitle')
     {
         return $this->text($name);
     }
 
+    /**
+     * @param string $name
+     *
+     * @return Text
+     */
     public function lead($name = 'lead')
     {
         return $this->text($name);
     }
 
+    /**
+     * @param string $name
+     *
+     * @return Text
+     */
     public function content($name = 'content')
     {
         return $this->text($name);
     }
 
+    /**
+     * @param      $name
+     * @param null $default
+     *
+     * @return Boolean
+     */
     public function boolean($name, $default = null)
     {
         $boolean = new Boolean($this, $name);
@@ -178,6 +291,11 @@ class Table
         return $boolean;
     }
 
+    /**
+     * @param $name
+     *
+     * @return Text
+     */
     public function text($name)
     {
         $text = new Text($this, $name);
@@ -187,21 +305,43 @@ class Table
         return $text;
     }
 
+    /**
+     * @param string $name
+     *
+     * @return Text
+     */
     public function description($name = 'description')
     {
         return $this->text($name);
     }
 
+    /**
+     * @param string $name
+     *
+     * @return Varchar
+     */
     public function email($name = 'email')
     {
         return $this->varchar($name);
     }
 
+    /**
+     * @param string $name
+     * @param int    $length
+     *
+     * @return Varchar
+     */
     public function password($name = 'password', $length = 40)
     {
         return $this->varchar($name, $length);
     }
 
+    /**
+     * @param     $name
+     * @param int $length
+     *
+     * @return Integer
+     */
     public function integer($name, $length = 11)
     {
         $integer = new Integer($this, $name);
@@ -213,6 +353,12 @@ class Table
         return $integer;
     }
 
+    /**
+     * @param       $name
+     * @param array $length
+     *
+     * @return Decimal
+     */
     public function decimal($name, $length = [8, 2])
     {
         $decimal = new Decimal($this, $name);
@@ -224,6 +370,11 @@ class Table
         return $decimal;
     }
 
+    /**
+     * @param string $name
+     *
+     * @return int
+     */
     public function parent($name = 'parent_id')
     {
         $parent = $this->integer($name);
@@ -233,6 +384,11 @@ class Table
         return $parent;
     }
 
+    /**
+     * @param $name
+     *
+     * @return Datetime
+     */
     public function datetime($name)
     {
         $datetime = new Datetime($this, $name);
@@ -242,6 +398,9 @@ class Table
         return $datetime;
     }
 
+    /**
+     * @return $this
+     */
     public function language()
     {
         $language = $this->varchar('language_id', 2)->references('languages', 'slug');
@@ -251,6 +410,9 @@ class Table
 
     // groups
 
+    /**
+     * @return Timeable
+     */
     public function timeable()
     {
         $timeable = new Timeable($this);
@@ -258,6 +420,9 @@ class Table
         return $timeable;
     }
 
+    /**
+     * @return Orderable
+     */
     public function orderable()
     {
         $orderable = new Orderable($this);
@@ -265,6 +430,9 @@ class Table
         return $orderable;
     }
 
+    /**
+     * @return Hidable
+     */
     public function hideable()
     {
         $hidable = new Hidable($this);
@@ -272,6 +440,9 @@ class Table
         return $hidable;
     }
 
+    /**
+     * @return Deletable
+     */
     public function deletable()
     {
         $deletable = new Deletable($this);
@@ -281,6 +452,11 @@ class Table
 
     // index, primary, unique
 
+    /**
+     * @param array ...$fields
+     *
+     * @return Primary
+     */
     public function primary(...$fields)
     {
         $primary = new Primary($this, ...$fields);
@@ -290,6 +466,11 @@ class Table
         return $primary;
     }
 
+    /**
+     * @param array ...$fields
+     *
+     * @return Index
+     */
     public function index(...$fields)
     {
         $index = new Index($this, ...$fields);
@@ -299,6 +480,11 @@ class Table
         return $index;
     }
 
+    /**
+     * @param array ...$fields
+     *
+     * @return Unique
+     */
     public function unique(...$fields)
     {
         $unique = new Unique($this, ...$fields);
@@ -307,5 +493,4 @@ class Table
 
         return $unique;
     }
-
 }

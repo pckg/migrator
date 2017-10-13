@@ -1,4 +1,6 @@
-<?php namespace Pckg\Migration\Console;
+<?php
+
+namespace Pckg\Migration\Console;
 
 use Exception;
 use Pckg\Concept\Reflect;
@@ -6,19 +8,29 @@ use Pckg\Framework\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Throwable;
 
+/**
+ * Class InstallMigrator
+ *
+ * @package Pckg\Migration\Console
+ */
 class InstallMigrator extends Command
 {
-
+    /**
+     *
+     */
     protected function configure()
     {
         $this->setName('migrator:install')
-             ->setDescription('Install migrations from envirtonment')
-             ->addOption('only', null, InputOption::VALUE_OPTIONAL, 'Install only listed migrations')
-             ->addOption('fields', null, null, 'Install only fields (no keys)');
+            ->setDescription('Install migrations from envirtonment')
+            ->addOption('only', null, InputOption::VALUE_OPTIONAL, 'Install only listed migrations')
+            ->addOption('fields', null, null, 'Install only fields (no keys)')
+        ;
     }
 
     /**
      * We
+     *
+     * @throws Exception
      */
     public function handle()
     {
@@ -34,7 +46,7 @@ class InstallMigrator extends Command
         $installedMigrations = (array)$this->getInstalledMigrations();
 
         $installed = 0;
-        $updated = 0;
+        $updated   = 0;
         foreach ($requestedMigrations as $requestedMigration) {
             $migrationClass = is_object($requestedMigration) ? get_class($requestedMigration) : $requestedMigration;
             if ($this->option('only') && strpos($migrationClass, $this->option('only')) === false) {
@@ -58,10 +70,8 @@ class InstallMigrator extends Command
                     if ($this->option('fields')) {
                         $dependency->onlyFields();
                     }
-                    $this->output(
-                        'Dependency: ' . $dependency->getRepository() . ' : ' . get_class($dependency),
-                        'info'
-                    );
+                    $this->output('Dependency: ' . $dependency->getRepository() . ' : ' . get_class($dependency),
+                        'info');
                     $dependency->up();
                 }
                 $migration->up();
@@ -80,7 +90,7 @@ class InstallMigrator extends Command
                 }
                 $this->output($migration->getRepository() . ' : ' . $requestedMigration, 'info');
                 $this->output();
-            } catch (Throwable $e) {
+            }catch (Throwable $e) {
                 dd(exception($e));
             }
 
@@ -99,23 +109,35 @@ class InstallMigrator extends Command
         $this->putInstalledMigrations($installedMigrations);
     }
 
+    /**
+     * @return mixed
+     */
     private function getRequestedMigrations()
     {
         return require $this->getConfigPath();
     }
 
+    /**
+     * @return array|mixed
+     */
     private function getInstalledMigrations()
     {
-        return is_file($this->getEnvironmentPath())
-            ? json_decode(file_get_contents($this->getEnvironmentPath()))
-            : [];
+        return is_file($this->getEnvironmentPath()) ? json_decode(file_get_contents($this->getEnvironmentPath())) : [];
     }
 
+    /**
+     * @param array $installedMigrations
+     *
+     * @return bool|int
+     */
     private function putInstalledMigrations(array $installedMigrations = [])
     {
         return file_put_contents($this->getEnvironmentPath(), json_encode($installedMigrations));
     }
 
+    /**
+     * @return string
+     */
     private function getConfigPath()
     {
         return path('apps') . $this->app . path('ds') . 'config' . path('ds') . 'migrations.php';
@@ -123,9 +145,6 @@ class InstallMigrator extends Command
 
     private function getEnvironmentPath()
     {
-        return path('root') . 'storage' . path('ds') . 'environment' . path('ds') . 'migrator' . path(
-                'ds'
-            ) . $this->app . '.json';
+        return path('root') . 'storage' . path('ds') . 'environment' . path('ds') . 'migrator' . path('ds') . $this->app . '.json';
     }
-
 }
