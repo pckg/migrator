@@ -11,6 +11,7 @@ use Pckg\Migration\Constraint;
  */
 class Primary extends Constraint
 {
+
     /**
      * @var string
      */

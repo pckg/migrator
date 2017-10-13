@@ -12,6 +12,7 @@ use Pckg\Migration\Command\ExecuteMigration;
  */
 class Migration
 {
+
     /**
      * @var array
      */
@@ -37,7 +38,7 @@ class Migration
      */
     public function onlyFields()
     {
-        $this->fields    = true;
+        $this->fields = true;
         $this->relations = false;
 
         return $this;
@@ -147,7 +148,7 @@ class Migration
      */
     public function translatable($table, $suffix = '_i18n')
     {
-        $translatable   = new Table($table . $suffix);
+        $translatable = new Table($table . $suffix);
         $this->tables[] = $translatable;
 
         $translatable->id('id', false)->references($table)->required();
@@ -167,7 +168,7 @@ class Migration
     public function permissiontable($table, $suffix = '_p17n')
     {
         $permissiontable = new Table($table . $suffix);
-        $this->tables[]  = $permissiontable;
+        $this->tables[] = $permissiontable;
 
         $permissiontable->id('id', false)->references($table);
         $permissiontable->integer('user_group_id')->references('user_groups');
@@ -189,7 +190,7 @@ class Migration
      */
     public function morphtable($table, $morph, $suffix = '_morphs')
     {
-        $morphtable     = new Table($table . $suffix);
+        $morphtable = new Table($table . $suffix);
         $this->tables[] = $morphtable;
 
         $morphtable->id('id');

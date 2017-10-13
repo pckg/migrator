@@ -2,8 +2,6 @@
 
 namespace Pckg\Migration\Field;
 
-use Pckg\Migration\Field;
-
 /**
  * Class IdString
  *
@@ -11,6 +9,7 @@ use Pckg\Migration\Field;
  */
 class IdString extends Varchar
 {
+
     /**
      * @var bool
      */

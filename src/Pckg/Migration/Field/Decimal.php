@@ -11,6 +11,7 @@ use Pckg\Migration\Field;
  */
 class Decimal extends Field
 {
+
     /**
      * @var string
      */

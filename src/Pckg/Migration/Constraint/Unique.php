@@ -11,6 +11,7 @@ use Pckg\Migration\Constraint;
  */
 class Unique extends Constraint
 {
+
     /**
      * @var string
      */

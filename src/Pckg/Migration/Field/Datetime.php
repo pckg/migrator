@@ -11,6 +11,7 @@ use Pckg\Migration\Field;
  */
 class Datetime extends Field
 {
+
     /**
      * @var string
      */

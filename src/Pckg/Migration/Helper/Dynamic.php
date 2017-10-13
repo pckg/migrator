@@ -15,6 +15,7 @@ use Pckg\Dynamic\Record\Table;
  */
 trait Dynamic
 {
+
     /**
      * @param      $table
      * @param null $repository
@@ -79,11 +80,11 @@ trait Dynamic
         $relationType = $this->dynamicRelationType($relationType);
 
         return Relation::getOrCreate([
-                'on_table_id'      => $onTable->id,
-                'on_field_id'      => $onField->id,
-                'show_table_id'    => $showTable->id,
-                'show_field_id'    => $showField->id,
-                'relation_type_id' => $relationType->id,
-            ]);
+                                         'on_table_id'      => $onTable->id,
+                                         'on_field_id'      => $onField->id,
+                                         'show_table_id'    => $showTable->id,
+                                         'show_field_id'    => $showField->id,
+                                         'relation_type_id' => $relationType->id,
+                                     ]);
     }
 }

@@ -26,6 +26,7 @@ use Pckg\Migration\Field\Varchar;
  */
 class Table
 {
+
     /**
      * @var
      */

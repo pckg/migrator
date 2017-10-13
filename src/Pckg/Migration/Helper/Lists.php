@@ -12,6 +12,7 @@ use Pckg\Generic\Record\ListRecord;
  */
 trait Lists
 {
+
     /**
      * @param $id
      *

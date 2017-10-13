@@ -12,17 +12,17 @@ use Symfony\Component\Console\Input\InputArgument;
  */
 class UpdateMigrator extends Command
 {
+
     /**
      *
      */
     protected function configure()
     {
         $this->setName('migrator:update')
-            ->setDescription('Install not installed migrations listed in migrations.php in app config')
-            ->addArguments([
-                'app' => 'Application name',
-            ], InputArgument::REQUIRED)
-        ;
+             ->setDescription('Install not installed migrations listed in migrations.php in app config')
+             ->addArguments([
+                                'app' => 'Application name',
+                            ], InputArgument::REQUIRED);
     }
 
     /**
@@ -36,6 +36,7 @@ class UpdateMigrator extends Command
 
     private function getAppMigrationPath()
     {
-        return path('root') . 'storage' . path('ds') . 'environment' . path('ds') . 'migrator' . path('ds') . $this->app . path('ds');
+        return path('root') . 'storage' . path('ds') . 'environment' . path('ds') . 'migrator' . path('ds') .
+               $this->app . path('ds');
     }
 }

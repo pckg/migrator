@@ -11,6 +11,7 @@ use Pckg\Migration\Constraint;
  */
 class Index extends Constraint
 {
+
     /**
      * @var string
      */

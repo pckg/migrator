@@ -12,6 +12,7 @@ use Pckg\Translator\Record\Translation;
  */
 trait Translations
 {
+
     /**
      * @param       $slug
      * @param array $translations
@@ -27,7 +28,7 @@ trait Translations
 
         $t = Translation::getOrCreate(['slug' => $slug]);
         foreach ($translations as $language => $translation) {
-            $t->value       = $translation;
+            $t->value = $translation;
             $t->language_id = $language;
             $t->save();
         }

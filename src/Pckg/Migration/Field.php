@@ -13,6 +13,7 @@ use Pckg\Migration\Constraint\Unique;
  */
 class Field
 {
+
     /**
      * @var
      */
@@ -52,7 +53,7 @@ class Field
     public function __construct(Table $table, $name)
     {
         $this->table = $table;
-        $this->name  = $name;
+        $this->name = $name;
     }
 
     /**
@@ -76,7 +77,7 @@ class Field
      */
     public function getSql()
     {
-        $sql   = [];
+        $sql = [];
         $sql[] = $this->getTypeWithLength();
         if ($this->isNullable()) {
             $sql[] = 'NULL';
@@ -92,7 +93,6 @@ class Field
                 $default = "'" . $this->default . "'";
             }
             $sql[] = 'DEFAULT ' . $default;
-
         } elseif ($this->isNullable()) {
             $sql[] = 'DEFAULT NULL';
         }

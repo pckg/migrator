@@ -9,6 +9,7 @@ namespace Pckg\Migration;
  */
 class Constraint
 {
+
     /**
      * @var Table
      */
@@ -27,7 +28,7 @@ class Constraint
      */
     public function __construct(Table $table, ...$fields)
     {
-        $this->table  = $table;
+        $this->table = $table;
         $this->fields = $fields;
     }
 
@@ -45,6 +46,6 @@ class Constraint
     public function getName()
     {
         return str_replace(' KEY', '', $this->type) . '__' . $this->table->getName() . '__' . implode('_',
-                $this->fields);
+                                                                                                      $this->fields);
     }
 }

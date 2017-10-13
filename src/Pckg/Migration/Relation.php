@@ -9,9 +9,13 @@ namespace Pckg\Migration;
  */
 class Relation
 {
-    const RESTRICT  = 'RESTRICT';
-    const CASCADE   = 'CASCADE';
-    const SET_NULL  = 'SET NULL';
+
+    const RESTRICT = 'RESTRICT';
+
+    const CASCADE = 'CASCADE';
+
+    const SET_NULL = 'SET NULL';
+
     const NO_ACTION = 'NO ACTION';
 
     /**
@@ -48,9 +52,9 @@ class Relation
      */
     public function __construct(Field $field, $references, $on)
     {
-        $this->field      = $field;
+        $this->field = $field;
         $this->references = $references;
-        $this->on         = $on;
+        $this->on = $on;
     }
 
     /**
@@ -136,7 +140,9 @@ class Relation
     public function getSql()
     {
         return 'CONSTRAINT `' . $this->getName() . '` FOREIGN KEY (`' . $this->getField()
-                ->getName() . '`) ' . 'REFERENCES `' . $this->getReferences() . '`(`' . $this->getOn() . '`) ' . 'ON DELETE ' . $this->getOnDelete() . ' ' . 'ON UPDATE ' . $this->getOnUpdate();
+                                                                             ->getName() . '`) ' . 'REFERENCES `' .
+               $this->getReferences() . '`(`' . $this->getOn() . '`) ' . 'ON DELETE ' . $this->getOnDelete() . ' ' .
+               'ON UPDATE ' . $this->getOnUpdate();
     }
 
     /**
@@ -150,6 +156,7 @@ class Relation
      */
     public function getSqlByParams($field, $references, $on, $onDelete, $onUpdate)
     {
-        return 'CONSTRAINT `' . $this->getName() . '` FOREIGN KEY (`' . $field . '`) ' . 'REFERENCES `' . $references . '`(`' . $on . '`) ' . 'ON DELETE ' . $onDelete . ' ' . 'ON UPDATE ' . $onUpdate;
+        return 'CONSTRAINT `' . $this->getName() . '` FOREIGN KEY (`' . $field . '`) ' . 'REFERENCES `' . $references .
+               '`(`' . $on . '`) ' . 'ON DELETE ' . $onDelete . ' ' . 'ON UPDATE ' . $onUpdate;
     }
 }

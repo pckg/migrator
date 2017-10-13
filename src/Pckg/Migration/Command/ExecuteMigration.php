@@ -19,6 +19,7 @@ use Pckg\Migration\Table;
  */
 class ExecuteMigration
 {
+
     /**
      * @var Migration
      */
@@ -59,7 +60,7 @@ class ExecuteMigration
      */
     public function onlyFields()
     {
-        $this->fields    = true;
+        $this->fields = true;
         $this->relations = false;
 
         return $this;
@@ -93,7 +94,7 @@ class ExecuteMigration
      */
     protected function applyMigration()
     {
-        $sqls            = implode(";\n\n", $this->sqls);
+        $sqls = implode(";\n\n", $this->sqls);
         $installMigrator = context()->getOrDefault(InstallMigrator::class);
 
         if (!$installMigrator) {
@@ -121,7 +122,8 @@ class ExecuteMigration
             $prepare = $repository->getConnection()->prepare($sql);
             $execute = $prepare->execute();
             if (!$execute) {
-                throw new Exception('Cannot execute query! ' . "\n" . $sql . "\n" . 'Error code ' . $prepare->errorCode() . "\n" . $prepare->errorInfo()[2]);
+                throw new Exception('Cannot execute query! ' . "\n" . $sql . "\n" . 'Error code ' .
+                                    $prepare->errorCode() . "\n" . $prepare->errorInfo()[2]);
             }
         }
     }
@@ -192,7 +194,7 @@ class ExecuteMigration
         }
 
         $current = $relation->getSqlByParams($cached['primary'], $cached['references'], $cached['on'],
-            Relation::RESTRICT, Relation::CASCADE);
+                                             Relation::RESTRICT, Relation::CASCADE);
 
         if ($current != $relation->getSql()) {
             $this->output('APPLY RELATION MANUALLY: ' . "\n" . $relation->getSql());
@@ -269,7 +271,8 @@ class ExecuteMigration
 
         if ($this->sql) {
             $this->sqls[] = 'CREATE TABLE IF NOT EXISTS `' . $table->getName() . '` (' . "\n" . implode(",\n",
-                    $this->sql) . "\n" . ') ENGINE=InnoDB DEFAULT CHARSET=utf8';
+                                                                                                        $this->sql) .
+                            "\n" . ') ENGINE=InnoDB DEFAULT CHARSET=utf8';
         }
     }
 
@@ -318,7 +321,13 @@ class ExecuteMigration
     {
         $cachedField = $cache->getField($field->getName(), $table->getName());
 
-        return strtoupper($cachedField['type']) . ($cachedField['limit'] ? '(' . $cachedField['limit'] . ')' : '') . ($cachedField['null'] ? ' NULL' : ' NOT NULL') . ($cachedField['default'] ? ' DEFAULT ' . ($cachedField['default'] == 'CURRENT_TIMESTAMP' ? $cachedField['default'] : ("'" . $cachedField['default'] . "'")) : ($cachedField['null'] ? ' DEFAULT NULL' : '')) . ($cachedField['extra'] ? ' ' . strtoupper($cachedField['extra']) : '');
+        return strtoupper($cachedField['type']) . ($cachedField['limit'] ? '(' . $cachedField['limit'] . ')' : '') .
+               ($cachedField['null'] ? ' NULL' : ' NOT NULL') . ($cachedField['default'] ? ' DEFAULT ' .
+                                                                                           ($cachedField['default'] ==
+                                                                                            'CURRENT_TIMESTAMP' ? $cachedField['default'] : ("'" .
+                                                                                                                                             $cachedField['default'] .
+                                                                                                                                             "'")) : ($cachedField['null'] ? ' DEFAULT NULL' : '')) .
+               ($cachedField['extra'] ? ' ' . strtoupper($cachedField['extra']) : '');
     }
 
     /**

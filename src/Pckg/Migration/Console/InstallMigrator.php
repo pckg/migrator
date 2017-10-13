@@ -15,16 +15,16 @@ use Throwable;
  */
 class InstallMigrator extends Command
 {
+
     /**
      *
      */
     protected function configure()
     {
         $this->setName('migrator:install')
-            ->setDescription('Install migrations from envirtonment')
-            ->addOption('only', null, InputOption::VALUE_OPTIONAL, 'Install only listed migrations')
-            ->addOption('fields', null, null, 'Install only fields (no keys)')
-        ;
+             ->setDescription('Install migrations from envirtonment')
+             ->addOption('only', null, InputOption::VALUE_OPTIONAL, 'Install only listed migrations')
+             ->addOption('fields', null, null, 'Install only fields (no keys)');
     }
 
     /**
@@ -46,7 +46,7 @@ class InstallMigrator extends Command
         $installedMigrations = (array)$this->getInstalledMigrations();
 
         $installed = 0;
-        $updated   = 0;
+        $updated = 0;
         foreach ($requestedMigrations as $requestedMigration) {
             $migrationClass = is_object($requestedMigration) ? get_class($requestedMigration) : $requestedMigration;
             if ($this->option('only') && strpos($migrationClass, $this->option('only')) === false) {
@@ -71,7 +71,7 @@ class InstallMigrator extends Command
                         $dependency->onlyFields();
                     }
                     $this->output('Dependency: ' . $dependency->getRepository() . ' : ' . get_class($dependency),
-                        'info');
+                                  'info');
                     $dependency->up();
                 }
                 $migration->up();
@@ -90,7 +90,7 @@ class InstallMigrator extends Command
                 }
                 $this->output($migration->getRepository() . ' : ' . $requestedMigration, 'info');
                 $this->output();
-            }catch (Throwable $e) {
+            } catch (Throwable $e) {
                 dd(exception($e));
             }
 
@@ -145,6 +145,7 @@ class InstallMigrator extends Command
 
     private function getEnvironmentPath()
     {
-        return path('root') . 'storage' . path('ds') . 'environment' . path('ds') . 'migrator' . path('ds') . $this->app . '.json';
+        return path('root') . 'storage' . path('ds') . 'environment' . path('ds') . 'migrator' . path('ds') .
+               $this->app . '.json';
     }
 }
