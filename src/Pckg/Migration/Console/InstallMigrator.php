@@ -4,6 +4,7 @@ namespace Pckg\Migration\Console;
 
 use Exception;
 use Pckg\Concept\Reflect;
+use Pckg\Database\Repository;
 use Pckg\Framework\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Throwable;
@@ -24,7 +25,9 @@ class InstallMigrator extends Command
         $this->setName('migrator:install')
              ->setDescription('Install migrations from envirtonment')
              ->addOption('only', null, InputOption::VALUE_OPTIONAL, 'Install only listed migrations')
-             ->addOption('fields', null, null, 'Install only fields (no keys)');
+             ->addOption('fields', null, null, 'Install only fields (no keys)')
+             ->addOption('yes', null, null, 'Say yes to all questions')
+             ->addOption('repository', null, InputOption::VALUE_REQUIRED, 'Install only repository');
     }
 
     /**
@@ -47,6 +50,7 @@ class InstallMigrator extends Command
 
         $installed = 0;
         $updated = 0;
+        $repository = $this->option('repository');
         foreach ($requestedMigrations as $requestedMigration) {
             $migrationClass = is_object($requestedMigration) ? get_class($requestedMigration) : $requestedMigration;
             if ($this->option('only') && strpos($migrationClass, $this->option('only')) === false) {
@@ -60,12 +64,19 @@ class InstallMigrator extends Command
             try {
                 $this->output('Migration: ' . $requestedMigration, 'info');
                 $migration = new $requestedMigration;
+                if ($migration->shouldSkip($repository)) {
+                    continue;
+                }
+
                 if ($this->option('fields')) {
                     $migration->onlyFields();
                 }
                 foreach ($migration->dependencies() as $dependency) {
                     if (is_string($dependency)) {
                         $dependency = Reflect::create($dependency);
+                    }
+                    if ($dependency->shouldSkip($repository)) {
+                        continue;
                     }
                     if ($this->option('fields')) {
                         $dependency->onlyFields();
@@ -81,6 +92,9 @@ class InstallMigrator extends Command
                 foreach ($migration->partials() as $partial) {
                     if (is_string($partial)) {
                         $partial = Reflect::create($partial);
+                    }
+                    if ($partial->shouldSkip($repository)) {
+                        continue;
                     }
                     if ($this->option('fields')) {
                         $partial->onlyFields();

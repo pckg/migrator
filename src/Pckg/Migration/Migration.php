@@ -124,6 +124,19 @@ class Migration
         return $this;
     }
 
+    public function shouldSkip($repository)
+    {
+        if ($repository) {
+            if ($repository == 'default' && $this->getRepository() == Repository::class) {
+                // ok
+            } else if (strpos($this->getRepository(), $repository) === false) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      *
      */
