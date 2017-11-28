@@ -106,7 +106,6 @@ class ExecuteMigration
         $installMigrator->output($sqls);
         $message = 'Should I execute SQL statements on ' . $this->migration->getRepository() . '?';
         if ($installMigrator->option('yes') || $installMigrator->askConfirmation($message)) {
-            d('executing');
             $this->executeInRepository();
         }
     }

@@ -400,6 +400,34 @@ class Table
     }
 
     /**
+     * @param $name
+     *
+     * @return Datetime
+     */
+    public function date($name)
+    {
+        $datetime = new Datetime($this, $name);
+
+        $this->fields[] = $datetime;
+
+        return $datetime;
+    }
+
+    /**
+     * @param $name
+     *
+     * @return Datetime
+     */
+    public function time($name)
+    {
+        $datetime = new Datetime($this, $name);
+
+        $this->fields[] = $datetime;
+
+        return $datetime;
+    }
+
+    /**
      * @return $this
      */
     public function language()
