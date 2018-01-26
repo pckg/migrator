@@ -15,6 +15,7 @@ use Pckg\Migration\Field\Group\Timeable;
 use Pckg\Migration\Field\Id;
 use Pckg\Migration\Field\IdString;
 use Pckg\Migration\Field\Integer;
+use Pckg\Migration\Field\LongText;
 use Pckg\Migration\Field\Point;
 use Pckg\Migration\Field\Text;
 use Pckg\Migration\Field\Varchar;
@@ -300,6 +301,20 @@ class Table
     public function text($name)
     {
         $text = new Text($this, $name);
+
+        $this->fields[] = $text;
+
+        return $text;
+    }
+
+    /**
+     * @param $name
+     *
+     * @return LongText
+     */
+    public function longtext($name)
+    {
+        $text = new LongText($this, $name);
 
         $this->fields[] = $text;
 
