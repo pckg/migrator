@@ -26,6 +26,6 @@ class Deletable
     {
         $this->table = $table;
 
-        $table->datetime('deleted_at');
+        $table->datetime('deleted_at')->index();
     }
 }
