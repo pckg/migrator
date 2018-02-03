@@ -177,7 +177,7 @@ class Field
      */
     public function index()
     {
-        $index = new Index($this, $this->name);
+        $index = new Index($this->table, $this->name);
 
         $this->table->addConstraint($index);
 
