@@ -15,7 +15,7 @@ class Index extends Constraint
     /**
      * @var string
      */
-    protected $type = 'KEY';
+    protected $type = 'INDEX';
 
     /**
      * @return string
@@ -30,6 +30,7 @@ class Index extends Constraint
      */
     public function getName()
     {
-        return 'INDEX';
+        return 'I_' . $this->getFields('_');
     }
+
 }

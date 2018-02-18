@@ -7,7 +7,7 @@ namespace Pckg\Migration;
  *
  * @package Pckg\Migration
  */
-class Constraint
+abstract class Constraint
 {
 
     /**
@@ -19,6 +19,8 @@ class Constraint
      * @var array
      */
     protected $fields = [];
+
+    protected $type = 'INDEX';
 
     /**
      * Constraint constructor.
@@ -45,7 +47,20 @@ class Constraint
      */
     public function getName()
     {
-        return str_replace(' KEY', '', $this->type) . '__' . $this->table->getName() . '__' . implode('_',
-                                                                                                      $this->fields);
+        return str_replace([' KEY'], '', $this->type) . '__' . $this->table->getName() . '__' . $this->getFields('_');
     }
+
+    public function getFields($separator = ',')
+    {
+        return implode($separator, $this->fields);
+    }
+
+    /**
+     * @return string
+     */
+    function getType()
+    {
+        return $this->type;
+    }
+
 }

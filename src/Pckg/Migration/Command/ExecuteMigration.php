@@ -43,6 +43,11 @@ class ExecuteMigration
     /**
      * @var bool
      */
+    protected $indexes = false;
+
+    /**
+     * @var bool
+     */
     protected $relations = true;
 
     /**
@@ -62,6 +67,16 @@ class ExecuteMigration
     {
         $this->fields = true;
         $this->relations = false;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function onlyIndexes()
+    {
+        $this->indexes = true;
 
         return $this;
     }
@@ -151,17 +166,44 @@ class ExecuteMigration
 
         if ($this->sql) {
             $this->sqls[] = 'ALTER TABLE `' . $table->getName() . '` ' . "\n" . ' ' . implode(",\n ", $this->sql);
+            $this->sql = [];
         }
 
-        if ($this->relations) {
+        if ($this->indexes) {
+            $tableConstraints = $cache->getTableConstraints($table->getName());
             foreach ($table->getConstraints() as $constraint) {
                 if ($cache->tableHasConstraint($table->getName(), $constraint->getName())) {
                     $this->updateConstraint($cache, $table, $constraint);
                 } else {
-                    $this->installConstraint($constraint);
+                    $found = false;
+                    foreach (array_keys($tableConstraints) as $constraintName) {
+                        if ($constraintName == 'PRIMARY' && $constraint->getFields(',') == 'id') {
+                            $found = $constraintName;
+                            break;
+                        }
+                        if ($constraintName == $constraint->getFields('_')) {
+                            $found = $constraintName;
+                            break;
+                        }
+                        if (strpos($constraintName, '__' . $constraint->getFields('_')) === false) {
+                            continue;
+                        }
+                        $found = $constraintName;
+                        break;
+                    }
+                    if (!$found) {
+                        $this->installConstraint($constraint);
+                    }
                 }
             }
+        }
 
+        if ($this->sql) {
+            $this->sqls[] = 'ALTER TABLE `' . $table->getName() . '` ' . "\n" . ' ' . implode(",\n ", $this->sql);
+            $this->sql = [];
+        }
+
+        if ($this->relations) {
             foreach ($table->getRelations() as $relation) {
                 $relationName = $relation->getName();
 

@@ -26,6 +26,6 @@ class Orderable
     {
         $this->table = $table;
 
-        $table->integer('order');
+        $table->integer('order')->index();
     }
 }

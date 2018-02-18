@@ -31,6 +31,11 @@ class Migration
     /**
      * @var bool
      */
+    protected $indexes = false;
+
+    /**
+     * @var bool
+     */
     protected $relations = true;
 
     /**
@@ -40,6 +45,16 @@ class Migration
     {
         $this->fields = true;
         $this->relations = false;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function onlyIndexes()
+    {
+        $this->indexes = true;
 
         return $this;
     }
@@ -148,6 +163,10 @@ class Migration
             $executeMigration->onlyFields();
         }
 
+        if ($this->indexes) {
+            $executeMigration->onlyIndexes();
+        }
+
         $executeMigration->execute();
 
         $this->tables = [];
@@ -183,7 +202,7 @@ class Migration
         $permissiontable = new Table($table . $suffix);
         $this->tables[] = $permissiontable;
 
-        $permissiontable->id('id', false)->references($table);
+        $permissiontable->id('id', false)->references($table, 'id', false);
         $permissiontable->integer('user_group_id')->references('user_groups');
         $permissiontable->varchar('action', 32)->required();
 

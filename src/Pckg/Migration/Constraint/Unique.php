@@ -16,4 +16,10 @@ class Unique extends Constraint
      * @var string
      */
     protected $type = 'UNIQUE KEY';
+
+    function getType()
+    {
+        return 'UNIQUE';
+    }
+
 }

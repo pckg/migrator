@@ -395,7 +395,7 @@ class Table
     {
         $parent = $this->integer($name);
 
-        $parent->references($this->name)->nullable();
+        $parent->references($this->name)->nullable()->index();
 
         return $parent;
     }
@@ -447,7 +447,7 @@ class Table
      */
     public function language()
     {
-        $language = $this->varchar('language_id', 2)->references('languages', 'slug');
+        $language = $this->varchar('language_id', 2)->references('languages', 'slug')->index();
 
         return $language;
     }

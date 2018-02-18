@@ -214,11 +214,15 @@ class Field
      *
      * @return $this
      */
-    public function references($table, $on = 'id')
+    public function references($table, $on = 'id', $index = true)
     {
         $relation = new Relation($this, $table, $on);
 
         $this->table->addRelation($relation);
+
+        if ($index) {
+            $this->index();
+        }
 
         return $this;
     }

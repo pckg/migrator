@@ -26,6 +26,7 @@ class InstallMigrator extends Command
              ->setDescription('Install migrations from envirtonment')
              ->addOption('only', null, InputOption::VALUE_OPTIONAL, 'Install only listed migrations')
              ->addOption('fields', null, null, 'Install only fields (no keys)')
+             ->addOption('indexes', null, null, 'Install only indexes (no keys)')
              ->addOption('yes', null, null, 'Say yes to all questions')
              ->addOption('repository', null, InputOption::VALUE_REQUIRED, 'Install only repository');
     }
@@ -71,6 +72,9 @@ class InstallMigrator extends Command
                 if ($this->option('fields')) {
                     $migration->onlyFields();
                 }
+                if ($this->option('indexes')) {
+                    $migration->onlyIndexes();
+                }
                 foreach ($migration->dependencies() as $dependency) {
                     if (is_string($dependency)) {
                         $dependency = Reflect::create($dependency);
@@ -80,6 +84,9 @@ class InstallMigrator extends Command
                     }
                     if ($this->option('fields')) {
                         $dependency->onlyFields();
+                    }
+                    if ($this->option('indexes')) {
+                        $dependency->onlyIndexes();
                     }
                     $this->output('Dependency: ' . $dependency->getRepository() . ' : ' . get_class($dependency),
                                   'info');
@@ -98,6 +105,9 @@ class InstallMigrator extends Command
                     }
                     if ($this->option('fields')) {
                         $partial->onlyFields();
+                    }
+                    if ($this->option('indexes')) {
+                        $partial->onlyIndexes();
                     }
                     $this->output('Partial: ' . $partial->getRepository() . ' : ' . get_class($partial), 'info');
                     $partial->up();
