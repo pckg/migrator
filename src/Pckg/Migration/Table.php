@@ -443,7 +443,7 @@ class Table
     }
 
     /**
-     * @return $this
+     * @return Varchar
      */
     public function language()
     {
