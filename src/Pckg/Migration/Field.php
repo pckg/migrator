@@ -201,7 +201,7 @@ class Field
      */
     public function unique()
     {
-        $unique = new Unique($this, $this->name);
+        $unique = new Unique($this->table, $this->name);
 
         $this->table->addConstraint($unique);
 
