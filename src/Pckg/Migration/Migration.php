@@ -191,6 +191,19 @@ class Migration
         return $translatable;
     }
 
+    public function languagable($table, $suffix = '_l11e')
+    {
+        $languagable = new Table($table . $suffix);
+        $this->tables[] = $languagable;
+
+        $languagable->id('id', false)->references($table)->required();
+        $languagable->varchar('language_id', 2)->references('languages', 'slug')->required();
+
+        $languagable->primary('id', 'language_id');
+
+        return $languagable;
+    }
+
     /**
      * @param        $table
      * @param string $suffix
