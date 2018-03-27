@@ -6,6 +6,7 @@ use Exception;
 use Pckg\Concept\Reflect;
 use Pckg\Database\Repository;
 use Pckg\Framework\Console\Command;
+use Pckg\Framework\Console\Command\ClearCache;
 use Symfony\Component\Console\Input\InputOption;
 use Throwable;
 
@@ -28,6 +29,8 @@ class InstallMigrator extends Command
              ->addOption('fields', null, null, 'Install only fields (no keys)')
              ->addOption('indexes', null, null, 'Install only indexes (no keys)')
              ->addOption('yes', null, null, 'Say yes to all questions')
+             ->addOption('clear', null, null, 'Clear cache before and after')
+             ->addOption('retry', null, InputOption::VALUE_REQUIRED, 'Retry iterations')
              ->addOption('repository', null, InputOption::VALUE_REQUIRED, 'Install only repository');
     }
 
@@ -52,78 +55,91 @@ class InstallMigrator extends Command
         $installed = 0;
         $updated = 0;
         $repository = $this->option('repository');
-        foreach ($requestedMigrations as $requestedMigration) {
-            $migrationClass = is_object($requestedMigration) ? get_class($requestedMigration) : $requestedMigration;
-            if ($this->option('only') && strpos($migrationClass, $this->option('only')) === false) {
-                continue;
+        $clear = $this->option('clear');
+        $retry = min($this->option('retry') ?? 1, 5);
+        foreach (range(1, $retry) as $r) {
+            if ($clear) {
+                context()->get(Repository::class)->getCache()->rebuild();
             }
-
-            /**
-             * @T00D00
-             * Implement beforeFirstUp(), beforeUp(), afterUp(), afterFirstUp(), isFirstUp()
-             */
-            try {
-                $this->output('Migration: ' . $requestedMigration, 'info');
-                $migration = new $requestedMigration;
-                if ($migration->shouldSkip($repository)) {
+            if ($r > 1) {
+                $this->output('Retry #' . $r);
+            }
+            foreach ($requestedMigrations as $requestedMigration) {
+                $migrationClass = is_object($requestedMigration) ? get_class($requestedMigration) : $requestedMigration;
+                if ($this->option('only') && strpos($migrationClass, $this->option('only')) === false) {
                     continue;
                 }
 
-                if ($this->option('fields')) {
-                    $migration->onlyFields();
-                }
-                if ($this->option('indexes')) {
-                    $migration->onlyIndexes();
-                }
-                foreach ($migration->dependencies() as $dependency) {
-                    if (is_string($dependency)) {
-                        $dependency = Reflect::create($dependency);
-                    }
-                    if ($dependency->shouldSkip($repository)) {
+                /**
+                 * @T00D00
+                 * Implement beforeFirstUp(), beforeUp(), afterUp(), afterFirstUp(), isFirstUp()
+                 */
+                try {
+                    $this->output('Migration: ' . $requestedMigration, 'info');
+                    $migration = new $requestedMigration;
+                    if ($migration->shouldSkip($repository)) {
                         continue;
                     }
-                    if ($this->option('fields')) {
-                        $dependency->onlyFields();
-                    }
-                    if ($this->option('indexes')) {
-                        $dependency->onlyIndexes();
-                    }
-                    $this->output('Dependency: ' . $dependency->getRepository() . ' : ' . get_class($dependency),
-                                  'info');
-                    $dependency->up();
-                }
-                $migration->up();
-                if (!in_array($requestedMigration, $installedMigrations)) {
-                    $migration->afterFirstUp();
-                }
-                foreach ($migration->partials() as $partial) {
-                    if (is_string($partial)) {
-                        $partial = Reflect::create($partial);
-                    }
-                    if ($partial->shouldSkip($repository)) {
-                        continue;
-                    }
-                    if ($this->option('fields')) {
-                        $partial->onlyFields();
-                    }
-                    if ($this->option('indexes')) {
-                        $partial->onlyIndexes();
-                    }
-                    $this->output('Partial: ' . $partial->getRepository() . ' : ' . get_class($partial), 'info');
-                    $partial->up();
-                }
-                $this->output($migration->getRepository() . ' : ' . $requestedMigration, 'info');
-                $this->output();
-            } catch (Throwable $e) {
-                dd(exception($e));
-            }
 
-            if (in_array($requestedMigration, $installedMigrations)) {
-                $updated++;
-            } else {
-                $installedMigrations[] = $requestedMigration;
-                $installed++;
+                    if ($this->option('fields')) {
+                        $migration->onlyFields();
+                    }
+                    if ($this->option('indexes')) {
+                        $migration->onlyIndexes();
+                    }
+                    foreach ($migration->dependencies() as $dependency) {
+                        if (is_string($dependency)) {
+                            $dependency = Reflect::create($dependency);
+                        }
+                        if ($dependency->shouldSkip($repository)) {
+                            continue;
+                        }
+                        if ($this->option('fields')) {
+                            $dependency->onlyFields();
+                        }
+                        if ($this->option('indexes')) {
+                            $dependency->onlyIndexes();
+                        }
+                        $this->output('Dependency: ' . $dependency->getRepository() . ' : ' . get_class($dependency),
+                                      'info');
+                        $dependency->up();
+                    }
+                    $migration->up();
+                    if (!in_array($requestedMigration, $installedMigrations)) {
+                        $migration->afterFirstUp();
+                    }
+                    foreach ($migration->partials() as $partial) {
+                        if (is_string($partial)) {
+                            $partial = Reflect::create($partial);
+                        }
+                        if ($partial->shouldSkip($repository)) {
+                            continue;
+                        }
+                        if ($this->option('fields')) {
+                            $partial->onlyFields();
+                        }
+                        if ($this->option('indexes')) {
+                            $partial->onlyIndexes();
+                        }
+                        $this->output('Partial: ' . $partial->getRepository() . ' : ' . get_class($partial), 'info');
+                        $partial->up();
+                    }
+                    $this->output($migration->getRepository() . ' : ' . $requestedMigration, 'info');
+                    $this->output();
+                } catch (Throwable $e) {
+                    dd(exception($e));
+                }
+
+                if (in_array($requestedMigration, $installedMigrations)) {
+                    $updated++;
+                } else {
+                    $installedMigrations[] = $requestedMigration;
+                    $installed++;
+                }
             }
+        }
+        if ($clear) {
+            context()->get(Repository::class)->getCache()->rebuild();
         }
 
         $this->output('Updated: ' . $updated, 'comment');
