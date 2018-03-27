@@ -347,7 +347,7 @@ class Table
      *
      * @return Varchar
      */
-    public function password($name = 'password', $length = 40)
+    public function password($name = 'password', $length = 255)
     {
         return $this->varchar($name, $length);
     }
