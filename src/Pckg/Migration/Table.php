@@ -76,6 +76,11 @@ class Table
         return $this->fields;
     }
 
+    public function getField($name)
+    {
+        return new Field($this, $name);
+    }
+
     /**
      * @return array
      */

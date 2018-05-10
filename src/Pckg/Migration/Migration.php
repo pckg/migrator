@@ -68,13 +68,25 @@ class Migration
      */
     public function table($table, $id = true, $primary = true)
     {
-        $table = new Table($table);
+        $table = $this->getTable($table);
 
         $this->tables[] = $table;
 
         if ($id) {
             $table->id('id', $primary);
         }
+
+        return $table;
+    }
+
+    /**
+     * @param $table
+     *
+     * @return Table
+     */
+    public function getTable($table)
+    {
+        $table = new Table($table);
 
         return $table;
     }
@@ -144,7 +156,7 @@ class Migration
         if ($repository) {
             if ($repository == 'default' && $this->getRepository() == Repository::class) {
                 // ok
-            } else if (strpos($this->getRepository(), $repository) === false) {
+            } elseif (strpos($this->getRepository(), $repository) === false) {
                 return true;
             }
         }

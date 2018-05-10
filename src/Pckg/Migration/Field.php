@@ -45,6 +45,11 @@ class Field
     protected $table;
 
     /**
+     * @var bool
+     */
+    protected $drop = false;
+
+    /**
      * Field constructor.
      *
      * @param Table $table
@@ -230,11 +235,16 @@ class Field
     /**
      * @return $this
      */
-    public function drop()
+    public function drop($drop = true)
     {
-        /**
-         * @T00D00
-         */
+        $this->drop = true;
+
         return $this;
     }
+
+    public function isDropped()
+    {
+        return $this->drop;
+    }
+
 }
