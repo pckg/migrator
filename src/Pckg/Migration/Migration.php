@@ -100,7 +100,7 @@ class Migration
     }
 
     /**
-     * @return string
+     * @return string|Repository
      */
     public function getRepository()
     {
