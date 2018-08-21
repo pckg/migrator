@@ -75,8 +75,8 @@ class InstallMigrator extends Command
                  * Implement beforeFirstUp(), beforeUp(), afterUp(), afterFirstUp(), isFirstUp()
                  */
                 try {
-                    $this->output('Migration: ' . $requestedMigration, 'info');
-                    $migration = new $requestedMigration;
+                    $this->output('Migration: ' . $migrationClass, 'info');
+                    $migration = is_object($requestedMigration) ? $requestedMigration : (new $requestedMigration);
                     if ($migration->shouldSkip($repository)) {
                         continue;
                     }
@@ -124,16 +124,16 @@ class InstallMigrator extends Command
                         $this->output('Partial: ' . $partial->getRepository() . ' : ' . get_class($partial), 'info');
                         $partial->up();
                     }
-                    $this->output($migration->getRepository() . ' : ' . $requestedMigration, 'info');
+                    $this->output($migration->getRepository() . ' : ' . $migrationClass, 'info');
                     $this->output();
                 } catch (Throwable $e) {
                     dd(exception($e));
                 }
 
-                if (in_array($requestedMigration, $installedMigrations)) {
+                if (in_array($migrationClass, $installedMigrations)) {
                     $updated++;
                 } else {
-                    $installedMigrations[] = $requestedMigration;
+                    $installedMigrations[] = $migrationClass;
                     $installed++;
                 }
             }
