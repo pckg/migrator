@@ -127,7 +127,7 @@ class InstallMigrator extends Command
                     $this->output($migration->getRepository() . ' : ' . $migrationClass, 'info');
                     $this->output();
                 } catch (Throwable $e) {
-                    dd(exception($e));
+                    ddd(exception($e));
                 }
 
                 if (in_array($migrationClass, $installedMigrations)) {
