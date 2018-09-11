@@ -31,7 +31,7 @@ class UpdateMigrator extends Command
     public function handle()
     {
         $this->app = $this->argument('app');
-        dd("UpdateMigrator::handle", $this->app, $this->getAppMigrationPath());
+        ddd("UpdateMigrator::handle", $this->app, $this->getAppMigrationPath());
     }
 
     private function getAppMigrationPath()
