@@ -139,10 +139,9 @@ class Relation
      */
     public function getSql()
     {
-        return 'CONSTRAINT `' . $this->getName() . '` FOREIGN KEY (`' . $this->getField()
-                                                                             ->getName() . '`) ' . 'REFERENCES `' .
-               $this->getReferences() . '`(`' . $this->getOn() . '`) ' . 'ON DELETE ' . $this->getOnDelete() . ' ' .
-               'ON UPDATE ' . $this->getOnUpdate();
+        return 'CONSTRAINT `' . $this->getName() . '` FOREIGN KEY (`' . $this->getField()->getName() . '`) ' .
+            'REFERENCES `' . $this->getReferences() . '`(`' . $this->getOn() . '`) ' . 'ON DELETE ' .
+            $this->getOnDelete() . ' ' . 'ON UPDATE ' . $this->getOnUpdate();
     }
 
     /**
@@ -157,6 +156,6 @@ class Relation
     public function getSqlByParams($field, $references, $on, $onDelete, $onUpdate)
     {
         return 'CONSTRAINT `' . $this->getName() . '` FOREIGN KEY (`' . $field . '`) ' . 'REFERENCES `' . $references .
-               '`(`' . $on . '`) ' . 'ON DELETE ' . $onDelete . ' ' . 'ON UPDATE ' . $onUpdate;
+            '`(`' . $on . '`) ' . 'ON DELETE ' . $onDelete . ' ' . 'ON UPDATE ' . $onUpdate;
     }
 }

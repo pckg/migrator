@@ -37,6 +37,6 @@ class UpdateMigrator extends Command
     private function getAppMigrationPath()
     {
         return path('root') . 'storage' . path('ds') . 'environment' . path('ds') . 'migrator' . path('ds') .
-               $this->app . path('ds');
+            $this->app . path('ds');
     }
 }

@@ -6,7 +6,6 @@ use Exception;
 use Pckg\Concept\Reflect;
 use Pckg\Database\Repository;
 use Pckg\Framework\Console\Command;
-use Pckg\Framework\Console\Command\ClearCache;
 use Symfony\Component\Console\Input\InputOption;
 use Throwable;
 
@@ -186,6 +185,6 @@ class InstallMigrator extends Command
     private function getEnvironmentPath()
     {
         return path('root') . 'storage' . path('ds') . 'environment' . path('ds') . 'migrator' . path('ds') .
-               $this->app . '.json';
+            $this->app . '.json';
     }
 }
