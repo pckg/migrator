@@ -137,10 +137,8 @@ class ExecuteMigration
             $prepare = $repository->getConnection()->prepare($sql);
             $execute = $prepare->execute();
             if (!$execute) {
-                throw new Exception(
-                    'Cannot execute query! ' . "\n" . $sql . "\n" . 'Error code ' .
-                    $prepare->errorCode() . "\n" . $prepare->errorInfo()[2]
-                );
+                throw new Exception('Cannot execute query! ' . "\n" . $sql . "\n" . 'Error code ' .
+                                    $prepare->errorCode() . "\n" . $prepare->errorInfo()[2]);
             }
         }
     }
@@ -247,10 +245,8 @@ class ExecuteMigration
             return;
         }
 
-        $current = $relation->getSqlByParams(
-            $cached['primary'], $cached['references'], $cached['on'],
-            Relation::RESTRICT, Relation::CASCADE
-        );
+        $current = $relation->getSqlByParams($cached['primary'], $cached['references'], $cached['on'],
+                                             Relation::RESTRICT, Relation::CASCADE);
 
         if ($current != $relation->getSql()) {
             $this->output('APPLY RELATION MANUALLY: ' . "\n" . $relation->getSql());
@@ -326,11 +322,8 @@ class ExecuteMigration
         }
 
         if ($this->sql) {
-            $this->sqls[] = 'CREATE TABLE IF NOT EXISTS `' . $table->getName() . '` (' . "\n" . implode(
-                    ",\n",
-                    $this->sql
-                ) .
-                "\n" . ') ENGINE=InnoDB DEFAULT CHARSET=utf8';
+            $this->sqls[] = 'CREATE TABLE IF NOT EXISTS `' . $table->getName() . '` (' . "\n" .
+                implode(",\n", $this->sql) . "\n" . ') ENGINE=InnoDB DEFAULT CHARSET=utf8';
         }
     }
 
@@ -380,12 +373,10 @@ class ExecuteMigration
         $cachedField = $cache->getField($field->getName(), $table->getName());
 
         return strtoupper($cachedField['type']) . ($cachedField['limit'] ? '(' . $cachedField['limit'] . ')' : '') .
-            ($cachedField['null'] ? ' NULL' : ' NOT NULL') . ($cachedField['default'] ? ' DEFAULT ' .
-                ($cachedField['default'] ==
-                'CURRENT_TIMESTAMP' ? $cachedField['default'] : ("'" .
-                    $cachedField['default'] .
-                    "'")) : ($cachedField['null'] ? ' DEFAULT NULL' : '')) .
-            ($cachedField['extra'] ? ' ' . strtoupper($cachedField['extra']) : '');
+            ($cachedField['null'] ? ' NULL' : ' NOT NULL') . ($cachedField['default']
+                ? ' DEFAULT ' . ($cachedField['default'] == 'CURRENT_TIMESTAMP'
+                    ? $cachedField['default'] : ("'" . $cachedField['default'] . "'")) : ($cachedField['null']
+                    ? ' DEFAULT NULL' : '')) . ($cachedField['extra'] ? ' ' . strtoupper($cachedField['extra']) : '');
     }
 
     /**
