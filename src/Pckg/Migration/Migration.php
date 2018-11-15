@@ -251,9 +251,12 @@ class Migration
         $this->tables[] = $morphtable;
 
         $morphtable->id('id');
-        $morphtable->integer($morph)->references($table);
         $morphtable->varchar('morph_id');
         $morphtable->varchar('poly_id');
+
+        if ($morph) {
+            $morphtable->integer($morph)->references($table);
+        }
 
         return $morphtable;
     }
