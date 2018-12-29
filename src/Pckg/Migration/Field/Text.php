@@ -16,4 +16,14 @@ class Text extends Field
      * @var string
      */
     protected $type = 'TEXT';
+
+    protected $fulltext = false;
+
+    public function fulltext($set = true)
+    {
+        $this->fulltext = $set;
+
+        return $this;
+    }
+
 }
