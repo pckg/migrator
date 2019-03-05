@@ -183,7 +183,7 @@ class Table
      *
      * @return Varchar
      */
-    public function varchar($name, $length = 128)
+    public function varchar($name, $length = 255)
     {
         $varchar = new Varchar($this, $name);
 
