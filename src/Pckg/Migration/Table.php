@@ -15,6 +15,7 @@ use Pckg\Migration\Field\Group\Timeable;
 use Pckg\Migration\Field\Id;
 use Pckg\Migration\Field\IdString;
 use Pckg\Migration\Field\Integer;
+use Pckg\Migration\Field\Json;
 use Pckg\Migration\Field\LongText;
 use Pckg\Migration\Field\Point;
 use Pckg\Migration\Field\Text;
@@ -190,6 +191,20 @@ class Table
         $this->fields[] = $varchar;
 
         $varchar->length($length);
+
+        return $varchar;
+    }
+
+    /**
+     * @param     $name
+     *
+     * @return Json
+     */
+    public function json($name)
+    {
+        $json = new Json($this, $name);
+
+        $this->fields[] = $json;
 
         return $varchar;
     }
