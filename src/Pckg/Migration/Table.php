@@ -206,7 +206,7 @@ class Table
 
         $this->fields[] = $json;
 
-        return $varchar;
+        return $json;
     }
 
     /**
