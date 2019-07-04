@@ -11,6 +11,7 @@ use Pckg\Migration\Field;
 use Pckg\Migration\Migration;
 use Pckg\Migration\Relation;
 use Pckg\Migration\Table;
+use Pckg\Migration\View;
 
 /**
  * Class ExecuteMigration
@@ -99,6 +100,14 @@ class ExecuteMigration
             }
         }
 
+        /*foreach ($this->migration->getViews() as $view) {
+            if ($cache->hasTable($view->getName())) {
+                $this->updateView($cache, $view);
+            } else {
+                $this->installView($cache, $view);
+            }
+        }*/
+
         if ($this->sqls) {
             $this->applyMigration();
         }
@@ -141,6 +150,17 @@ class ExecuteMigration
                                     $prepare->errorCode() . "\n" . $prepare->errorInfo()[2]);
             }
         }
+    }
+
+    public function updateView(Cache $cache, View $view)
+    {
+        $this->sql[] = 'DROP VIEW ' . $view->getName();
+        $this->installView($cache, $view);
+    }
+
+    public function installView(Cache $cache, View $view)
+    {
+        $this->sql[] = 'CREATE VIEW ' . $view->getName() . ' AS ' . $view->buildSql();
     }
 
     /**

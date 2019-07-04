@@ -12,6 +12,8 @@ use Pckg\Migration\Field;
 class Integer extends Field
 {
 
+    use Unsigned;
+
     /**
      * @var string
      */
@@ -21,4 +23,5 @@ class Integer extends Field
      * @var int
      */
     protected $length = 11;
+
 }

@@ -19,6 +19,11 @@ class Migration
     protected $tables = [];
 
     /**
+     * @var array
+     */
+    protected $view = [];
+
+    /**
      * @var string
      */
     protected $repository = Repository::class;
@@ -80,6 +85,20 @@ class Migration
     }
 
     /**
+     * @param      $view
+     *
+     * @return View
+     */
+    public function view($view)
+    {
+        $view = $this->getView($view);
+
+        $this->views[] = $view;
+
+        return $view;
+    }
+
+    /**
      * @param $table
      *
      * @return Table
@@ -92,11 +111,31 @@ class Migration
     }
 
     /**
+     * @param $table
+     *
+     * @return Table
+     */
+    public function getView($view)
+    {
+        $view = new View($view);
+
+        return $view;
+    }
+
+    /**
      * @return array
      */
     public function getTables()
     {
         return $this->tables;
+    }
+
+    /**
+     * @return array
+     */
+    public function getViews()
+    {
+        return $this->view;
     }
 
     /**
