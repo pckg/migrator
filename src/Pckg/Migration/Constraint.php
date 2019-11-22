@@ -63,4 +63,21 @@ abstract class Constraint
         return $this->type;
     }
 
+    public function drop(Migration $migration)
+    {
+        $sql = 'ALTER TABLE `' . $this->table->getName() . '` DROP INDEX `' . str_replace([' KEY'], '', $this->type)
+            . '__' . $this->table->getName() . '__' . implode('_', $this->fields) . '`';
+
+        $repository = context()->get($migration->getRepository());
+        $prepare = $repository->getConnection()->prepare($sql);
+        if (!$prepare) {
+            throw new \Exception('Cannot prepare query ' . $sql);
+        }
+        $execute = $prepare->execute();
+        if (!$execute) {
+            throw new \Exception('Cannot execute query! ' . "\n" . $sql . "\n" . 'Error code ' .
+                                $prepare->errorCode() . "\n" . $prepare->errorInfo()[2]);
+        }
+    }
+
 }
