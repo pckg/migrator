@@ -5,6 +5,7 @@ namespace Pckg\Migration;
 use Pckg\Migration\Constraint\Index;
 use Pckg\Migration\Constraint\Primary;
 use Pckg\Migration\Constraint\Unique;
+use Pckg\Migration\Constraint\Constraint;
 use Pckg\Migration\Field\Boolean;
 use Pckg\Migration\Field\Datetime;
 use Pckg\Migration\Field\Decimal;

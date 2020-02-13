@@ -6,7 +6,7 @@ use Exception;
 use Pckg\Database\Entity;
 use Pckg\Database\Helper\Cache;
 use Pckg\Migration\Console\InstallMigrator;
-use Pckg\Migration\Constraint;
+use Pckg\Migration\Constraint\Constraint;
 use Pckg\Migration\Field;
 use Pckg\Migration\Migration;
 use Pckg\Migration\Relation;

@@ -2,8 +2,6 @@
 
 namespace Pckg\Migration\Constraint;
 
-use Pckg\Migration\Constraint;
-
 /**
  * Class Primary
  *

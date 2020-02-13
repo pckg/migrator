@@ -2,8 +2,6 @@
 
 namespace Pckg\Migration\Constraint;
 
-use Pckg\Migration\Constraint;
-
 /**
  * Class Unique
  *
@@ -20,6 +18,11 @@ class Unique extends Constraint
     function getType()
     {
         return 'UNIQUE';
+    }
+
+    function getDropType()
+    {
+        return 'INDEX';
     }
 
 }

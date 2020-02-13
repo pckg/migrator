@@ -2,8 +2,6 @@
 
 namespace Pckg\Migration\Constraint;
 
-use Pckg\Migration\Constraint;
-
 /**
  * Class Index
  *
@@ -30,7 +28,7 @@ class Index extends Constraint
      */
     public function getName()
     {
-        return 'I_' . $this->getFields('_');
+        return $this->name ?? 'I_' . $this->getFields('_');
     }
 
 }

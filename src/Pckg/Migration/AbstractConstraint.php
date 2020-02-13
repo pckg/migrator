@@ -7,7 +7,7 @@ namespace Pckg\Migration;
  *
  * @package Pckg\Migration
  */
-abstract class Constraint
+abstract class AbstractConstraint
 {
 
     /**
@@ -20,7 +20,9 @@ abstract class Constraint
      */
     protected $fields = [];
 
-    protected $type = 'INDEX';
+    protected $type = 'CONSTRAINT';
+
+    protected $name;
 
     /**
      * Constraint constructor.
@@ -43,11 +45,23 @@ abstract class Constraint
     }
 
     /**
+     * @param $name
+     *
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getName()
     {
-        return str_replace([' KEY'], '', $this->type) . '__' . $this->table->getName() . '__' . $this->getFields('_');
+        return $this->name ?? str_replace([' KEY', 'CONSTRAINT'], ['', 'FOREIGN'], $this->type) . '__' . $this->table->getName() . '__' . $this->getFields('_');
     }
 
     public function getFields($separator = ',')
@@ -63,10 +77,14 @@ abstract class Constraint
         return $this->type;
     }
 
+    public function getDropType()
+    {
+        return $this->getType();
+    }
+
     public function drop(Migration $migration)
     {
-        $sql = 'ALTER TABLE `' . $this->table->getName() . '` DROP INDEX `' . str_replace([' KEY'], '', $this->type)
-            . '__' . $this->table->getName() . '__' . implode('_', $this->fields) . '`';
+        $sql = 'ALTER TABLE `' . $this->table->getName() . '` DROP ' . $this->getDropType() . ' `' . $this->getName() . '`';
 
         $repository = context()->get($migration->getRepository());
         $prepare = $repository->getConnection()->prepare($sql);
