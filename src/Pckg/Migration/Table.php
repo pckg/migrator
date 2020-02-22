@@ -9,6 +9,7 @@ use Pckg\Migration\Constraint\Constraint;
 use Pckg\Migration\Field\Boolean;
 use Pckg\Migration\Field\Datetime;
 use Pckg\Migration\Field\Decimal;
+use Pckg\Migration\Field\Generated;
 use Pckg\Migration\Field\Group\Deletable;
 use Pckg\Migration\Field\Group\Hidable;
 use Pckg\Migration\Field\Group\Orderable;
@@ -208,6 +209,20 @@ class Table
         $this->fields[] = $json;
 
         return $json;
+    }
+
+    /**
+     * @param string $name
+     * @param string $type
+     * @param string $as
+     */
+    public function generated(string $name, string $type, string $as)
+    {
+        $generated = new Generated($this, $name, $type, $as);
+
+        $this->fields[] = $generated;
+
+        return $generated;
     }
 
     /**
