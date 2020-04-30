@@ -346,6 +346,24 @@ class Table
     /**
      * @param $name
      *
+     * @return Text|Varchar
+     */
+    public function textByLength($name, $length = 255)
+    {
+        if ($length <= 255) {
+            return $this->tinytext($name, $length);
+        }
+
+        if ($length <= 2048) {
+            return $this->varchar($name, $length);
+        }
+
+        return $this->text($name);
+    }
+
+    /**
+     * @param $name
+     *
      * @return LongText
      */
     public function longtext($name)
