@@ -579,7 +579,7 @@ class Table
     }
 
     /**
-     * @param array ...$fields
+     * @param mixed ...$fields
      *
      * @return Unique
      */
