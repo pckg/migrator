@@ -165,6 +165,27 @@ class Table
      * @param string $name
      * @param bool   $primary
      *
+     * @return Id
+     */
+    public function uuid($name = 'uuid', $primary = true)
+    {
+        $uuid = new IdString($this, $name);
+
+        if ($primary) {
+            $uuid->primary();
+        } else {
+            $uuid->unique();
+        }
+
+        $this->fields[] = $uuid;
+
+        return $uuid;
+    }
+
+    /**
+     * @param string $name
+     * @param bool   $primary
+     *
      * @return IdString
      */
     public function idString($name = 'id', $primary = true)
