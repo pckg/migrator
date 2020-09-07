@@ -11,7 +11,7 @@
   ],
   "require": {
     "pckg/database": "dev-master",
-    "symfony/console": "4.* 5.*"
+    "symfony/console": ">=3.*"
   },
   "autoload": {
     "psr-0": {
