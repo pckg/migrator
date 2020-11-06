@@ -174,7 +174,7 @@ class Table
         if ($primary) {
             $uuid->primary();
         } else {
-            $uuid->unique();
+            $uuid->unique()->required();
         }
 
         $this->fields[] = $uuid;
