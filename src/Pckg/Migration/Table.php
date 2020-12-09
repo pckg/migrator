@@ -431,7 +431,7 @@ class Table
      * @param     $name
      * @param int $length
      *
-     * @return Integer
+     * @return \Pckg\Migration\Field\Integer
      */
     public function integer($name, $length = 11)
     {
