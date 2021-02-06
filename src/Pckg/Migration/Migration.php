@@ -93,7 +93,7 @@ class Migration
     {
         $view = $this->getView($view);
 
-        $this->views[] = $view;
+        $this->view[] = $view;
 
         return $view;
     }

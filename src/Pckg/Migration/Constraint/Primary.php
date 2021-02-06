@@ -30,5 +30,4 @@ class Primary extends Constraint
     {
         return 'PRIMARY';
     }
-
 }

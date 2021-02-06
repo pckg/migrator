@@ -265,8 +265,13 @@ class ExecuteMigration
             return;
         }
 
-        $current = $relation->getSqlByParams($cached['primary'], $cached['references'], $cached['on'],
-                                             Relation::RESTRICT, Relation::CASCADE);
+        $current = $relation->getSqlByParams(
+            $cached['primary'],
+            $cached['references'],
+            $cached['on'],
+            Relation::RESTRICT,
+            Relation::CASCADE
+        );
 
         if ($current != $relation->getSql()) {
             $this->output('APPLY RELATION MANUALLY: ' . "\n" . $relation->getSql());

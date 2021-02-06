@@ -25,5 +25,4 @@ class Text extends Field
 
         return $this;
     }
-
 }

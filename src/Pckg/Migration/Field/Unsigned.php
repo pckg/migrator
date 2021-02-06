@@ -1,4 +1,6 @@
-<?php namespace Pckg\Migration\Field;
+<?php
+
+namespace Pckg\Migration\Field;
 
 trait Unsigned
 {
@@ -22,5 +24,4 @@ trait Unsigned
     {
         return $this->type . ($this->length ? '(' . $this->length . ')' : '') . ($this->unsigned ? ' UNSIGNED' : '');
     }
-
 }

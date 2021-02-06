@@ -17,6 +17,8 @@ use Throwable;
 class InstallMigrator extends Command
 {
 
+    protected $app;
+
     /**
      *
      */
@@ -75,7 +77,7 @@ class InstallMigrator extends Command
                  */
                 try {
                     $this->output('Migration: ' . $migrationClass, 'info');
-                    $migration = is_object($requestedMigration) ? $requestedMigration : (new $requestedMigration);
+                    $migration = is_object($requestedMigration) ? $requestedMigration : (new $requestedMigration());
                     if ($migration->shouldSkip($repository)) {
                         continue;
                     }
@@ -99,8 +101,10 @@ class InstallMigrator extends Command
                         if ($this->option('indexes')) {
                             $dependency->onlyIndexes();
                         }
-                        $this->output('Dependency: ' . $dependency->getRepository() . ' : ' . get_class($dependency),
-                                      'info');
+                        $this->output(
+                            'Dependency: ' . $dependency->getRepository() . ' : ' . get_class($dependency),
+                            'info'
+                        );
                         $dependency->up();
                     }
                     $migration->up();

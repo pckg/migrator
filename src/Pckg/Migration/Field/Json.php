@@ -16,5 +16,4 @@ class Json extends Field
      * @var string
      */
     protected $type = 'JSON';
-
 }

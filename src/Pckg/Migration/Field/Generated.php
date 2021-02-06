@@ -37,5 +37,4 @@ class Generated extends Field
 
         return implode(' ', $sql);
     }
-
 }

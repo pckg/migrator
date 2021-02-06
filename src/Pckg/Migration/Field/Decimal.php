@@ -11,7 +11,6 @@ use Pckg\Migration\Field;
  */
 class Decimal extends Field
 {
-
     use Unsigned;
 
     /**
@@ -31,5 +30,4 @@ class Decimal extends Field
     {
         return $this->type . ($this->length ? '(' . implode(',', $this->length) . ')' : '');
     }
-
 }

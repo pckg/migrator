@@ -372,7 +372,7 @@ class Table
     public function textByLength($name, $length = 255)
     {
         if ($length <= 255) {
-            return $this->tinytext($name, $length);
+            return $this->varchar($name, $length); // was ->tinytext()
         }
 
         if ($length <= 2048) {

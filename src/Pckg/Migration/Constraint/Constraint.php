@@ -1,4 +1,6 @@
-<?php namespace Pckg\Migration\Constraint;
+<?php
+
+namespace Pckg\Migration\Constraint;
 
 use Pckg\Migration\AbstractConstraint;
 

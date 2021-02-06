@@ -14,5 +14,4 @@ class ForeignKey extends Constraint
      * @var string
      */
     protected $type = 'FOREIGN KEY';
-
 }

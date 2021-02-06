@@ -30,5 +30,4 @@ class Index extends Constraint
     {
         return $this->name ?? 'I_' . $this->getFields('_');
     }
-
 }

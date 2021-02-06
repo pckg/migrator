@@ -246,5 +246,4 @@ class Field
     {
         return $this->drop;
     }
-
 }

@@ -1,4 +1,6 @@
-<?php namespace Pckg\Migration;
+<?php
+
+namespace Pckg\Migration;
 
 use Pckg\Migration\Constraint\Index;
 use Pckg\Migration\Constraint\Primary;
@@ -31,18 +33,15 @@ class View
      * @var
      */
     protected $name;
-
-    /**
+/**
      * @var string
      */
     protected $select = null;
-
-    /**
+/**
      * @var bool
      */
     protected $check = false;
-
-    /**
+/**
      * Table constructor.
      *
      * @param $name
@@ -68,7 +67,6 @@ class View
     public function as($select)
     {
         $this->select = $select;
-
         return $this;
     }
 
@@ -80,7 +78,6 @@ class View
     public function withCheck($check = true)
     {
         $this->check = $check;
-
         return $this;
     }
 
@@ -91,5 +88,4 @@ class View
     {
         return $this->select . ($this->check ? ' WITH CHECK OPTION' : null);
     }
-
 }

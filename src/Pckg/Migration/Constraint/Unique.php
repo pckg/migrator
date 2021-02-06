@@ -24,5 +24,4 @@ class Unique extends Constraint
     {
         return 'INDEX';
     }
-
 }

@@ -13,6 +13,8 @@ use Symfony\Component\Console\Input\InputArgument;
 class UpdateMigrator extends Command
 {
 
+    protected $app;
+
     /**
      *
      */

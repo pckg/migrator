@@ -97,5 +97,4 @@ abstract class AbstractConstraint
                                 $prepare->errorCode() . "\n" . $prepare->errorInfo()[2]);
         }
     }
-
 }
