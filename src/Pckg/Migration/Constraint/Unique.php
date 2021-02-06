@@ -15,12 +15,12 @@ class Unique extends Constraint
      */
     protected $type = 'UNIQUE KEY';
 
-    function getType()
+    public function getType()
     {
         return 'UNIQUE';
     }
 
-    function getDropType()
+    public function getDropType()
     {
         return 'INDEX';
     }

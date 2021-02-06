@@ -72,7 +72,7 @@ abstract class AbstractConstraint
     /**
      * @return string
      */
-    function getType()
+    public function getType()
     {
         return $this->type;
     }
