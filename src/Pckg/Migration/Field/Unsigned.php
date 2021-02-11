@@ -22,6 +22,9 @@ trait Unsigned
      */
     public function getTypeWithLength()
     {
+        if ($this->type === 'INT' || $this->type === 'VARCHAR') {
+            return $this->type;
+        }
         return $this->type . ($this->length ? '(' . $this->length . ')' : '') . ($this->unsigned ? ' UNSIGNED' : '');
     }
 }

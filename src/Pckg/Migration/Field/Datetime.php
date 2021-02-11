@@ -15,5 +15,6 @@ class Datetime extends Field
     /**
      * @var string
      */
-    protected $type = 'DATETIME';
+    //protected $type = 'DATETIME';
+    protected $type = 'TIMESTAMP';
 }

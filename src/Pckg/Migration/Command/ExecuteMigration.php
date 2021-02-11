@@ -119,6 +119,7 @@ class ExecuteMigration
     protected function applyMigration()
     {
         $sqls = implode(";\n\n", $this->sqls);
+        $sqls = str_replace('`', '"', $sqls);
         $installMigrator = context()->getOrDefault(InstallMigrator::class);
 
         if (!$installMigrator) {
@@ -141,6 +142,7 @@ class ExecuteMigration
     {
         $repositoryName = $this->migration->getRepository();
         foreach ($this->sqls as $sql) {
+            $sql = str_replace('`', '"', $sql);
             $repository = context()->get($repositoryName);
 
             $prepare = $repository->getConnection()->prepare($sql);
@@ -348,7 +350,8 @@ class ExecuteMigration
 
         if ($this->sql) {
             $this->sqls[] = 'CREATE TABLE IF NOT EXISTS `' . $table->getName() . '` (' . "\n" .
-                implode(",\n", $this->sql) . "\n" . ') ENGINE=InnoDB DEFAULT CHARSET=utf8';
+                implode(",\n", $this->sql) . "\n" . ')';
+            //implode(",\n", $this->sql) . "\n" . ') ENGINE=InnoDB DEFAULT CHARSET=utf8';
         }
     }
 

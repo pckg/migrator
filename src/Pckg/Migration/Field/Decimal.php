@@ -28,6 +28,9 @@ class Decimal extends Field
      */
     public function getTypeWithLength()
     {
+        if ($this->type === 'INT' || $this->type === 'VARCHAR') {
+            return $this->type;
+        }
         return $this->type . ($this->length ? '(' . implode(',', $this->length) . ')' : '');
     }
 }

@@ -33,7 +33,11 @@ class Generated extends Field
 
     public function getSql()
     {
-        $sql = [$this->getTypeWithLength(), 'GENERATED ALWAYS AS (' . $this->generatedAs . ')'];
+        $type = $this->type;
+        if (strpos($this->type, '(')) {
+            $type = substr($type, 0, strpos($this->type, '('));
+        }
+        $sql = [$type, 'GENERATED ALWAYS AS (' . $this->generatedAs . ') STORED'];
 
         return implode(' ', $sql);
     }

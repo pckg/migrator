@@ -5,6 +5,7 @@ namespace Pckg\Migration;
 use Pckg\Migration\Constraint\Index;
 use Pckg\Migration\Constraint\Primary;
 use Pckg\Migration\Constraint\Unique;
+use Pckg\Migration\Field\Id;
 
 /**
  * Class Field
@@ -74,6 +75,9 @@ class Field
      */
     public function getTypeWithLength()
     {
+        if ($this->type === 'INT' || $this->type === 'VARCHAR') {
+            return $this->type;
+        }
         return $this->type . ($this->length ? '(' . $this->length . ')' : '');
     }
 
@@ -83,11 +87,14 @@ class Field
     public function getSql()
     {
         $sql = [];
-        $sql[] = $this->getTypeWithLength();
-        if ($this->isNullable()) {
-            $sql[] = 'NULL';
-        } else {
-            $sql[] = 'NOT NULL';
+        if (!($this instanceof Id)) {
+            $sql[] = $this->getTypeWithLength();
+
+            if ($this->isNullable()) {
+                $sql[] = 'NULL';
+            } else {
+                $sql[] = 'NOT NULL';
+            }
         }
 
         if ($this->default) {

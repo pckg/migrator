@@ -37,6 +37,7 @@ class Id extends Integer
      */
     public function getSql()
     {
+        return parent::getSql() . ($this->autoincrement ? ' SERIAL' : '');
         return parent::getSql() . ($this->autoincrement ? ' AUTO_INCREMENT' : '');
     }
 }
