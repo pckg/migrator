@@ -16,7 +16,7 @@ trait Unsigned
 
         return $this;
     }
-    
+
     public function isUnsigned()
     {
         return $this->unsigned;

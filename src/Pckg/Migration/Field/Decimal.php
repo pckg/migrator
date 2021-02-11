@@ -22,5 +22,4 @@ class Decimal extends Field
      * @var array
      */
     protected $length = [8, 2];
-
 }

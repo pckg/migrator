@@ -81,7 +81,7 @@ class Migration
     {
         if ($this->driver) {
             return $this->driver;
-        }db();
+        }
 
         return $this->getRepository()->getDriver();
     }
@@ -127,7 +127,7 @@ class Migration
      */
     public function getTable($table)
     {
-        $table = new Table($table, $this->getDriver());
+        $table = new Table($table);
 
         return $table;
     }
