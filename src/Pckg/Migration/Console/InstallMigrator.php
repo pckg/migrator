@@ -82,6 +82,12 @@ class InstallMigrator extends Command
                         continue;
                     }
 
+                    /**
+                     * Set database driver and apply formatting.
+                     */
+                    $driver = context()->get(Repository::class)->getDriver();
+                    $migration->setDriver($driver);
+
                     if ($this->option('fields')) {
                         $migration->onlyFields();
                     }

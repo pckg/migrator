@@ -16,5 +16,4 @@ class LongText extends Field
      * @var string
      */
     protected $type = 'VARCHAR';
-    //protected $type = 'LONGTEXT';
 }

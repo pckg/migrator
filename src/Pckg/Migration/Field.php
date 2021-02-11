@@ -62,6 +62,27 @@ class Field
         $this->name = $name;
     }
 
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTypeWithLength()
+    {
+        return $this->type
+            . ($this->length ? '(' . (is_array($this->length) ? implode(',', $this->length) : $this->length) . ')' : '');
+    }
+
     /**
      * @return mixed
      */
@@ -71,45 +92,11 @@ class Field
     }
 
     /**
-     * @return string
+     * @return null
      */
-    public function getTypeWithLength()
+    public function getDefault()
     {
-        if ($this->type === 'INT' || $this->type === 'VARCHAR') {
-            return $this->type;
-        }
-        return $this->type . ($this->length ? '(' . $this->length . ')' : '');
-    }
-
-    /**
-     * @return string
-     */
-    public function getSql()
-    {
-        $sql = [];
-        if (!($this instanceof Id)) {
-            $sql[] = $this->getTypeWithLength();
-
-            if ($this->isNullable()) {
-                $sql[] = 'NULL';
-            } else {
-                $sql[] = 'NOT NULL';
-            }
-        }
-
-        if ($this->default) {
-            $default = '';
-            if ($this->default == 'CURRENT_TIMESTAMP') {
-                $default = $this->default;
-            } else {
-                $default = "'" . $this->default . "'";
-            }
-            $sql[] = 'DEFAULT ' . $default;
-        } elseif ($this->isNullable()) {
-            $sql[] = 'DEFAULT NULL';
-        }
-
-        return implode(' ', $sql);
+        return $this->default;
     }
 
     /**

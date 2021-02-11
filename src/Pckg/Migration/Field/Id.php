@@ -33,11 +33,10 @@ class Id extends Integer
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getSql()
+    public function isAutoIncrement()
     {
-        return parent::getSql() . ($this->autoincrement ? ' SERIAL' : '');
-        return parent::getSql() . ($this->autoincrement ? ' AUTO_INCREMENT' : '');
+        return $this->autoincrement;
     }
 }

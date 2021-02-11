@@ -61,6 +61,11 @@ class ExecuteMigration
         $this->migration = $migration;
     }
 
+    public function getSqls()
+    {
+        return $this->sqls;
+    }
+
     /**
      * @return $this
      */
@@ -88,7 +93,8 @@ class ExecuteMigration
     public function execute()
     {
         $entity = new Entity();
-        $entity->setRepository(context()->get($this->migration->getRepository()));
+        $repository = context()->get($this->migration->getRepository());
+        $entity->setRepository($repository);
         $cache = $entity->getRepository()->getCache();
 
         foreach ($this->migration->getTables() as $table) {
@@ -119,7 +125,7 @@ class ExecuteMigration
     protected function applyMigration()
     {
         $sqls = implode(";\n\n", $this->sqls);
-        $sqls = str_replace('`', '"', $sqls);
+        $sqls = $this->migration->getDriver()->recapsulate($sqls, '`');
         $installMigrator = context()->getOrDefault(InstallMigrator::class);
 
         if (!$installMigrator) {
@@ -142,7 +148,7 @@ class ExecuteMigration
     {
         $repositoryName = $this->migration->getRepository();
         foreach ($this->sqls as $sql) {
-            $sql = str_replace('`', '"', $sql);
+            $sql = $this->migration->getDriver()->recapsulate($sql, '`');
             $repository = context()->get($repositoryName);
 
             $prepare = $repository->getConnection()->prepare($sql);
@@ -326,7 +332,7 @@ class ExecuteMigration
      * @param Cache $cache
      * @param Table $table
      */
-    protected function installTable(Cache $cache, Table $table)
+    public function installTable(Cache $cache, Table $table)
     {
         //$this->output('Installing table ' . $table->getName());
         $primaryKey = null;
@@ -349,9 +355,7 @@ class ExecuteMigration
         }
 
         if ($this->sql) {
-            $this->sqls[] = 'CREATE TABLE IF NOT EXISTS `' . $table->getName() . '` (' . "\n" .
-                implode(",\n", $this->sql) . "\n" . ')';
-            //implode(",\n", $this->sql) . "\n" . ') ENGINE=InnoDB DEFAULT CHARSET=utf8';
+            $this->sqls[] = $this->migration->getDriver()->getCreateTableQuery($table->getName(), $this->sql);
         }
     }
 
@@ -362,7 +366,7 @@ class ExecuteMigration
      */
     protected function installField(Field $field)
     {
-        return '`' . $field->getName() . '` ' . $field->getSql();
+        return $this->migration->getDriver()->installField($field);
     }
 
     /**

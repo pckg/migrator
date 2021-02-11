@@ -2,6 +2,7 @@
 
 namespace Pckg\Migration;
 
+use Pckg\Database\Driver\DriverInterface;
 use Pckg\Migration\Constraint\Index;
 use Pckg\Migration\Constraint\Primary;
 use Pckg\Migration\Constraint\Unique;

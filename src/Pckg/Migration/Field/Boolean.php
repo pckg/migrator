@@ -15,8 +15,7 @@ class Boolean extends Field
     /**
      * @var string
      */
-    protected $type = 'INT';
-    //protected $type = 'TINYINT';
+    protected $type = 'TINYINT';
 
     /**
      * @var int

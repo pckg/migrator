@@ -2,6 +2,7 @@
 
 namespace Pckg\Migration;
 
+use Pckg\Database\Driver\DriverInterface;
 use Pckg\Database\Repository;
 use Pckg\Migration\Command\ExecuteMigration;
 
@@ -44,6 +45,11 @@ class Migration
     protected $relations = true;
 
     /**
+     * @var DriverInterface
+     */
+    protected $driver;
+
+    /**
      * @return $this
      */
     public function onlyFields()
@@ -62,6 +68,22 @@ class Migration
         $this->indexes = true;
 
         return $this;
+    }
+
+    public function setDriver(DriverInterface $driver)
+    {
+        $this->driver = $driver;
+
+        return $this;
+    }
+
+    public function getDriver()
+    {
+        if ($this->driver) {
+            return $this->driver;
+        }db();
+
+        return $this->getRepository()->getDriver();
     }
 
     /**
@@ -105,7 +127,7 @@ class Migration
      */
     public function getTable($table)
     {
-        $table = new Table($table);
+        $table = new Table($table, $this->getDriver());
 
         return $table;
     }

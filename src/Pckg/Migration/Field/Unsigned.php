@@ -16,15 +16,9 @@ trait Unsigned
 
         return $this;
     }
-
-    /**
-     * @return string
-     */
-    public function getTypeWithLength()
+    
+    public function isUnsigned()
     {
-        if ($this->type === 'INT' || $this->type === 'VARCHAR') {
-            return $this->type;
-        }
-        return $this->type . ($this->length ? '(' . $this->length . ')' : '') . ($this->unsigned ? ' UNSIGNED' : '');
+        return $this->unsigned;
     }
 }

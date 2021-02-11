@@ -15,7 +15,9 @@
   },
   "require-dev": {
     "pckg-app/frontend-dev": "dev-master",
-    "pckg/framework": "dev-master"
+    "pckg/framework": "dev-master",
+    "pckg/htmlbuilder": "dev-master",
+    "pckg/manager": "dev-master"
   },
   "autoload": {
     "psr-0": {
