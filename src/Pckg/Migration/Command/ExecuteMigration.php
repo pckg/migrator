@@ -311,7 +311,7 @@ class ExecuteMigration
         $oldSql = $this->buildOldFieldSql($cache, $table, $field);
 
         if ($newSql != $oldSql) {
-            return '`' . $field->getName() . '` ' . $newSql;
+            return $newSql;
         }
     }
 
