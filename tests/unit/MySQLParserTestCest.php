@@ -25,6 +25,7 @@ class MySQLParserTestCest
         $myTable->json('test_json');
         $myTable->integer('test_integer');
         $myTable->varchar('test_varchar');
+        $myTable->longtext('test_longtext');
         $myTable->datetime('test_datetime');
         $myTable->boolean('test_boolean');
         $myTable->decimal('my_decimal');
@@ -37,6 +38,7 @@ class MySQLParserTestCest
 `test_json` JSON NULL DEFAULT NULL,
 `test_integer` INT(11) NULL DEFAULT NULL,
 `test_varchar` VARCHAR(255) NULL DEFAULT NULL,
+`test_longtext` LONGTEXT NULL DEFAULT NULL,
 `test_datetime` DATETIME NULL DEFAULT NULL,
 `test_boolean` TINYINT(1) NULL DEFAULT NULL,
 `my_decimal` DECIMAL(8,2) NULL DEFAULT NULL,

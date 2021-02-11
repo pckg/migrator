@@ -186,7 +186,7 @@ class ExecuteMigration
                 }
                 $sql = $this->updateField($cache, $table, $field);
                 if ($sql) {
-                    $this->sql[] = 'CHANGE `' . $field->getName() . '` ' . $sql;
+                    $this->sql[] = 'CHANGE ' . $sql;
                 }
                 continue;
             }
@@ -307,7 +307,7 @@ class ExecuteMigration
     protected function updateField(Cache $cache, Table $table, Field $field)
     {
         //$this->output('Updating field ' . $table->getName() . '.' . $field->getName());
-        $newSql = $field->getSql();
+        $newSql = $this->migration->getDriver()->installField($field);
         $oldSql = $this->buildOldFieldSql($cache, $table, $field);
 
         if ($newSql != $oldSql) {
@@ -404,7 +404,8 @@ class ExecuteMigration
     {
         $cachedField = $cache->getField($field->getName(), $table->getName());
 
-        return strtoupper($cachedField['type']) . ($cachedField['limit'] ? '(' . $cachedField['limit'] . ')' : '') .
+        return '`' . $cachedField['name'] . '` '
+            . strtoupper($cachedField['type']) . ($cachedField['limit'] ? '(' . $cachedField['limit'] . ')' : '') .
             ($cachedField['null'] ? ' NULL' : ' NOT NULL') . ($cachedField['default']
                 ? ' DEFAULT ' . ($cachedField['default'] == 'CURRENT_TIMESTAMP'
                     ? $cachedField['default'] : ("'" . $cachedField['default'] . "'")) : ($cachedField['null']

@@ -23,6 +23,7 @@ class PostgreSQLParserTestCest
         $myTable->json('test_json');
         $myTable->integer('test_integer');
         $myTable->varchar('test_varchar');
+        $myTable->longtext('test_longtext');
         $myTable->datetime('test_datetime');
         $myTable->boolean('test_boolean');
         $myTable->decimal('my_decimal');
@@ -35,6 +36,7 @@ class PostgreSQLParserTestCest
 "test_json" JSON NULL DEFAULT NULL,
 "test_integer" INT NULL DEFAULT NULL,
 "test_varchar" VARCHAR NULL DEFAULT NULL,
+"test_longtext" TEXT NULL DEFAULT NULL,
 "test_datetime" TIMESTAMP NULL DEFAULT NULL,
 "test_boolean" BOOLEAN NULL DEFAULT NULL,
 "my_decimal" DECIMAL(8,2) NULL DEFAULT NULL,
