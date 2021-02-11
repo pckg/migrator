@@ -254,12 +254,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pckg/database.git",
-                "reference": "8650f788c4083334704bc1d2e23e0bd1fd53bd26"
+                "reference": "6f91f24fa9f6d0ef1f9f1b4fb6d85de3822e5525"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pckg/database/zipball/8650f788c4083334704bc1d2e23e0bd1fd53bd26",
-                "reference": "8650f788c4083334704bc1d2e23e0bd1fd53bd26",
+                "url": "https://api.github.com/repos/pckg/database/zipball/6f91f24fa9f6d0ef1f9f1b4fb6d85de3822e5525",
+                "reference": "6f91f24fa9f6d0ef1f9f1b4fb6d85de3822e5525",
                 "shasum": ""
             },
             "require": {
@@ -275,7 +275,8 @@
                 "pckg-app/frontend-dev": "dev-master",
                 "pckg/framework": "dev-master",
                 "pckg/htmlbuilder": "dev-master",
-                "pckg/manager": "dev-master"
+                "pckg/manager": "dev-master",
+                "pckg/migrator": "dev-master"
             },
             "suggest": {
                 "fzaninotto/faker": "Use faker to mock data*",
@@ -305,7 +306,7 @@
                 "issues": "https://github.com/pckg/database/issues",
                 "source": "https://github.com/pckg/database/tree/master"
             },
-            "time": "2021-02-11T14:00:53+00:00"
+            "time": "2021-02-11T15:23:09+00:00"
         },
         {
             "name": "pckg/locale",
