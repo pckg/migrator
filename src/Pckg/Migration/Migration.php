@@ -83,7 +83,7 @@ class Migration
             return $this->driver;
         }
 
-        return $this->getRepository()->getDriver();
+        return context()->get($this->getRepository())->getDriver();
     }
 
     /**
