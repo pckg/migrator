@@ -32,7 +32,7 @@ class PostgreSQLParserTestCest
 
         $I->assertEquals([
             'CREATE TABLE IF NOT EXISTS "my_table" (
-"id" SERIAL,
+"id" SERIAL PRIMARY KEY,
 "test_json" JSON NULL DEFAULT NULL,
 "test_integer" INT NULL DEFAULT NULL,
 "test_varchar" VARCHAR NULL DEFAULT NULL,
