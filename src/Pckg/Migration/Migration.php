@@ -86,6 +86,11 @@ class Migration
         return context()->get($this->getRepository())->getDriver();
     }
 
+    public function makeJsonField($table, $field, $jsonPath)
+    {
+        return $this->getDriver()->makeJsonField($table, $field, $jsonPath);
+    }
+
     /**
      * @param      $table
      * @param bool $id
