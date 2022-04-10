@@ -56,11 +56,12 @@ class InstallMigrator extends Command
         $installed = 0;
         $updated = 0;
         $repository = $this->option('repository');
+        $repositoryDot = $repository ? '.' . $repository : '';
         $clear = $this->option('clear');
         $retry = min($this->option('retry') ?? 1, 5);
         foreach (range(1, $retry) as $r) {
             if ($clear) {
-                context()->get(Repository::class)->getCache()->rebuild();
+                context()->get(Repository::class . $repositoryDot)->getCache()->rebuild();
             }
             if ($r > 1) {
                 $this->output('Retry #' . $r);
@@ -85,7 +86,7 @@ class InstallMigrator extends Command
                     /**
                      * Set database driver and apply formatting.
                      */
-                    $driver = context()->get(Repository::class)->getDriver();
+                    $driver = context()->get(Repository::class . $repositoryDot)->getDriver();
                     $migration->setDriver($driver);
 
                     if ($this->option('fields')) {
