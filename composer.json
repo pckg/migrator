@@ -10,14 +10,14 @@
     }
   ],
   "require": {
-    "pckg/database": "dev-master",
-    "symfony/console": ">=3"
+    "pckg/database": "dev-next-8.0 as dev-master",
+    "symfony/console": ">=5"
   },
   "require-dev": {
-    "pckg-app/frontend-dev": "dev-master",
-    "pckg/framework": "dev-master",
-    "pckg/htmlbuilder": "dev-master",
-    "pckg/manager": "dev-master"
+    "pckg-app/frontend-dev": "dev-next-8.0 as dev-master",
+    "pckg/framework": "dev-next-8.0 as dev-master",
+    "pckg/htmlbuilder": "dev-next-8.0 as dev-master",
+    "pckg/manager": "dev-next-8.0 as dev-master"
   },
   "autoload": {
     "psr-0": {
