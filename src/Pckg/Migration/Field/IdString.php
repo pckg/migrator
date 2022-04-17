@@ -9,7 +9,6 @@ namespace Pckg\Migration\Field;
  */
 class IdString extends Varchar
 {
-
     /**
      * @var bool
      */

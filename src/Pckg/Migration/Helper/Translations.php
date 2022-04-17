@@ -12,7 +12,6 @@ use Pckg\Translator\Record\Translation;
  */
 trait Translations
 {
-
     /**
      * @param       $slug
      * @param array $translations

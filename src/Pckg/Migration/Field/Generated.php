@@ -12,7 +12,6 @@ use Pckg\Migration\Table;
  */
 class Generated extends Field
 {
-
     /**
      * @var string
      */

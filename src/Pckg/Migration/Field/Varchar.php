@@ -11,7 +11,6 @@ use Pckg\Migration\Field;
  */
 class Varchar extends Field
 {
-
     /**
      * @var string
      */

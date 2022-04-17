@@ -9,7 +9,6 @@ namespace Pckg\Migration;
  */
 class Relation
 {
-
     const RESTRICT = 'RESTRICT';
 
     const CASCADE = 'CASCADE';

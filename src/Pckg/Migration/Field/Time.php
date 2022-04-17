@@ -11,7 +11,6 @@ use Pckg\Migration\Field;
  */
 class Time extends Field
 {
-
     /**
      * @var string
      */

@@ -6,5 +6,4 @@ use Pckg\Migration\AbstractConstraint;
 
 class Constraint extends AbstractConstraint
 {
-
 }

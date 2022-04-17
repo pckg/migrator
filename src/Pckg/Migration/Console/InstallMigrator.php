@@ -16,7 +16,6 @@ use Throwable;
  */
 class InstallMigrator extends Command
 {
-
     protected $app;
 
     /**

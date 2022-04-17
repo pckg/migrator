@@ -11,7 +11,6 @@ use Pckg\Migration\Field;
  */
 class LongText extends Field
 {
-
     /**
      * @var string
      */

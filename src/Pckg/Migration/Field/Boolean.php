@@ -11,7 +11,6 @@ use Pckg\Migration\Field;
  */
 class Boolean extends Field
 {
-
     /**
      * @var string
      */

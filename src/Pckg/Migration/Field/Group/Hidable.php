@@ -11,7 +11,6 @@ use Pckg\Migration\Table;
  */
 class Hidable
 {
-
     /**
      * @var Table
      */

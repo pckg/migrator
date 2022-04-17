@@ -4,7 +4,6 @@ namespace Pckg\Migration\Field;
 
 trait Unsigned
 {
-
     /**
      * @var bool
      */

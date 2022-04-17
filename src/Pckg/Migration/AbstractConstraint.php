@@ -9,7 +9,6 @@ namespace Pckg\Migration;
  */
 abstract class AbstractConstraint
 {
-
     /**
      * @var Table
      */

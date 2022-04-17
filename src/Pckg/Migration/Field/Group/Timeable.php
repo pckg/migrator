@@ -11,7 +11,6 @@ use Pckg\Migration\Table;
  */
 class Timeable
 {
-
     /**
      * @var Table
      */

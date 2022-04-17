@@ -9,7 +9,6 @@ namespace Pckg\Migration\Field;
  */
 class Id extends Integer
 {
-
     /**
      * @var bool
      */

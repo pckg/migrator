@@ -11,7 +11,6 @@ use Pckg\Migration\Field;
  */
 class Point extends Field
 {
-
     /**
      * @var string
      */

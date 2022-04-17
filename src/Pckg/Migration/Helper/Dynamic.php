@@ -15,7 +15,6 @@ use Pckg\Dynamic\Record\Table;
  */
 trait Dynamic
 {
-
     /**
      * @param      $table
      * @param null $repository

@@ -11,7 +11,6 @@ use Pckg\Migration\Field;
  */
 class Json extends Field
 {
-
     /**
      * @var string
      */

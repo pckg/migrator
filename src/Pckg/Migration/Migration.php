@@ -13,7 +13,6 @@ use Pckg\Migration\Command\ExecuteMigration;
  */
 class Migration
 {
-
     /**
      * @var array
      */

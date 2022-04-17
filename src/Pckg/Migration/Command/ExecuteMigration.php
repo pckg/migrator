@@ -20,7 +20,6 @@ use Pckg\Migration\View;
  */
 class ExecuteMigration
 {
-
     /**
      * @var Migration
      */

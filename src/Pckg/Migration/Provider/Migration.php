@@ -13,7 +13,6 @@ use Pckg\Migration\Console\UpdateMigrator;
  */
 class Migration extends Provider
 {
-
     /**
      * @return array
      */

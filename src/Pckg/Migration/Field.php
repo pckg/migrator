@@ -14,7 +14,6 @@ use Pckg\Migration\Field\Id;
  */
 class Field
 {
-
     /**
      * @var
      */

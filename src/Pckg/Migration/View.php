@@ -28,7 +28,6 @@ use Pckg\Migration\Field\Varchar;
  */
 class View
 {
-
     /**
      * @var
      */

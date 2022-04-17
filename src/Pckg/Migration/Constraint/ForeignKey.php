@@ -9,7 +9,6 @@ namespace Pckg\Migration\Constraint;
  */
 class ForeignKey extends Constraint
 {
-
     /**
      * @var string
      */
