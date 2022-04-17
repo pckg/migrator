@@ -10,10 +10,10 @@
     }
   ],
   "require": {
-    "pckg/database": "dev-next-8.0 as dev-master",
     "symfony/console": ">=5"
   },
   "require-dev": {
+    "pckg/database": "dev-next-8.0 as dev-master",
     "pckg-app/frontend-dev": "dev-next-8.0 as dev-master",
     "pckg/framework": "dev-next-8.0 as dev-master",
     "pckg/htmlbuilder": "dev-next-8.0 as dev-master",
