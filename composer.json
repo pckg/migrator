@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "symfony/console": ">=5"
+    "symfony/console": "3.* || 4.* || 5.* || 6.*"
   },
   "require-dev": {
     "pckg/database": "dev-next-8.0 as dev-master",
