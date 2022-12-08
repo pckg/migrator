@@ -17,7 +17,9 @@
     "pckg-app/frontend-dev": "dev-next-8.0 as dev-master",
     "pckg/framework": "dev-next-8.0 as dev-master",
     "pckg/htmlbuilder": "dev-next-8.0 as dev-master",
-    "pckg/manager": "dev-next-8.0 as dev-master"
+    "pckg/manager": "dev-next-8.0 as dev-master",
+    "pckg/cache": "dev-next-8.0 as dev-master",
+    "pckg/concept": "dev-next-8.0 as dev-master"
   },
   "autoload": {
     "psr-0": {
